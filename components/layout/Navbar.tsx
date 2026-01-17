@@ -50,22 +50,22 @@ export const Navbar = () => {
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center gap-8">
                     <Link
+                        href="/"
+                        className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
+                    >
+                        Home
+                    </Link>
+                    <Link
                         href="/courses"
                         className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
                     >
                         Browse Courses
                     </Link>
                     <Link
-                        href="/pricing"
+                        href="/about"
                         className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
                     >
-                        Pricing
-                    </Link>
-                    <Link
-                        href="/instructors"
-                        className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
-                    >
-                        Instructors
+                        about
                     </Link>
                 </div>
 
@@ -207,25 +207,26 @@ export const Navbar = () => {
                     >
                         <div className="space-y-1 px-4 py-4">
                             <Link
+                                href="/"
+                                className="block rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                Home
+                            </Link>
+                            <Link
                                 href="/courses"
                                 className="block rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 Browse Courses
                             </Link>
+
                             <Link
-                                href="/pricing"
+                                href="/about"
                                 className="block rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Pricing
-                            </Link>
-                            <Link
-                                href="/instructors"
-                                className="block rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                Instructors
+                                about
                             </Link>
                             {!isAuthenticated && (
                                 <div className="mt-4 flex flex-col gap-2">
