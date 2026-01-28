@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import { Star, StarHalf } from 'lucide-react'
 import { cn } from '../../lib/utils'

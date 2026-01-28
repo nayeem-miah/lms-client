@@ -7,11 +7,18 @@ import {
     Twitter
 } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 
 
 export const Footer = () => {
+    const pathname = usePathname()
+
+    if (pathname?.startsWith('/dashboard')) {
+        return null
+    }
+
     return (
         <footer className="bg-slate-900 text-slate-300">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">

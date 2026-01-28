@@ -13,22 +13,28 @@ import {
     X,
 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { selectCurrentUser, selectIsAuthenticated, logOut } from '@/lib/redux/features/auth/authSlice'
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { Avatar } from '../ui/Avater'
 import { Button } from '../ui/Button'
+
 export const Navbar = () => {
-    // const { user, isAuthenticated, logout } = useAuth()
-    const isAuthenticated = true
-    const user = {
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150?u=a042581f4e28540',
-        email: 's3NkU@example.com',
-    }
+    const dispatch = useAppDispatch()
+    const isAuthenticated = useAppSelector(selectIsAuthenticated)
+    const user = useAppSelector(selectCurrentUser)
+
+    const pathname = usePathname()
     const router = useRouter()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+
+    if (pathname?.startsWith('/dashboard')) {
+        return null
+    }
+
     const handleLogout = () => {
-        // logout()
+        dispatch(logOut())
         router.push('/login')
         setIsProfileMenuOpen(false)
     }
@@ -93,7 +99,7 @@ export const Navbar = () => {
                                     onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                                     className="flex items-center gap-2 rounded-full border border-slate-200 p-1 hover:bg-slate-50 transition-colors"
                                 >
-                                    <Avatar src={user?.avatar} alt={user?.name} size="sm" />
+                                    <Avatar src={user?.profilePhoto} alt={user?.name} fallback={user?.name} size="sm" />
                                 </button>
 
                                 <AnimatePresence>

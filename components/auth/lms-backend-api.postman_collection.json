@@ -1,0 +1,2030 @@
+{
+  "info": {
+    "_postman_id": "889c48bd-a26f-4cdb-a26a-614ce863b00a",
+    "name": "lms-backend-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46499415"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Nayeem\",\r\n    \"email\": \"tifito8888@ixospace.com\",\r\n    \"password\": \"Nayeem123\",\r\n    \"role\": \"INSTRUCTOR\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3Njc0MDg5NzAsImV4cCI6MTc2ODAxMzc3MH0.PZZ_SBWv2APdjcmYYkKHbWUof8QjlGZxknea9ksYDhA",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "nayeem",
+                  "disabled": true
+                },
+                {
+                  "key": "role",
+                  "value": "INSTRUCTOR",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "2",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find by id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Nayeem\",\r\n    \"email\": \"nayeem@gmail.com\",\r\n    \"password\":\"Nayeem123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/694e27be71ccf33fee75a6e0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "694e27be71ccf33fee75a6e0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Nayeem\",\r\n    \"email\": \"nayeem@gmail.com\",\r\n    \"password\":\"Nayeem123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/694e27be71ccf33fee75a6e0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "694e27be71ccf33fee75a6e0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get me",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTEyNTIsImV4cCI6MTc2OTA1NjA1Mn0.q96CHwWnagwR-kS2waybzk-TjxF4FzuoCDuMo32KQVM",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Nayeem\",\r\n    \"email\": \"nayeem@gmail.com\",\r\n    \"password\":\"Nayeem123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ],
+              "query": [
+                {
+                  "key": "auth",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3NjY4MjcxNTQsImV4cCI6MTc2NzQzMTk1NH0.M2VG3SFjcn4WzHrkztzo6rAjY2U2tgad4ARogFmYRrQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "MD Nayeem Miah",
+                  "type": "text",
+                  "uuid": "7f565b53-cf57-48cf-a667-c02c8438f52b"
+                },
+                {
+                  "key": "profilePhoto",
+                  "type": "file",
+                  "uuid": "264b1f82-a876-46f0-b970-40687b7aa986",
+                  "src": "/C:/Users/Nayeem/Pictures/Screenshots/nayeem.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/update-profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "update-profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "seed admin",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"admin@lms\",\r\n    \"email\": \"admin@lms.com\",\r\n    \"password\": \"admin123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/seed-admin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "seed-admin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update role & update status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3NjY4OTA4NjcsImV4cCI6MTc2NzQ5NTY2N30.A5Z0OxhaKVmjB1KnUwpF3-pfDuEPiwslHjBNivc8bt4",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/update-role/694f7c8dd1abd0c1afa2020c",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "update-role",
+                "694f7c8dd1abd0c1afa2020c"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3NjY4MTY5MTMsImV4cCI6MTc2NzQyMTcxM30.Ibm8Ect3oEwlkgjg1cIOt75jUglLaiOzNUFqTMyKLwo",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n//     \"email\": \"nayeem@gmail.com\",\r\n//     \"password\":\"Nayeem123#\",\r\n//     \"deviceId\": \"rakib123456465765678678\"\r\n\r\n    \"email\": \"admin@lms.com\",\r\n    \"password\": \"admin123\",\r\n    \"deviceId\": \"admin12345\"\r\n\r\n    // \"email\": \"rakibul.web.ins@gmail.com\",\r\n    // \"password\": \"Nayeem123\",\r\n    // \"deviceId\": \"instructor213456u7\"\r\n\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3NjY4MjM2ODMsImV4cCI6MTc2NzQyODQ4M30.egQuJAaPm-aMGVD1Vb8MRAyj3sOENVjCZJk4HV--T_I",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"oldPassword\":\"Nayeem123#\",\r\n    \"newPassword\":\"Nayeem123#\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "lgout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRlNThiMzRhNjRhOWZlMjRiY2E1OTYiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3NjY4MDY1NDAsImV4cCI6MTc2NzQxMTM0MH0.U2_8b9NFoUljiHHkadIEvgrONByQxEKPtScZPMbxwI4",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"deviceId\": \"rakib123456465765678678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "course",
+      "item": [
+        {
+          "name": "create course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY4NDUyNjAxLCJleHAiOjE3NjkwNTc0MDF9.4mskWJM8SJUf9X7PP8oyC77Op0T3EwjnyLN1U0PQq1M",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"title\": \"Complete Web Development Course\",\n  \"description\": \"This course covers HTML, CSS, JavaScript, and modern frameworks with hands-on projects.\",\n  \"price\": 4999,\n  \"category\": \"Web Development\",\n  \"level\": \"BEGINNER\"\n}\n",
+                  "type": "text",
+                  "uuid": "468d2517-9089-43fd-9eb2-d61c141f4abe"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "927b9757-a814-4c55-bfe1-1c80fda7d3c5",
+                  "src": "/C:/Users/Nayeem/Downloads/virtual-course-registration-form-1.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update course",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY2OTA1MzcyLCJleHAiOjE3Njc1MTAxNzJ9.kAo1hrGDfMul7ghvGvoIwezk2xgXXAyPBQC0qx4O3Gc",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"isPublished\": false}",
+                  "type": "text",
+                  "uuid": "514268de-aa5d-40a7-b537-58630bbdce89",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "e06e49cb-31e6-4e3a-84fe-84038c75fd4b",
+                  "src": "/C:/Users/Nayeem/Pictures/Screenshots/Screenshot 2025-12-28 112325.png",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/6950f27506b6e6fc98082b5f/toggle-publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "6950f27506b6e6fc98082b5f",
+                "toggle-publish"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all course",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY2OTA1MzcyLCJleHAiOjE3Njc1MTAxNzJ9.kAo1hrGDfMul7ghvGvoIwezk2xgXXAyPBQC0qx4O3Gc",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"isPublished\": false}",
+                  "type": "text",
+                  "uuid": "514268de-aa5d-40a7-b537-58630bbdce89",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "e06e49cb-31e6-4e3a-84fe-84038c75fd4b",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get all course",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY2OTA1MzcyLCJleHAiOjE3Njc1MTAxNzJ9.kAo1hrGDfMul7ghvGvoIwezk2xgXXAyPBQC0qx4O3Gc",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "data",
+                      "value": "{\n    \"isPublished\": false}",
+                      "type": "text",
+                      "uuid": "514268de-aa5d-40a7-b537-58630bbdce89",
+                      "disabled": true
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "e06e49cb-31e6-4e3a-84fe-84038c75fd4b",
+                      "value": null,
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/courses/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "courses",
+                    "all"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "742"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2e6-UrjoJv+cA7PkHDRSSebij8xdazo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 04:42:24 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Courses fetched successfully\",\n    \"data\": [\n        {\n            \"_id\": \"6950cdd34378693788ab8242\",\n            \"title\": \"Advanced NestJS Course\",\n            \"description\": \"Complete guide to building scalable backend applications with NestJS\",\n            \"price\": 2999,\n            \"category\": \"Backend Development\",\n            \"instructorId\": {\n                \"_id\": \"69509c87c197afaa90afc804\",\n                \"name\": \"Admin\",\n                \"email\": \"admin@lms.com\"\n            },\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766903253/courses/thumbnails/xaaswyvy2f80e8new4vz.png\",\n            \"thumbnailPublicId\": \"courses/thumbnails/xaaswyvy2f80e8new4vz\",\n            \"level\": \"INTERMEDIATE\",\n            \"isPublished\": true,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2025-12-28T06:27:31.633Z\",\n            \"updatedAt\": \"2025-12-28T06:27:31.633Z\",\n            \"__v\": 0\n        }\n    ],\n    \"meta\": {\n        \"total\": 1,\n        \"page\": 1,\n        \"totalPages\": 1\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "get single course",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY4NDUyNjAxLCJleHAiOjE3NjkwNTc0MDF9.4mskWJM8SJUf9X7PP8oyC77Op0T3EwjnyLN1U0PQq1M",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/69687366a92f2bb9e9f324c4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "69687366a92f2bb9e9f324c4"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get single course",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY4NDUyNjAxLCJleHAiOjE3NjkwNTc0MDF9.4mskWJM8SJUf9X7PP8oyC77Op0T3EwjnyLN1U0PQq1M",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/courses/69687366a92f2bb9e9f324c4",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "courses",
+                    "69687366a92f2bb9e9f324c4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "742"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2e6-vOzg6U50nMcIHvWs1szQSuVG6oQ\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 04:59:06 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Course fetched successfully\",\n    \"data\": {\n        \"_id\": \"69687366a92f2bb9e9f324c4\",\n        \"title\": \"Complete Web Development Course\",\n        \"description\": \"This course covers HTML, CSS, JavaScript, and modern frameworks with hands-on projects.\",\n        \"price\": 4999,\n        \"category\": \"Web Development\",\n        \"instructorId\": {\n            \"_id\": \"6950d5f4b14c6452458151d7\",\n            \"name\": \"Nayeem\",\n            \"email\": \"rakibul.web.ins@gmail.com\"\n        },\n        \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1768452966/courses/thumbnails/rfunyvitoyfkfssu9b1h.jpg\",\n        \"thumbnailPublicId\": \"courses/thumbnails/rfunyvitoyfkfssu9b1h\",\n        \"level\": \"BEGINNER\",\n        \"isPublished\": false,\n        \"ratingAvg\": 0,\n        \"totalEnrollments\": 0,\n        \"createdAt\": \"2026-01-15T04:56:06.318Z\",\n        \"updatedAt\": \"2026-01-15T04:56:06.318Z\",\n        \"__v\": 0\n    },\n    \"meta\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "get instructor course",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY4NDUyNjAxLCJleHAiOjE3NjkwNTc0MDF9.4mskWJM8SJUf9X7PP8oyC77Op0T3EwjnyLN1U0PQq1M",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/my-courses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "my-courses"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get instructor course",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY4NDUyNjAxLCJleHAiOjE3NjkwNTc0MDF9.4mskWJM8SJUf9X7PP8oyC77Op0T3EwjnyLN1U0PQq1M",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/courses/my-courses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "courses",
+                    "my-courses"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1893"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"765-RQPaL4IZsfeUTpLendT4x/v5wxg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 05:10:21 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"My courses fetched successfully\",\n    \"data\": [\n        {\n            \"_id\": \"69687366a92f2bb9e9f324c4\",\n            \"title\": \"Complete Web Development Course\",\n            \"description\": \"This course covers HTML, CSS, JavaScript, and modern frameworks with hands-on projects.\",\n            \"price\": 4999,\n            \"category\": \"Web Development\",\n            \"instructorId\": \"6950d5f4b14c6452458151d7\",\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1768452966/courses/thumbnails/rfunyvitoyfkfssu9b1h.jpg\",\n            \"thumbnailPublicId\": \"courses/thumbnails/rfunyvitoyfkfssu9b1h\",\n            \"level\": \"BEGINNER\",\n            \"isPublished\": false,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2026-01-15T04:56:06.318Z\",\n            \"updatedAt\": \"2026-01-15T04:56:06.318Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6950f27506b6e6fc98082b5f\",\n            \"title\": \"Advanced NestJS Course\",\n            \"description\": \"Complete guide to building scalable backend applications with NestJS\",\n            \"price\": 2999,\n            \"category\": \"Backend Development\",\n            \"instructorId\": \"6950d5f4b14c6452458151d7\",\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766912630/courses/thumbnails/xk50n6quzdp65yjvbyvu.png\",\n            \"thumbnailPublicId\": \"courses/thumbnails/xk50n6quzdp65yjvbyvu\",\n            \"level\": \"INTERMEDIATE\",\n            \"isPublished\": false,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2025-12-28T09:03:49.831Z\",\n            \"updatedAt\": \"2025-12-28T09:05:00.280Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6950d683b14c6452458151dd\",\n            \"title\": \"Advanced NestJS Course\",\n            \"description\": \"Complete guide to building scalable backend applications with NestJS\",\n            \"price\": 2999,\n            \"category\": \"Backend Development\",\n            \"instructorId\": \"6950d5f4b14c6452458151d7\",\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766905476/courses/thumbnails/zdatru9j15go9vnimisu.png\",\n            \"thumbnailPublicId\": \"courses/thumbnails/zdatru9j15go9vnimisu\",\n            \"level\": \"INTERMEDIATE\",\n            \"isPublished\": false,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2025-12-28T07:04:35.238Z\",\n            \"updatedAt\": \"2025-12-28T07:04:35.238Z\",\n            \"__v\": 0\n        }\n    ],\n    \"meta\": {\n        \"total\": 3,\n        \"page\": 1,\n        \"totalPages\": 1\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "public course by admin",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY4NDUyNjAxLCJleHAiOjE3NjkwNTc0MDF9.4mskWJM8SJUf9X7PP8oyC77Op0T3EwjnyLN1U0PQq1M",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/69687366a92f2bb9e9f324c4/toggle-publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "69687366a92f2bb9e9f324c4",
+                "toggle-publish"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "public course by admin",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY4NDUyNjAxLCJleHAiOjE3NjkwNTc0MDF9.4mskWJM8SJUf9X7PP8oyC77Op0T3EwjnyLN1U0PQq1M",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/courses/69687366a92f2bb9e9f324c4/toggle-publish",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "courses",
+                    "69687366a92f2bb9e9f324c4",
+                    "toggle-publish"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "683"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2ab-kIOS1uOAm4rAYwBPlWt6b6NIFcw\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 05:29:05 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Course published successfully\",\n    \"data\": {\n        \"_id\": \"69687366a92f2bb9e9f324c4\",\n        \"title\": \"Complete Web Development Course\",\n        \"description\": \"This course covers HTML, CSS, JavaScript, and modern frameworks with hands-on projects.\",\n        \"price\": 4999,\n        \"category\": \"Web Development\",\n        \"instructorId\": \"6950d5f4b14c6452458151d7\",\n        \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1768452966/courses/thumbnails/rfunyvitoyfkfssu9b1h.jpg\",\n        \"thumbnailPublicId\": \"courses/thumbnails/rfunyvitoyfkfssu9b1h\",\n        \"level\": \"BEGINNER\",\n        \"isPublished\": true,\n        \"ratingAvg\": 0,\n        \"totalEnrollments\": 0,\n        \"createdAt\": \"2026-01-15T04:56:06.318Z\",\n        \"updatedAt\": \"2026-01-15T05:29:05.845Z\",\n        \"__v\": 0\n    },\n    \"meta\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "course all by admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3Njg0NTQ2MTIsImV4cCI6MTc2OTA1OTQxMn0.mFG1r73efYomDWMvo6mBoujtscUZDVLoU6MAKEKot-M",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/courses/admin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "admin"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "public course by admin",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3Njg0NTQ2MTIsImV4cCI6MTc2OTA1OTQxMn0.mFG1r73efYomDWMvo6mBoujtscUZDVLoU6MAKEKot-M",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/courses/admin",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "courses",
+                    "admin"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "2703"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"a8f-b462jDLNsCt1Vok89RaBdqhkAJo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 05:23:54 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Courses fetched successfully\",\n    \"data\": [\n        {\n            \"_id\": \"69687366a92f2bb9e9f324c4\",\n            \"title\": \"Complete Web Development Course\",\n            \"description\": \"This course covers HTML, CSS, JavaScript, and modern frameworks with hands-on projects.\",\n            \"price\": 4999,\n            \"category\": \"Web Development\",\n            \"instructorId\": {\n                \"_id\": \"6950d5f4b14c6452458151d7\",\n                \"name\": \"Nayeem\",\n                \"email\": \"rakibul.web.ins@gmail.com\"\n            },\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1768452966/courses/thumbnails/rfunyvitoyfkfssu9b1h.jpg\",\n            \"thumbnailPublicId\": \"courses/thumbnails/rfunyvitoyfkfssu9b1h\",\n            \"level\": \"BEGINNER\",\n            \"isPublished\": false,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2026-01-15T04:56:06.318Z\",\n            \"updatedAt\": \"2026-01-15T04:56:06.318Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6950f27506b6e6fc98082b5f\",\n            \"title\": \"Advanced NestJS Course\",\n            \"description\": \"Complete guide to building scalable backend applications with NestJS\",\n            \"price\": 2999,\n            \"category\": \"Backend Development\",\n            \"instructorId\": {\n                \"_id\": \"6950d5f4b14c6452458151d7\",\n                \"name\": \"Nayeem\",\n                \"email\": \"rakibul.web.ins@gmail.com\"\n            },\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766912630/courses/thumbnails/xk50n6quzdp65yjvbyvu.png\",\n            \"thumbnailPublicId\": \"courses/thumbnails/xk50n6quzdp65yjvbyvu\",\n            \"level\": \"INTERMEDIATE\",\n            \"isPublished\": false,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2025-12-28T09:03:49.831Z\",\n            \"updatedAt\": \"2025-12-28T09:05:00.280Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6950d683b14c6452458151dd\",\n            \"title\": \"Advanced NestJS Course\",\n            \"description\": \"Complete guide to building scalable backend applications with NestJS\",\n            \"price\": 2999,\n            \"category\": \"Backend Development\",\n            \"instructorId\": {\n                \"_id\": \"6950d5f4b14c6452458151d7\",\n                \"name\": \"Nayeem\",\n                \"email\": \"rakibul.web.ins@gmail.com\"\n            },\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766905476/courses/thumbnails/zdatru9j15go9vnimisu.png\",\n            \"thumbnailPublicId\": \"courses/thumbnails/zdatru9j15go9vnimisu\",\n            \"level\": \"INTERMEDIATE\",\n            \"isPublished\": false,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2025-12-28T07:04:35.238Z\",\n            \"updatedAt\": \"2025-12-28T07:04:35.238Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6950cdd34378693788ab8242\",\n            \"title\": \"Advanced NestJS Course\",\n            \"description\": \"Complete guide to building scalable backend applications with NestJS\",\n            \"price\": 2999,\n            \"category\": \"Backend Development\",\n            \"instructorId\": {\n                \"_id\": \"69509c87c197afaa90afc804\",\n                \"name\": \"Admin\",\n                \"email\": \"admin@lms.com\"\n            },\n            \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766903253/courses/thumbnails/xaaswyvy2f80e8new4vz.png\",\n            \"thumbnailPublicId\": \"courses/thumbnails/xaaswyvy2f80e8new4vz\",\n            \"level\": \"INTERMEDIATE\",\n            \"isPublished\": true,\n            \"ratingAvg\": 0,\n            \"totalEnrollments\": 0,\n            \"createdAt\": \"2025-12-28T06:27:31.633Z\",\n            \"updatedAt\": \"2025-12-28T06:27:31.633Z\",\n            \"__v\": 0\n        }\n    ],\n    \"meta\": {\n        \"total\": 4,\n        \"page\": 1,\n        \"totalPages\": 1\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "delete course",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3Njg0NTQ2MTIsImV4cCI6MTc2OTA1OTQxMn0.mFG1r73efYomDWMvo6mBoujtscUZDVLoU6MAKEKot-M",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{baseUrl}}/courses/6950d683b14c6452458151dd",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "6950d683b14c6452458151dd"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "delete course",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3Njg0NTQ2MTIsImV4cCI6MTc2OTA1OTQxMn0.mFG1r73efYomDWMvo6mBoujtscUZDVLoU6MAKEKot-M",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/courses/6950d683b14c6452458151dd",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "courses",
+                    "6950d683b14c6452458151dd"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "117"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"75-fIQblktRoYQRs3FDdh9rtcRNSME\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 05:32:38 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Course deleted successfully\",\n    \"data\": {\n        \"message\": \"Course deleted successfully\"\n    },\n    \"meta\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "payment",
+      "item": [
+        {
+          "name": "create course payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTUzNzYsImV4cCI6MTc2OTA2MDE3Nn0.YbllBfaxZ7MzRQkfjv87Vck-jkUA4D4KfeQVavDZ04E",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"courseId\": \"69687366a92f2bb9e9f324c4\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "create payment",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTUzNzYsImV4cCI6MTc2OTA2MDE3Nn0.YbllBfaxZ7MzRQkfjv87Vck-jkUA4D4KfeQVavDZ04E",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"courseId\": \"69687366a92f2bb9e9f324c4\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "534"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"216-MEn09E3RCjIczRRG8/sZxsc1TOU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 05:49:02 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Payment created successfully\",\n    \"data\": {\n        \"checkoutUrl\": \"https://checkout.stripe.com/c/pay/cs_test_a1bW7bMpmgxeOLNv6By0hRdxIPFctQPHGCKg1XLyUCCXVKQdZdFDnuBJnO#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blpxYHZxWjA0VU5oMVNXcHdqY0x%2Fd2dGPDRRUGR1YEF%2FQks9Q3EzfXx0SUMzUX1ycWdRNTVxYj0xbDVGMTF%2FVExGdTB8aVdJSkh2MVxnZmtyREhxSF9qaGtRTm1GPUtGNTVOY2tOd0A0SCcpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl\"\n    },\n    \"meta\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "my payment history",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTk1NDAsImV4cCI6MTc2OTA2NDM0MH0.NQ4WO3YCsH0i_UjsshSuo3A2vqVGDUtszJJyXTn8BS0",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"courseId\": \"6950cdd34378693788ab8242\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "my payment history",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTk1NDAsImV4cCI6MTc2OTA2NDM0MH0.NQ4WO3YCsH0i_UjsshSuo3A2vqVGDUtszJJyXTn8BS0",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"courseId\": \"6950cdd34378693788ab8242\"\r\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payments/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1579"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"62b-V9wikqf6EvWUgm20rSri4GXifYo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 16 Jan 2026 02:40:17 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"My payments fetched successfully\",\n    \"data\": [\n        {\n            \"_id\": \"69688f28a34b2f7ff9227545\",\n            \"userId\": {\n                \"_id\": \"694f7c8dd1abd0c1afa2020c\",\n                \"name\": \"MD Nayeem Miah\",\n                \"email\": \"nayeem@gmail.com\",\n                \"profilePhoto\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766832961/users/profile/d0nbq6sexxhi8m9e5dai.png\"\n            },\n            \"courseId\": {\n                \"_id\": \"69687366a92f2bb9e9f324c4\",\n                \"title\": \"Complete Web Development Course\",\n                \"category\": \"Web Development\",\n                \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1768452966/courses/thumbnails/rfunyvitoyfkfssu9b1h.jpg\",\n                \"level\": \"BEGINNER\",\n                \"ratingAvg\": 0,\n                \"totalEnrollments\": 0\n            },\n            \"amount\": 4999,\n            \"currency\": \"USD\",\n            \"status\": \"PAID\",\n            \"createdAt\": \"2026-01-15T06:54:32.627Z\",\n            \"updatedAt\": \"2026-01-15T06:57:08.026Z\",\n            \"transactionId\": \"cs_test_a1C8pbWMDs2vV0ND1BHl59kk1WIBnHi1wyNVPqhZVgui1V7oPmucrE7eVz\"\n        },\n        {\n            \"_id\": \"69523c9a6cd5131442a5e988\",\n            \"userId\": {\n                \"_id\": \"694f7c8dd1abd0c1afa2020c\",\n                \"name\": \"MD Nayeem Miah\",\n                \"email\": \"nayeem@gmail.com\",\n                \"profilePhoto\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766832961/users/profile/d0nbq6sexxhi8m9e5dai.png\"\n            },\n            \"courseId\": {\n                \"_id\": \"6950cdd34378693788ab8242\",\n                \"title\": \"Advanced NestJS Course\",\n                \"category\": \"Backend Development\",\n                \"thumbnail\": \"https://res.cloudinary.com/dgk8lgdzb/image/upload/v1766903253/courses/thumbnails/xaaswyvy2f80e8new4vz.png\",\n                \"level\": \"INTERMEDIATE\",\n                \"ratingAvg\": 0,\n                \"totalEnrollments\": 0\n            },\n            \"amount\": 2999,\n            \"currency\": \"USD\",\n            \"status\": \"PAID\",\n            \"createdAt\": \"2025-12-29T08:32:26.723Z\",\n            \"updatedAt\": \"2025-12-29T08:32:45.566Z\",\n            \"transactionId\": \"cs_test_a1Mn7sngj469vAb412v1eLWPDrcpyet7UiEuLPDmttivo7dtDQRfElVxkc\"\n        }\n    ],\n    \"meta\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "get all payment history",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTEyNTIsImV4cCI6MTc2OTA1NjA1Mn0.q96CHwWnagwR-kS2waybzk-TjxF4FzuoCDuMo32KQVM",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "enrollments",
+      "item": [
+        {
+          "name": "enroll course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NjA2MjMsImV4cCI6MTc2OTA2NTQyM30.04-bolVXWSVGoVDV8b2Dpt2yxQf17LbZSiQNLwoHPjE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/6950cdd34378693788ab8242",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enrollments",
+                "6950cdd34378693788ab8242"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "enroll course",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NjA2MjMsImV4cCI6MTc2OTA2NTQyM30.04-bolVXWSVGoVDV8b2Dpt2yxQf17LbZSiQNLwoHPjE",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/enrollments/69687366a92f2bb9e9f324c4",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "enrollments",
+                    "69687366a92f2bb9e9f324c4"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "312"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"138-sRwDk0/fDGG8w2FujsMdRpyhV0k\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 08:20:05 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"message\": \"Enrollment successful\",\n    \"enrollment\": {\n        \"userId\": \"694f7c8dd1abd0c1afa2020c\",\n        \"courseId\": \"69687366a92f2bb9e9f324c4\",\n        \"progress\": 0,\n        \"isActive\": true,\n        \"_id\": \"6968a335b288662decf09135\",\n        \"enrolledAt\": \"2026-01-15T08:20:05.178Z\",\n        \"createdAt\": \"2026-01-15T08:20:05.181Z\",\n        \"updatedAt\": \"2026-01-15T08:20:05.181Z\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "get user enrollment data",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NjA2MjMsImV4cCI6MTc2OTA2NTQyM30.04-bolVXWSVGoVDV8b2Dpt2yxQf17LbZSiQNLwoHPjE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enrollments",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get user enrollment data",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NjA2MjMsImV4cCI6MTc2OTA2NTQyM30.04-bolVXWSVGoVDV8b2Dpt2yxQf17LbZSiQNLwoHPjE",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/enrollments/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "enrollments",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "792"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"318-MgFlhBQ5YllrUDdKKK1voKnjh3o\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 15 Jan 2026 08:29:37 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"My enrollments fetched successfully\",\n    \"data\": [\n        {\n            \"_id\": \"6968a335b288662decf09135\",\n            \"userId\": \"694f7c8dd1abd0c1afa2020c\",\n            \"courseId\": {\n                \"_id\": \"69687366a92f2bb9e9f324c4\",\n                \"title\": \"Complete Web Development Course\",\n                \"price\": 4999,\n                \"category\": \"Web Development\"\n            },\n            \"progress\": 0,\n            \"isActive\": true,\n            \"enrolledAt\": \"2026-01-15T08:20:05.178Z\",\n            \"createdAt\": \"2026-01-15T08:20:05.181Z\",\n            \"updatedAt\": \"2026-01-15T08:20:05.181Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69523cad6cd5131442a5e991\",\n            \"userId\": \"694f7c8dd1abd0c1afa2020c\",\n            \"courseId\": {\n                \"_id\": \"6950cdd34378693788ab8242\",\n                \"title\": \"Advanced NestJS Course\",\n                \"price\": 2999,\n                \"category\": \"Backend Development\"\n            },\n            \"progress\": 0,\n            \"isActive\": true,\n            \"enrolledAt\": \"2025-12-29T08:32:45.583Z\",\n            \"createdAt\": \"2025-12-29T08:32:45.584Z\",\n            \"updatedAt\": \"2025-12-29T08:32:45.584Z\",\n            \"__v\": 0\n        }\n    ],\n    \"meta\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "review",
+      "item": [
+        {
+          "name": "review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTk1NDAsImV4cCI6MTc2OTA2NDM0MH0.NQ4WO3YCsH0i_UjsshSuo3A2vqVGDUtszJJyXTn8BS0",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"courseId\": \"6950cdd34378693788ab8242\",\r\n  \"rating\": 4.2,\r\n  \"comment\": \"Course content was very clear and practical.\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "review",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTRmN2M4ZGQxYWJkMGMxYWZhMjAyMGMiLCJlbWFpbCI6Im5heWVlbUBnbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImRldmljZUlkIjoicmFraWIxMjM0NTY0NjU3NjU2Nzg2NzgiLCJpYXQiOjE3Njg0NTk1NDAsImV4cCI6MTc2OTA2NDM0MH0.NQ4WO3YCsH0i_UjsshSuo3A2vqVGDUtszJJyXTn8BS0",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"courseId\": \"69687366a92f2bb9e9f324c4\",\r\n  \"rating\": 4.5,\r\n  \"comment\": \"Course content was very clear and practical.\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reviews",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reviews"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "340"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"154-VWZHL37esz4oDjqgOHogf4TSXpo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 16 Jan 2026 03:57:47 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Review created successfully\",\n    \"data\": {\n        \"userId\": \"694f7c8dd1abd0c1afa2020c\",\n        \"courseId\": \"69687366a92f2bb9e9f324c4\",\n        \"rating\": 4.5,\n        \"comment\": \"Course content was very clear and practical.\",\n        \"_id\": \"6969b73b31dec4ba28972099\",\n        \"createdAt\": \"2026-01-16T03:57:47.557Z\",\n        \"updatedAt\": \"2026-01-16T03:57:47.557Z\",\n        \"__v\": 0\n    },\n    \"meta\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "get review",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY2OTA1MzcyLCJleHAiOjE3Njc1MTAxNzJ9.kAo1hrGDfMul7ghvGvoIwezk2xgXXAyPBQC0qx4O3Gc",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reviews/course/69687366a92f2bb9e9f324c4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews",
+                "course",
+                "69687366a92f2bb9e9f324c4"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get review",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY2OTA1MzcyLCJleHAiOjE3Njc1MTAxNzJ9.kAo1hrGDfMul7ghvGvoIwezk2xgXXAyPBQC0qx4O3Gc",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reviews/course/69687366a92f2bb9e9f324c4",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reviews",
+                    "course",
+                    "69687366a92f2bb9e9f324c4"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "424"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1a8-p32+RzqqP767JUzWSTjwyH+Uo5c\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 16 Jan 2026 04:36:38 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Reviews fetched successfully\",\n    \"data\": {\n        \"averageRating\": 4.5,\n        \"totalReviews\": 1,\n        \"reviews\": [\n            {\n                \"_id\": \"6969b73b31dec4ba28972099\",\n                \"userId\": {\n                    \"_id\": \"694f7c8dd1abd0c1afa2020c\",\n                    \"name\": \"MD Nayeem Miah\"\n                },\n                \"courseId\": \"69687366a92f2bb9e9f324c4\",\n                \"rating\": 4.5,\n                \"comment\": \"Course content was very clear and practical.\",\n                \"createdAt\": \"2026-01-16T03:57:47.557Z\",\n                \"updatedAt\": \"2026-01-16T03:57:47.557Z\",\n                \"__v\": 0\n            }\n        ]\n    },\n    \"meta\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "get review",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwZDVmNGIxNGM2NDUyNDU4MTUxZDciLCJlbWFpbCI6InJha2lidWwud2ViLmluc0BnbWFpbC5jb20iLCJyb2xlIjoiSU5TVFJVQ1RPUiIsImRldmljZUlkIjoiaW5zdHJ1Y3RvcjIxMzQ1NnU3IiwiaWF0IjoxNzY2OTA1MzcyLCJleHAiOjE3Njc1MTAxNzJ9.kAo1hrGDfMul7ghvGvoIwezk2xgXXAyPBQC0qx4O3Gc",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reviews/course/6969b73b31dec4ba28972099",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews",
+                "course",
+                "6969b73b31dec4ba28972099"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "dashboard",
+      "item": [
+        {
+          "name": "admin dashboard summary",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3Njg1NDQ4OTYsImV4cCI6MTc2OTE0OTY5Nn0.9PYuz_YiE21Q81IbzQlIQHAEyAZ8A2f5WQH7gB6qYYc",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Nayeem\",\r\n    \"email\": \"rakibul.web.ins@gmail.com\",\r\n    \"password\": \"Nayeem123\",\r\n    \"role\": \"INSTRUCTOR\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard",
+                "summary"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTUwOWM4N2MxOTdhZmFhOTBhZmM4MDQiLCJlbWFpbCI6ImFkbWluQGxtcy5jb20iLCJyb2xlIjoiQURNSU4iLCJkZXZpY2VJZCI6ImFkbWluMTIzNDUiLCJpYXQiOjE3Njg1NDQ4OTYsImV4cCI6MTc2OTE0OTY5Nn0.9PYuz_YiE21Q81IbzQlIQHAEyAZ8A2f5WQH7gB6qYYc",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Nayeem\",\r\n    \"email\": \"rakibul.web.ins@gmail.com\",\r\n    \"password\": \"Nayeem123\",\r\n    \"role\": \"INSTRUCTOR\"\r\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/dashboard/summary",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "dashboard",
+                    "summary"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "141"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"8d-vXvJSdOMrtPTvRArPt2h/F29+W8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 16 Jan 2026 06:28:49 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Dashboard summary fetched successfully\",\n    \"data\": {\n        \"totalUsers\": 8,\n        \"totalCourses\": 3,\n        \"totalRevenue\": 12997\n    },\n    \"meta\": null\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

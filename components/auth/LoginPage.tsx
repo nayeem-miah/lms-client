@@ -12,15 +12,25 @@ import {
     CardFooter
 } from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
+import { useAuth } from '@/context/AuthContext'
 export const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    // const { login, isLoading } = useAuth()
+    const { login, isLoading } = useAuth()
     const router = useRouter()
+    const [error, setError] = useState<string | null>(null)
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // await login(email)
-        router.push('/')
+        setError(null)
+        try {
+            // Generate a random device ID for now, or use a persistent one if needed
+            const deviceId = 'web-' + Math.random().toString(36).substring(2, 15);
+            await login(email, password, deviceId)
+            router.push('/dashboard') // Redirect to dashboard after login
+        } catch (err: any) {
+            setError(err.message || 'Login failed. Please check your credentials.')
+        }
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
@@ -39,6 +49,11 @@ export const LoginPage = () => {
 
                 <Card className="border-slate-200 shadow-xl">
                     <CardContent className="pt-6">
+                        {error && (
+                            <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                <span className="block sm:inline">{error}</span>
+                            </div>
+                        )}
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <Input
                                 label="Email address"
@@ -68,7 +83,7 @@ export const LoginPage = () => {
                             </div>
 
                             <Button type="submit" className="w-full text-white bg-blue-600 hover:bg-blue-700"
-                            // isLoading={isLoading}
+                                isLoading={isLoading}
                             >
                                 Sign in
                             </Button>

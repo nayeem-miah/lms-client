@@ -1,15 +1,15 @@
 "use client"
 import React, { useState } from 'react'
 
+import { useRegisterMutation } from '@/lib/redux/features/auth/authApi'
+import { UserRole } from '@/types/types'
+import { BookOpen } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '../../components/ui/Button'
+import { Card, CardContent, CardFooter } from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
 import { Select } from '../../components/ui/Select'
-import { Card, CardContent, CardFooter } from '../../components/ui/Card'
-import { BookOpen } from 'lucide-react'
-import { UserRole } from '@/types/types'
-import Link from 'next/link'
-import { useAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/navigation'
 
 
 export const RegisterPage = () => {
@@ -18,11 +18,23 @@ export const RegisterPage = () => {
     const [password, setPassword] = useState('')
     const [role, setRole] = useState<UserRole>('STUDENT')
     // const { register, isLoading } = useAuth()
+    const [register, { isLoading }] = useRegisterMutation();
     const router = useRouter()
+    const [error, setError] = useState<string | null>(null)
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // await register(name, email, role)
-        router.push('/')
+        setError(null)
+        try {
+            console.log({ name, email, password, role })
+            const res = await register({ name, email, password, role }).unwrap();
+            console.log(res)
+            if (res.success) {
+                router.push('/login') // Redirect to login after successful registration
+            }
+        } catch (err: any) {
+            setError(err.message || 'Registration failed. Please try again.')
+        }
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
@@ -41,6 +53,11 @@ export const RegisterPage = () => {
 
                 <Card className="border-slate-200 shadow-xl">
                     <CardContent className="pt-6">
+                        {error && (
+                            <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                <span className="block sm:inline">{error}</span>
+                            </div>
+                        )}
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <Input
                                 label="Full Name"
@@ -70,11 +87,11 @@ export const RegisterPage = () => {
                                 label="I want to"
                                 options={[
                                     {
-                                        value: 'student',
+                                        value: 'STUDENT',
                                         label: 'Learn new skills (Student)',
                                     },
                                     {
-                                        value: 'instructor',
+                                        value: 'INSTRUCTOR',
                                         label: 'Teach courses (Instructor)',
                                     },
                                 ]}
@@ -108,7 +125,7 @@ export const RegisterPage = () => {
                             </div>
 
                             <Button type="submit" className="w-full text-white bg-blue-600"
-                            // isLoading={isLoading}
+                                isLoading={isLoading}
                             >
                                 Create Account
                             </Button>
