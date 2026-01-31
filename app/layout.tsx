@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import StoreProvider from "@/components/providers/StoreProvider";
 import ReduxAuthProvider from "@/components/providers/ReduxAuthProvider";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,29 @@ export default function RootLayout({
             <Footer />
           </ReduxAuthProvider>
         </StoreProvider>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#1e293b',
+              color: '#e2e8f0',
+              border: '1px solid #334155',
+            },
+            success: {
+              iconTheme: {
+                primary: '#06b6d4',
+                secondary: '#fff',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#fff',
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

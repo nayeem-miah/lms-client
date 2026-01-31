@@ -13,6 +13,8 @@ import {
 } from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
 import { useAuth } from '@/context/AuthContext'
+import { getDeviceId } from '@/lib/utils/deviceId'
+import toast, { Toaster } from 'react-hot-toast'
 export const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -23,17 +25,88 @@ export const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError(null)
+
+        // Show loading toast
+        const loadingToast = toast.loading('Signing you in...')
+
         try {
-            // Generate a random device ID for now, or use a persistent one if needed
-            const deviceId = 'web-' + Math.random().toString(36).substring(2, 15);
+            // Get or generate a unique device ID
+            const deviceId = getDeviceId();
+
+            // Log the login credentials with device ID
+            console.log('Login attempt:', {
+                email,
+                password: '***hidden***',
+                deviceId,
+                deviceName: navigator.userAgent.split('(')[1]?.split(')')[0] || 'Unknown Device'
+            });
+
             await login(email, password, deviceId)
-            router.push('/dashboard') // Redirect to dashboard after login
+
+            // Dismiss loading toast
+            toast.dismiss(loadingToast)
+
+            // Show success toast
+            toast.success('Welcome back!', {
+                duration: 2000,
+                icon: '👋',
+            })
+
+            // Redirect to dashboard after login
+            setTimeout(() => {
+                router.push('/dashboard')
+            }, 500)
         } catch (err: any) {
-            setError(err.message || 'Login failed. Please check your credentials.')
+            // Dismiss loading toast
+            toast.dismiss(loadingToast)
+
+            console.error('Login error:', err)
+
+            // Extract error message from API response
+            let errorMessage = 'Login failed. Please check your credentials.'
+
+            if (err?.data?.message) {
+                errorMessage = err.data.message
+            } else if (err?.message) {
+                errorMessage = err.message
+            } else if (typeof err === 'string') {
+                errorMessage = err
+            }
+
+            // Show error toast
+            toast.error(errorMessage, {
+                duration: 5000,
+                icon: '❌',
+            })
+
+            setError(errorMessage)
         }
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
+            <Toaster
+                position="top-center"
+                toastOptions={{
+                    style: {
+                        background: '#1e293b',
+                        color: '#fff',
+                        borderRadius: '12px',
+                        padding: '16px',
+                    },
+                    success: {
+                        iconTheme: {
+                            primary: '#10b981',
+                            secondary: '#fff',
+                        },
+                    },
+                    error: {
+                        iconTheme: {
+                            primary: '#ef4444',
+                            secondary: '#fff',
+                        },
+                    },
+                }}
+            />
             <div className="w-full max-w-md space-y-8">
                 <div className="flex flex-col items-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-600 text-white mb-4">

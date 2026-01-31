@@ -2,9 +2,10 @@
 import { useGetMyCoursesQuery } from '@/lib/redux/features/courses/coursesApi'
 import { Course } from '@/types/api'
 import { motion } from 'framer-motion'
-import { BookOpen, Users, Video, TrendingUp, Clock, MessageSquare, Star, DollarSign, BarChart3, Calendar, FileText, CheckCircle2 } from 'lucide-react'
+import { BookOpen, Users, Video, TrendingUp, Clock, MessageSquare, Star, DollarSign, BarChart3, Calendar, FileText, CheckCircle2, Plus } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import type { StatsCardProps } from '@/types/dashboard'
+import Link from 'next/link'
 
 const enrollmentData = [
     { month: 'Jan', students: 45 },
@@ -35,10 +36,24 @@ export default function InstructorDashboard() {
     return (
         <div className="space-y-6">
             {/* Welcome */}
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                <h1 className="text-3xl font-bold text-slate-100 mb-2">Instructor Dashboard 📚</h1>
-                <p className="text-slate-400">Manage your courses and students effectively</p>
-            </motion.div>
+            <div className="flex items-center justify-between">
+                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+                    <h1 className="text-3xl font-bold text-slate-100 mb-2">Instructor Dashboard 📚</h1>
+                    <p className="text-slate-400">Manage your courses and students effectively</p>
+                </motion.div>
+                <Link href="/dashboard/create-course">
+                    <motion.button
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-lg font-medium shadow-lg shadow-purple-500/30 transition-all"
+                    >
+                        <Plus className="w-5 h-5" />
+                        <span>Create Course</span>
+                    </motion.button>
+                </Link>
+            </div>
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">

@@ -56,6 +56,13 @@ export const coursesApi = apiSlice.injectEndpoints({
                 return response.data;
             },
         }),
+        getInstructorCourses: builder.query({
+            query: () => '/courses/my-courses',
+            providesTags: ['Course'],
+            transformResponse: (response: any) => {
+                return response.data;
+            },
+        }),
     }),
 })
 
@@ -66,4 +73,6 @@ export const {
     useUpdateCourseMutation,
     useDeleteCourseMutation,
     useGetMyCoursesQuery,
+    useGetInstructorCoursesQuery,
 } = coursesApi
+

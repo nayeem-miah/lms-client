@@ -174,7 +174,10 @@ export const Navbar = () => {
                                 </Button>
                             </Link>
                             <Link href="/register">
-                                <Button size="sm">Get Started</Button>
+                                <Button
+                                    variant='outline'
+                                    size="sm">Get Started
+                                </Button>
                             </Link>
                         </div>
                     )}

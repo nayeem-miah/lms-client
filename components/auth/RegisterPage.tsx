@@ -10,6 +10,7 @@ import { Button } from '../../components/ui/Button'
 import { Card, CardContent, CardFooter } from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
 import { Select } from '../../components/ui/Select'
+import toast, { Toaster } from 'react-hot-toast'
 
 
 export const RegisterPage = () => {
@@ -17,7 +18,6 @@ export const RegisterPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [role, setRole] = useState<UserRole>('STUDENT')
-    // const { register, isLoading } = useAuth()
     const [register, { isLoading }] = useRegisterMutation();
     const router = useRouter()
     const [error, setError] = useState<string | null>(null)
@@ -25,19 +25,93 @@ export const RegisterPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError(null)
+
+        // Show loading toast
+        const loadingToast = toast.loading('Creating your account...')
+
         try {
-            console.log({ name, email, password, role })
+            console.log('Registration payload:', { name, email, password, role })
             const res = await register({ name, email, password, role }).unwrap();
-            console.log(res)
-            if (res.success) {
-                router.push('/login') // Redirect to login after successful registration
+            console.log('Registration response:', res)
+
+            // Always dismiss loading toast first
+            toast.dismiss(loadingToast)
+
+            // Check if registration was successful
+            // The response might be { success: true, data: {...} } or just the data
+            const isSuccess = res?.success !== false; // If success is not explicitly false, consider it successful
+
+            if (isSuccess) {
+                // Show success toast
+                toast.success('Account created successfully! Please log in.', {
+                    duration: 4000,
+                    icon: '🎉',
+                })
+
+                // Redirect to login after a short delay
+                setTimeout(() => {
+                    router.push('/login')
+                }, 1500)
+            } else {
+                // Handle case where success is false but no error was thrown
+                const errorMsg = res?.message || 'Registration failed. Please try again.'
+                toast.error(errorMsg, {
+                    duration: 5000,
+                    icon: '❌',
+                })
+                setError(errorMsg)
             }
         } catch (err: any) {
-            setError(err.message || 'Registration failed. Please try again.')
+            // Always dismiss loading toast first
+            toast.dismiss(loadingToast)
+
+            console.error('Registration error:', err)
+
+            // Extract error message from API response
+            let errorMessage = 'Registration failed. Please try again.'
+
+            if (err?.data?.message) {
+                errorMessage = err.data.message
+            } else if (err?.message) {
+                errorMessage = err.message
+            } else if (typeof err === 'string') {
+                errorMessage = err
+            }
+
+            // Show error toast
+            toast.error(errorMessage, {
+                duration: 5000,
+                icon: '❌',
+            })
+
+            setError(errorMessage)
         }
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
+            <Toaster
+                position="top-center"
+                toastOptions={{
+                    style: {
+                        background: '#1e293b',
+                        color: '#fff',
+                        borderRadius: '12px',
+                        padding: '16px',
+                    },
+                    success: {
+                        iconTheme: {
+                            primary: '#10b981',
+                            secondary: '#fff',
+                        },
+                    },
+                    error: {
+                        iconTheme: {
+                            primary: '#ef4444',
+                            secondary: '#fff',
+                        },
+                    },
+                }}
+            />
             <div className="w-full max-w-md space-y-8">
                 <div className="flex flex-col items-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-600 text-white mb-4">
