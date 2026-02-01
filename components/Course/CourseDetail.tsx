@@ -168,28 +168,40 @@ export const CourseDetail = () => {
                     {/* Sidebar Purchase Card */}
                     <div className="lg:col-span-1">
                         <div className="sticky top-24 bg-white rounded-2xl p-8 border border-slate-100 shadow-xl space-y-6">
-                            <div className="space-y-2">
-                                <p className="text-3xl font-bold text-slate-900">৳{course.price}</p>
-                                <p className="text-slate-500 text-sm line-through">৳{course.price * 1.5}</p>
-                            </div>
-
-                            <Button
-                                onClick={isEnrolled ? () => router.push(`/dashboard`) : handleEnroll}
-                                isLoading={isEnrolling}
-                                variant={isEnrolled ? "outline" : "primary"}
-                                className="w-full h-12 text-md font-bold shadow-lg shadow-primary-500/20"
-                            >
+                            <div className="flex flex-col gap-3">
                                 {isEnrolled ? (
-                                    <span className="flex items-center gap-2">
-                                        <PlayCircle className="h-5 w-5" />
-                                        Go to Course
-                                    </span>
+                                    <Button
+                                        onClick={() => router.push(`/dashboard`)}
+                                        variant="outline"
+                                        className="w-full h-12 text-md font-bold shadow-lg"
+                                    >
+                                        <span className="flex items-center gap-2">
+                                            <PlayCircle className="h-5 w-5" />
+                                            Go to Course
+                                        </span>
+                                    </Button>
                                 ) : (
-                                    "Enroll Now"
+                                    <>
+                                        <Button
+                                            onClick={() => router.push(`/checkout?courseId=${id}`)}
+                                            className="w-full h-12 text-md font-bold shadow-lg shadow-primary-500/20"
+                                        >
+                                            Buy Now (৳{course.price})
+                                        </Button>
+                                        <Button
+                                            onClick={handleEnroll}
+                                            isLoading={isEnrolling}
+                                            variant="outline"
+                                            className="w-full h-12 text-md font-bold"
+                                        >
+                                            Enroll for Free
+                                        </Button>
+                                    </>
                                 )}
-                            </Button>
-                            <Button variant="outline" className="w-full h-12">
-                                Add to Wishlist
+                            </div>
+                            <Button variant="ghost" className="w-full h-10 text-slate-500">
+                                <Star className="h-4 w-4 mr-2" />
+                                Save to Wishlist
                             </Button>
 
                             <div className="pt-6 space-y-4 border-t border-slate-100">

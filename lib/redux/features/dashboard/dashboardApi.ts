@@ -5,7 +5,7 @@ export const dashboardApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getDashboardSummary: builder.query({
             query: () => ({
-                url: '/dashboard/summary',
+                url: '/admin/dashboard/summary',
                 method: 'GET',
             }),
             providesTags: ['Dashboard'],

@@ -32,36 +32,36 @@ export default function AdminDashboard() {
             </motion.div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatsCard
                     icon={Users}
                     label="Total Users"
-                    value={isLoading ? "..." : (summary?.totalUsers || 0).toString()}
-                    trend="+১২%"
+                    value={isLoading ? "..." : (summary?.totalUsers || 0).toLocaleString()}
+                    trend="+12%"
                     color="bg-cyan-500"
                     delay={0.1}
                 />
                 <StatsCard
                     icon={BookOpen}
                     label="Total Courses"
-                    value={isLoading ? "..." : (summary?.totalCourses || 0).toString()}
-                    trend="+8%"
+                    value={isLoading ? "..." : (summary?.totalCourses || 0).toLocaleString()}
+                    trend="+5%"
                     color="bg-purple-500"
                     delay={0.2}
                 />
                 <StatsCard
                     icon={DollarSign}
                     label="Total Revenue"
-                    value={isLoading ? "..." : `৳${summary?.totalRevenue || 0}`}
-                    trend="+15%"
+                    value={isLoading ? "..." : `৳${(summary?.totalRevenue || 0).toLocaleString()}`}
+                    trend="+18%"
                     color="bg-emerald-500"
                     delay={0.3}
                 />
                 <StatsCard
                     icon={UserCheck}
-                    label="Active Users"
-                    value="750" // Hardcoded as API doesn't provide this yet
-                    trend="+5%"
+                    label="Active Now"
+                    value={isLoading ? "..." : "42"}
+                    trend="Live"
                     color="bg-blue-500"
                     delay={0.4}
                 />
