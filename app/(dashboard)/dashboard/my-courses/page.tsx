@@ -1,30 +1,43 @@
 "use client"
 import { motion } from 'framer-motion'
-import { BookOpen, Search, Edit, Trash2, Eye, Plus, Filter, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+import { BookOpen, Search, Edit, Trash2, Eye, Plus, Filter, ChevronDown, ChevronLeft, ChevronRight, PlayCircle, Clock, Star } from 'lucide-react'
 import { useGetInstructorCoursesQuery, useDeleteCourseMutation } from '@/lib/redux/features/courses/coursesApi'
-import { Course } from '@/types/api'
+import { useGetMyEnrollmentsQuery } from '@/lib/redux/features/enrollments/enrollmentsApi'
+import { useAppSelector } from '@/lib/redux/hooks'
+import { selectCurrentUser } from '@/lib/redux/features/auth/authSlice'
+import { Course, Enrollment } from '@/types/api'
 import { useState } from 'react'
 import Link from 'next/link'
 import { toast } from 'react-hot-toast'
 import { Button } from '@/components/ui/Button'
+import { useRouter } from 'next/navigation'
 
 export default function MyCoursesPage() {
+    const user = useAppSelector(selectCurrentUser)
+    const isStudent = user?.role === 'STUDENT'
+    const router = useRouter()
+
     const [page, setPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
     const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft'>('all')
     const [showFilterDropdown, setShowFilterDropdown] = useState(false)
 
-    const { data, isLoading, isFetching, error } = useGetInstructorCoursesQuery({
+    // Instructor Data
+    const { data: instructorData, isLoading: isLoadingInstructor, error: instructorError } = useGetInstructorCoursesQuery({
         page,
         limit: 10,
         search: searchQuery || undefined,
         status: filterStatus !== 'all' ? filterStatus : undefined
-    })
+    }, { skip: isStudent })
 
-    const courses = data?.courses || []
-    const meta = data?.meta
+    // Student Data
+    const { data: studentEnrollments, isLoading: isLoadingStudent, error: studentError } = useGetMyEnrollmentsQuery({}, { skip: !isStudent })
 
-    const [deleteCourse] = useDeleteCourseMutation()
+    const isLoading = isStudent ? isLoadingStudent : isLoadingInstructor
+    const error = isStudent ? studentError : instructorError
+
+    const deleteCourseMutation = useDeleteCourseMutation()
+    const deleteCourse = deleteCourseMutation[0]
 
     const handleDelete = async (courseId: string, courseTitle: string) => {
         if (window.confirm(`Are you sure you want to delete "${courseTitle}"?`)) {
@@ -46,6 +59,97 @@ export default function MyCoursesPage() {
         })
     }
 
+    if (isStudent) {
+        return (
+            <div className="space-y-8">
+                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+                    <h1 className="text-3xl font-bold text-slate-100 mb-2">My Enrollments</h1>
+                    <p className="text-slate-400">Continue where you left off and track your learning progress</p>
+                </motion.div>
+
+                {isLoading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[1, 2, 3].map(i => <div key={i} className="h-64 bg-slate-800/50 rounded-2xl animate-pulse" />)}
+                    </div>
+                ) : !studentEnrollments || studentEnrollments.length === 0 ? (
+                    <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-16 text-center space-y-6">
+                        <div className="h-24 w-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto">
+                            <BookOpen className="h-12 w-12 text-slate-600" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-slate-200">No Enrolled Courses Found</h2>
+                        <p className="text-slate-500 max-w-md mx-auto">
+                            You haven't enrolled in any courses yet. Explore our course catalog to find the perfect course for you.
+                        </p>
+                        <Button
+                            onClick={() => router.push('/courses')}
+                            className="px-8 py-6 rounded-xl font-bold text-lg"
+                        >
+                            Browse Courses
+                        </Button>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {studentEnrollments.map((enrollment: Enrollment) => {
+                            const course = enrollment.courseId as Course
+                            return (
+                                <motion.div
+                                    whileHover={{ y: -5 }}
+                                    key={enrollment._id}
+                                    className="bg-slate-800/40 border border-slate-700/50 rounded-2xl overflow-hidden group transition-all hover:bg-slate-800/60 hover:shadow-2xl hover:shadow-cyan-500/10"
+                                >
+                                    <div className="aspect-video relative overflow-hidden">
+                                        {course.thumbnail ? (
+                                            <img src={course.thumbnail} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                        ) : (
+                                            <div className="h-full w-full bg-gradient-to-br from-slate-700 to-slate-800" />
+                                        )}
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <Button variant="outline" className="border-white text-white hover:bg-white/10 flex items-center gap-2">
+                                                <PlayCircle className="h-5 w-5" />
+                                                Continue Learning
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className="p-5 space-y-4">
+                                        <div>
+                                            <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded-lg">
+                                                {course.category}
+                                            </span>
+                                            <h3 className="mt-2 font-bold text-lg text-slate-100 line-clamp-1 group-hover:text-cyan-400 transition-colors">
+                                                {course.title}
+                                            </h3>
+                                        </div>
+
+                                        <div className="flex items-center justify-between pt-2 border-t border-slate-700/50">
+                                            <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                                                <Clock className="h-3.5 w-3.5" />
+                                                Enrolled: {formatDate(enrollment.createdAt)}
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500" />
+                                                <span className="text-xs font-bold text-slate-300">{course.ratingAvg?.toFixed(1) || '0.0'}</span>
+                                            </div>
+                                        </div>
+
+                                        <Link href={`/courses/${course._id}`} className="block">
+                                            <Button className="w-full h-11 bg-slate-700 hover:bg-slate-600 text-slate-100">
+                                                Course Details
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </motion.div>
+                            )
+                        })}
+                    </div>
+                )}
+            </div>
+        )
+    }
+
+    // Instructor View (Original logic mostly)
+    const courses = instructorData?.courses || []
+    const meta = instructorData?.meta
+
     const getStatusBadge = (isPublished: boolean) => {
         if (isPublished) {
             return (
@@ -66,7 +170,7 @@ export default function MyCoursesPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                    <h1 className="text-3xl font-bold text-slate-100 mb-2">My Courses</h1>
+                    <h1 className="text-3xl font-bold text-slate-100 mb-2">My Created Courses</h1>
                     <p className="text-slate-400">Manage and track all your courses</p>
                 </motion.div>
 
@@ -181,11 +285,6 @@ export default function MyCoursesPage() {
                         className="hidden lg:block bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden"
                     >
                         <div className="relative overflow-x-auto">
-                            {isFetching && (
-                                <div className="absolute inset-0 bg-slate-900/10 backdrop-blur-[1px] z-10 flex items-center justify-center">
-                                    <div className="w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-                                </div>
-                            )}
                             <table className="w-full">
                                 <thead>
                                     <tr className="bg-slate-900/50 border-b border-slate-700">
@@ -200,7 +299,7 @@ export default function MyCoursesPage() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {courses.map((course: Course, index: number) => (
+                                    {courses.map((course: Course) => (
                                         <tr
                                             key={course._id}
                                             className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors"
@@ -333,10 +432,6 @@ export default function MyCoursesPage() {
                             </div>
                         </div>
                     )}
-
-                    <div className="text-center text-xs text-slate-500 italic">
-                        Showing {courses.length} of {meta?.total || 0} total courses
-                    </div>
                 </div>
             )}
         </div>

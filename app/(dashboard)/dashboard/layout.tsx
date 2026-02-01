@@ -119,6 +119,7 @@ function Sidebar({ currentRole }: { currentRole: UserRole }) {
                 ...commonItems,
                 { icon: 'BookOpen', label: 'My Courses', href: '/dashboard/my-courses' },
                 { icon: 'Calendar', label: 'Schedule', href: '/dashboard/schedule' },
+                { icon: 'DollarSign', label: 'Payment History', href: '/dashboard/payment-history' },
                 { icon: 'Trophy', label: 'Leaderboard', href: '/dashboard/leaderboard' },
                 { icon: 'Award', label: 'Certificates', href: '/dashboard/certificates' },
             ]
@@ -202,6 +203,7 @@ function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClos
                 ...commonItems,
                 { icon: 'BookOpen', label: 'My Courses', href: '/dashboard/my-courses' },
                 { icon: 'Calendar', label: 'Schedule', href: '/dashboard/schedule' },
+                { icon: 'DollarSign', label: 'Payment History', href: '/dashboard/payment-history' },
                 { icon: 'Trophy', label: 'Leaderboard', href: '/dashboard/leaderboard' },
                 { icon: 'Award', label: 'Certificates', href: '/dashboard/certificates' },
             ]

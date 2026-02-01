@@ -2,7 +2,7 @@
 import React from 'react'
 import { useParams } from 'next/navigation'
 import { useGetCourseByIdQuery } from '@/lib/redux/features/courses/coursesApi'
-import { useCheckEnrollmentQuery, useCreateEnrollmentMutation } from '@/lib/redux/features/enrollments/enrollmentsApi'
+import { useCheckEnrollmentQuery, useCreateEnrollmentMutation, useGetMyEnrollmentsQuery } from '@/lib/redux/features/enrollments/enrollmentsApi'
 import { useCreateStripeSessionMutation } from '@/lib/redux/features/payments/paymentsApi'
 import { selectIsAuthenticated } from '@/lib/redux/features/auth/authSlice'
 import { useAppSelector } from '@/lib/redux/hooks'
@@ -24,9 +24,19 @@ export const CourseDetail = () => {
     const isAuthenticated = useAppSelector(selectIsAuthenticated)
 
     const { data: course, isLoading, error } = useGetCourseByIdQuery(id)
-    const { data: enrollmentInfo, isLoading: isCheckingEnrollment } = useCheckEnrollmentQuery(id, { skip: !isAuthenticated })
+    const { data: allEnrollments, isLoading: isFetchingEnrollments } = useGetMyEnrollmentsQuery({}, { skip: !isAuthenticated })
     const [createEnrollment, { isLoading: isEnrolling }] = useCreateEnrollmentMutation()
     const [createStripeSession, { isLoading: isCreatingSession }] = useCreateStripeSessionMutation()
+
+    const isEnrolled = React.useMemo(() => {
+        if (!allEnrollments || !Array.isArray(allEnrollments)) return false;
+        return allEnrollments.some((enrollment: any) => {
+            const eCourseId = typeof enrollment.courseId === 'object' ? enrollment.courseId?._id : enrollment.courseId;
+            return String(eCourseId) === String(id);
+        });
+    }, [allEnrollments, id]);
+
+    const isCheckingEnrollment = isFetchingEnrollments;
 
     const handleEnroll = async () => {
         if (!isAuthenticated) {
@@ -61,10 +71,28 @@ export const CourseDetail = () => {
         }
     }
 
-    if (isLoading) return <div className="flex items-center justify-center min-h-screen">Loading course details...</div>
-    if (error || !course) return <div className="flex items-center justify-center min-h-screen text-red-500">Course not found.</div>
+    if (isLoading) return (
+        <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+            <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-slate-500 animate-pulse font-medium">Loading course magic...</p>
+        </div>
+    )
 
-    const isEnrolled = enrollmentInfo?.isEnrolled;
+    if (error || !course) return (
+        <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
+            <div className="bg-red-500/10 border border-red-500/20 p-8 rounded-3xl max-w-md shadow-2xl">
+                <div className="bg-red-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Lock className="w-8 h-8 text-red-500" />
+                </div>
+                <h2 className="text-xl font-bold text-slate-100 mb-2">Error Loading Course</h2>
+                <p className="text-slate-400 text-sm mb-6">We couldn't find the course you're looking for or there was a system error. Please try again.</p>
+                <Button onClick={() => window.location.reload()} variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">
+                    Reload Page
+                </Button>
+            </div>
+        </div>
+    )
+
     const instructor = typeof course.instructorId === 'object'
         ? course.instructorId as User
         : { name: 'Instructor', profilePhoto: '' } as User;
@@ -200,33 +228,53 @@ export const CourseDetail = () => {
                         <div className="sticky top-24 bg-white rounded-2xl p-8 border border-slate-100 shadow-xl space-y-6">
                             <div className="flex flex-col gap-3">
                                 {isEnrolled ? (
-                                    <Button
-                                        onClick={() => router.push(`/dashboard`)}
-                                        variant="outline"
-                                        className="w-full h-12 text-md font-bold shadow-lg"
-                                    >
-                                        <span className="flex items-center gap-2">
-                                            <PlayCircle className="h-5 w-5" />
-                                            Go to Course
-                                        </span>
-                                    </Button>
+                                    <div className="space-y-4">
+                                        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex flex-col items-center gap-2 text-center">
+                                            <CheckCircle className="h-8 w-8 text-emerald-500" />
+                                            <div>
+                                                <p className="text-emerald-400 font-bold">Already Enrolled</p>
+                                                <p className="text-slate-400 text-xs mt-1">You have full access to this course</p>
+                                            </div>
+                                        </div>
+
+                                        <Button
+                                            onClick={() => router.push(`/dashboard`)}
+                                            className="w-full h-12 text-md font-bold shadow-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 border-none"
+                                        >
+                                            <PlayCircle className="h-5 w-5 mr-2" />
+                                            Continue Learning
+                                        </Button>
+
+                                        <Button
+                                            variant="ghost"
+                                            onClick={() => {
+                                                document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' });
+                                            }}
+                                            className="w-full text-primary-500 hover:text-primary-600 font-semibold"
+                                        >
+                                            <Star className="h-4 w-4 mr-2" />
+                                            Leave a Review
+                                        </Button>
+                                    </div>
                                 ) : (
                                     <>
                                         <Button
                                             onClick={handlePayment}
                                             isLoading={isCreatingSession}
-                                            className="w-full h-12 text-md font-bold shadow-lg shadow-primary-500/20"
+                                            disabled={isCheckingEnrollment}
                                             variant="outline"
+                                            className="w-full h-12 text-md font-bold shadow-lg shadow-primary-500/20"
                                         >
-                                            Create Payment ({course.price})
+                                            Buy Now ({course.price})
                                         </Button>
                                         <Button
                                             onClick={handleEnroll}
                                             isLoading={isEnrolling}
+                                            disabled={isCheckingEnrollment}
                                             variant="outline"
-                                            className="w-full h-12 text-md font-bold"
+                                            className="w-full h-12 text-md font-bold border-slate-200 text-slate-700 hover:bg-slate-50"
                                         >
-                                            Enroll Now
+                                            Enroll for Free
                                         </Button>
                                     </>
                                 )}

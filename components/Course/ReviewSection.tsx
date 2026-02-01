@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Star, MessageSquare, Send, User } from 'lucide-react'
+import { Star, MessageSquare, Send, User, Lock } from 'lucide-react'
 import { Rating } from '@/components/ui/Rating'
 import { Button } from '@/components/ui/Button'
 import { Avatar } from '@/components/ui/Avater'
@@ -52,7 +52,7 @@ export const ReviewSection = ({ courseId, isEnrolled, isAuthenticated }: ReviewS
     const reviews = reviewData?.reviews || []
 
     return (
-        <section className="space-y-8">
+        <section id="reviews-section" className="space-y-8 scroll-mt-24">
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                 <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
                     <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
@@ -71,50 +71,71 @@ export const ReviewSection = ({ courseId, isEnrolled, isAuthenticated }: ReviewS
                 </div>
             </div>
 
-            {/* Review Form (Only for enrolled users) */}
-            {isEnrolled && (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4"
-                >
-                    <h3 className="text-lg font-semibold text-slate-900">Leave a Review</h3>
-                    <form onSubmit={handleSubmitReview} className="space-y-4">
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-slate-700">Rating:</span>
-                            <div className="flex gap-1">
-                                {[1, 2, 3, 4, 5].map((s) => (
-                                    <button
-                                        key={s}
-                                        type="button"
-                                        onClick={() => setRating(s)}
-                                        className={`transition-colors ${s <= rating ? 'text-yellow-500' : 'text-slate-300'}`}
-                                    >
-                                        <Star className={`h-6 w-6 ${s <= rating ? 'fill-yellow-500' : ''}`} />
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="relative">
-                            <textarea
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                                placeholder="Share your experience with this course..."
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 min-h-[120px] resize-none"
-                                required
-                            />
-                        </div>
-                        <Button
-                            type="submit"
-                            isLoading={isSubmitting}
-                            className="flex items-center gap-2 px-6"
-                        >
-                            <Send className="h-4 w-4" />
-                            Submit Review
+            {/* Review Form Logic */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4"
+            >
+                {!isAuthenticated ? (
+                    <div className="py-4 text-center space-y-3">
+                        <Lock className="h-10 w-10 text-slate-300 mx-auto" />
+                        <h3 className="text-lg font-semibold text-slate-900">Want to share your thoughts?</h3>
+                        <p className="text-slate-500 text-sm">Please log in to leave a review for this course.</p>
+                        <Button onClick={() => window.location.href = '/login'} variant="outline" size="sm">
+                            Login Now
                         </Button>
-                    </form>
-                </motion.div>
-            )}
+                    </div>
+                ) : !isEnrolled ? (
+                    <div className="py-4 text-center space-y-3">
+                        <MessageSquare className="h-10 w-10 text-primary-200 mx-auto" />
+                        <h3 className="text-lg font-semibold text-slate-900">Enrolled students only</h3>
+                        <p className="text-slate-500 text-sm">You must be enrolled in this course to share your experience.</p>
+                        <div className="bg-primary-50 p-3 rounded-xl inline-block text-primary-700 text-xs font-medium">
+                            Enroll above to unlock the review form!
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <h3 className="text-lg font-semibold text-slate-900">Leave a Review</h3>
+                        <form onSubmit={handleSubmitReview} className="space-y-4">
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-slate-700">Your Rating:</span>
+                                <div className="flex gap-1">
+                                    {[1, 2, 3, 4, 5].map((s) => (
+                                        <button
+                                            key={s}
+                                            type="button"
+                                            onClick={() => setRating(s)}
+                                            className={`transition-colors transform hover:scale-110 ${s <= rating ? 'text-yellow-500' : 'text-slate-300'}`}
+                                        >
+                                            <Star className={`h-6 w-6 ${s <= rating ? 'fill-yellow-500' : ''}`} />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="relative">
+                                <textarea
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    placeholder="What did you like or dislike? How can we improve?"
+                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 min-h-[120px] resize-none"
+                                    required
+                                />
+                            </div>
+                            <Button
+                                type="submit"
+                                isLoading={isSubmitting}
+                                className="flex items-center gap-2 px-8 bg-primary-600 hover:bg-primary-700 w-full h-12 text-md font-bold shadow-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 border-none"
+                                variant="outline"
+                            >
+                                <Send className="h-4 w-4" />
+                                Post My Review
+                            </Button>
+                        </form>
+                    </>
+                )}
+            </motion.div>
 
             {/* Reviews List */}
             <div className="grid grid-cols-1 gap-6">

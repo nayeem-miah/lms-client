@@ -27,6 +27,11 @@ export const paymentsApi = apiSlice.injectEndpoints({
             }),
             transformResponse: (response: any) => response.data,
         }),
+        getMyPayments: builder.query({
+            query: () => '/payments/me',
+            providesTags: ['Payment'],
+            transformResponse: (response: any) => response.data,
+        }),
     }),
 })
 
@@ -34,5 +39,6 @@ export const {
     useGetPaymentsQuery,
     useGetRevenueStatsQuery,
     useCreatePaymentIntentMutation,
-    useCreateStripeSessionMutation
+    useCreateStripeSessionMutation,
+    useGetMyPaymentsQuery
 } = paymentsApi
