@@ -19,7 +19,20 @@ export const paymentsApi = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        createStripeSession: builder.mutation({
+            query: (data) => ({
+                url: '/payments',
+                method: 'POST',
+                body: data,
+            }),
+            transformResponse: (response: any) => response.data,
+        }),
     }),
 })
 
-export const { useGetPaymentsQuery, useGetRevenueStatsQuery, useCreatePaymentIntentMutation } = paymentsApi
+export const {
+    useGetPaymentsQuery,
+    useGetRevenueStatsQuery,
+    useCreatePaymentIntentMutation,
+    useCreateStripeSessionMutation
+} = paymentsApi

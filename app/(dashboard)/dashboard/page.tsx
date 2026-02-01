@@ -5,6 +5,7 @@ import AdminDashboard from '@/components/dashboard/AdminDashboard'
 import StudentDashboard from '@/components/dashboard/StudentDashboard'
 import InstructorDashboard from '@/components/dashboard/InstructorDashboard'
 import type { UserRole } from '@/types/user'
+import ProtectedRoute from '@/components/auth/ProtectedRoute'
 
 export default function DashboardPage() {
     const user = useAppSelector(selectCurrentUser)
@@ -13,10 +14,10 @@ export default function DashboardPage() {
     const currentRole = (user?.role as UserRole) || 'STUDENT'
 
     return (
-        <>
+        <ProtectedRoute>
             {currentRole === 'ADMIN' && <AdminDashboard />}
             {currentRole === 'STUDENT' && <StudentDashboard />}
             {currentRole === 'INSTRUCTOR' && <InstructorDashboard />}
-        </>
+        </ProtectedRoute>
     )
 }

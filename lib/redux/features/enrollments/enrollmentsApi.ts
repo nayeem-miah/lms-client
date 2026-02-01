@@ -11,10 +11,9 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
             },
         }),
         createEnrollment: builder.mutation({
-            query: (data) => ({
-                url: '/enrollments',
+            query: (courseId) => ({
+                url: `/enrollments/${courseId}`,
                 method: 'POST',
-                body: data,
             }),
             invalidatesTags: ['Enrollment'],
             transformResponse: (response: any) => {
@@ -22,7 +21,7 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
             },
         }),
         checkEnrollment: builder.query({
-            query: (courseId) => `/enrollments/check/${courseId}`,
+            query: (courseId) => `/enrollments/${courseId}`,
             providesTags: (result, error, courseId) => [{ type: 'Enrollment', id: courseId }],
             transformResponse: (response: any) => {
                 return response.data;

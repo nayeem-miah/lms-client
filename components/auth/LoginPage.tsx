@@ -82,6 +82,24 @@ export const LoginPage = () => {
             setError(errorMessage)
         }
     }
+
+    const handleGoogleLogin = () => {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
+        // Redirect to backend google auth endpoint
+        window.location.href = `${baseUrl}/auth/google`;
+    }
+
+    // Handle social login callback (token in URL)
+    React.useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            // If token in URL, set it and redirect
+            localStorage.setItem('accessToken', token);
+            toast.success('Signed in with Google!');
+            router.push('/dashboard');
+        }
+    }, [router]);
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
             <Toaster
@@ -178,6 +196,7 @@ export const LoginPage = () => {
                                 <Button
                                     variant="outline"
                                     className="w-full"
+                                    onClick={handleGoogleLogin}
                                     leftIcon={
                                         <svg className="h-5 w-5" viewBox="0 0 24 24">
                                             <path

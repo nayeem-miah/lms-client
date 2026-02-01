@@ -3,6 +3,7 @@ import React from 'react'
 import { useParams } from 'next/navigation'
 import { useGetCourseByIdQuery } from '@/lib/redux/features/courses/coursesApi'
 import { useCheckEnrollmentQuery, useCreateEnrollmentMutation } from '@/lib/redux/features/enrollments/enrollmentsApi'
+import { useCreateStripeSessionMutation } from '@/lib/redux/features/payments/paymentsApi'
 import { selectIsAuthenticated } from '@/lib/redux/features/auth/authSlice'
 import { useAppSelector } from '@/lib/redux/hooks'
 import { Button } from '@/components/ui/Button'
@@ -13,6 +14,8 @@ import { BookOpen, Clock, Users, PlayCircle, Star, Shield, CheckCircle, Lock } f
 import { motion } from 'framer-motion'
 import { Course, User } from '@/types/api'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-hot-toast'
+import { ReviewSection } from './ReviewSection'
 
 export const CourseDetail = () => {
     const params = useParams()
@@ -23,6 +26,7 @@ export const CourseDetail = () => {
     const { data: course, isLoading, error } = useGetCourseByIdQuery(id)
     const { data: enrollmentInfo, isLoading: isCheckingEnrollment } = useCheckEnrollmentQuery(id, { skip: !isAuthenticated })
     const [createEnrollment, { isLoading: isEnrolling }] = useCreateEnrollmentMutation()
+    const [createStripeSession, { isLoading: isCreatingSession }] = useCreateStripeSessionMutation()
 
     const handleEnroll = async () => {
         if (!isAuthenticated) {
@@ -30,10 +34,30 @@ export const CourseDetail = () => {
             return
         }
         try {
-            await createEnrollment({ courseId: id }).unwrap()
-            // Success! Could show a toast here
-        } catch (err) {
+            await createEnrollment(id).unwrap()
+            toast.success('Enrolled successfully! Redirecting to dashboard...')
+            setTimeout(() => {
+                router.push('/dashboard')
+            }, 2000)
+        } catch (err: any) {
             console.error('Failed to enroll:', err)
+            toast.error(err?.data?.message || 'Failed to enroll')
+        }
+    }
+
+    const handlePayment = async () => {
+        if (!isAuthenticated) {
+            router.push('/login')
+            return
+        }
+        try {
+            const { checkoutUrl } = await createStripeSession({ courseId: id }).unwrap()
+            if (checkoutUrl) {
+                window.location.href = checkoutUrl
+            }
+        } catch (err: any) {
+            console.error('Payment session creation failed:', err)
+            toast.error(err?.data?.message || 'Failed to initiate payment')
         }
     }
 
@@ -163,6 +187,12 @@ export const CourseDetail = () => {
                                 </div>
                             </div>
                         </section>
+
+                        <ReviewSection
+                            courseId={id}
+                            isEnrolled={!!isEnrolled}
+                            isAuthenticated={isAuthenticated}
+                        />
                     </div>
 
                     {/* Sidebar Purchase Card */}
@@ -183,10 +213,12 @@ export const CourseDetail = () => {
                                 ) : (
                                     <>
                                         <Button
-                                            onClick={() => router.push(`/checkout?courseId=${id}`)}
+                                            onClick={handlePayment}
+                                            isLoading={isCreatingSession}
                                             className="w-full h-12 text-md font-bold shadow-lg shadow-primary-500/20"
+                                            variant="outline"
                                         >
-                                            Buy Now (৳{course.price})
+                                            Create Payment ({course.price})
                                         </Button>
                                         <Button
                                             onClick={handleEnroll}
@@ -194,7 +226,7 @@ export const CourseDetail = () => {
                                             variant="outline"
                                             className="w-full h-12 text-md font-bold"
                                         >
-                                            Enroll for Free
+                                            Enroll Now
                                         </Button>
                                     </>
                                 )}
