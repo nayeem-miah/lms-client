@@ -1,15 +1,29 @@
 "use client"
 import React from 'react'
 import { motion } from 'framer-motion'
-import { DollarSign, Search, Calendar, Landmark, Receipt, ExternalLink } from 'lucide-react'
+import { DollarSign, Search, Calendar, Landmark, Receipt, ExternalLink, Eye, FileText, Printer, CheckCircle2 } from 'lucide-react'
 import { useGetMyPaymentsQuery } from '@/lib/redux/features/payments/paymentsApi'
 import { Payment } from '@/types/api'
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
 import { Star } from 'lucide-react'
+import { Modal } from '@/components/ui/Model'
+import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 export default function PaymentHistoryPage() {
     const { data: payments, isLoading, error } = useGetMyPaymentsQuery({})
+    const [selectedPayment, setSelectedPayment] = useState<any>(null)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const handleViewReceipt = (payment: any) => {
+        setSelectedPayment(payment)
+        setIsModalOpen(true)
+    }
+
+    const handlePrint = () => {
+        window.print()
+    }
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -135,16 +149,27 @@ export default function PaymentHistoryPage() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <Link href={`/courses/${typeof payment.courseId === 'object' ? payment.courseId?._id : payment.courseId}#reviews-section`}>
-                                                <Button variant="ghost" size="sm" className="text-cyan-400 hover:text-cyan-300 gap-1 h-8">
-                                                    <Star className="h-4 w-4" />
-                                                    Review
-                                                </Button>
+                                        <div className="flex items-center justify-end gap-2 text-slate-400">
+                                            <Link 
+                                                href={`/courses/${typeof payment.courseId === 'object' ? payment.courseId?._id : payment.courseId}`}
+                                                title="View Course"
+                                            >
+                                                <button className="p-2 hover:text-cyan-400 hover:bg-slate-700 rounded-lg transition-all">
+                                                    <Eye className="h-4 w-4" />
+                                                </button>
                                             </Link>
-                                            <button className="text-slate-500 hover:text-slate-300 transition-colors p-1">
-                                                <ExternalLink className="h-4 w-4" />
+                                            <button 
+                                                onClick={() => handleViewReceipt(payment)}
+                                                className="p-2 hover:text-emerald-400 hover:bg-slate-700 rounded-lg transition-all"
+                                                title="View Receipt"
+                                            >
+                                                <FileText className="h-4 w-4" />
                                             </button>
+                                            <Link href={`/courses/${typeof payment.courseId === 'object' ? payment.courseId?._id : payment.courseId}#reviews-section`}>
+                                                <button className="p-2 hover:text-amber-400 hover:bg-slate-700 rounded-lg transition-all" title="Write Review">
+                                                    <Star className="h-4 w-4" />
+                                                </button>
+                                            </Link>
                                         </div>
                                     </td>
                                 </motion.tr>
@@ -152,6 +177,91 @@ export default function PaymentHistoryPage() {
                         </tbody>
                     </table>
                 </div>
+            )}
+            {/* Receipt Modal */}
+            {selectedPayment && (
+                <Modal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    title="Transaction Receipt"
+                    size="md"
+                    footer={
+                        <div className="flex justify-between items-center w-full">
+                            <p className="text-xs text-slate-500 italic">Thank you for your purchase!</p>
+                            <div className="flex gap-2">
+                                <Button variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
+                                    Close
+                                </Button>
+                                <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2" onClick={handlePrint}>
+                                    <Printer className="h-4 w-4" />
+                                    Print Receipt
+                                </Button>
+                            </div>
+                        </div>
+                    }
+                >
+                    <div className="space-y-6 printable-area">
+                        <div className="flex justify-between items-start border-b border-slate-100 pb-4">
+                            <div>
+                                <h4 className="font-bold text-slate-900 text-xl">LMS Academy</h4>
+                                <p className="text-sm text-slate-500">Invoice #{selectedPayment.transactionId?.slice(-8).toUpperCase() || selectedPayment._id.slice(-8).toUpperCase()}</p>
+                            </div>
+                            <div className="text-right">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                                    {selectedPayment.status}
+                                </span>
+                                <p className="text-sm text-slate-500 mt-1">{formatDate(selectedPayment.createdAt)}</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p className="text-slate-500 uppercase tracking-wider text-[10px] font-bold">Billed To</p>
+                                <p className="font-semibold text-slate-900 mt-1">{typeof selectedPayment.userId === 'object' ? selectedPayment.userId?.name : 'Student'}</p>
+                                <p className="text-slate-600">{typeof selectedPayment.userId === 'object' ? selectedPayment.userId?.email : ''}</p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-slate-500 uppercase tracking-wider text-[10px] font-bold">Payment Method</p>
+                                <p className="font-semibold text-slate-900 mt-1">Stripe / Online Payment</p>
+                            </div>
+                        </div>
+
+                        <div className="bg-slate-50 rounded-xl p-4">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="text-slate-500 border-b border-slate-200">
+                                        <th className="text-left py-2 font-semibold">Course Description</th>
+                                        <th className="text-right py-2 font-semibold">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="text-slate-700">
+                                    <tr>
+                                        <td className="py-4">
+                                            <p className="font-bold text-slate-900">{selectedPayment.courseId?.title || 'Course Purchase'}</p>
+                                            <p className="text-xs text-slate-500 mt-0.5">Full access to all course materials</p>
+                                        </td>
+                                        <td className="text-right font-bold text-slate-900">
+                                            {selectedPayment.currency === 'BDT' ? '৳' : '$'}{selectedPayment.amount}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot className="border-t border-slate-200">
+                                    <tr>
+                                        <td className="py-3 font-bold text-slate-900">Total Paid</td>
+                                        <td className="text-right py-3 font-extrabold text-cyan-600 text-lg">
+                                            {selectedPayment.currency === 'BDT' ? '৳' : '$'}{selectedPayment.amount}
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div className="text-[10px] text-slate-400 text-center uppercase tracking-widest font-bold pt-4">
+                            This is a computer generated receipt
+                        </div>
+                    </div>
+                </Modal>
             )}
         </div>
     )
