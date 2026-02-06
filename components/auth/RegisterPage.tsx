@@ -21,10 +21,16 @@ export const RegisterPage = () => {
     const [register, { isLoading }] = useRegisterMutation();
     const router = useRouter()
     const [error, setError] = useState<string | null>(null)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+
+        // Prevent double submission
+        if (isSubmitting) return
+
         setError(null)
+        setIsSubmitting(true)
 
         // Show loading toast
         const loadingToast = toast.loading('Creating your account...')
@@ -60,6 +66,7 @@ export const RegisterPage = () => {
                     icon: '❌',
                 })
                 setError(errorMsg)
+                setIsSubmitting(false)
             }
         } catch (err: any) {
             // Always dismiss loading toast first
@@ -85,6 +92,7 @@ export const RegisterPage = () => {
             })
 
             setError(errorMessage)
+            setIsSubmitting(false)
         }
     }
 
@@ -105,7 +113,14 @@ export const RegisterPage = () => {
     }, [router]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" />
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }} />
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '4s' }} />
+            </div>
+
             <Toaster
                 position="top-center"
                 toastOptions={{
@@ -129,118 +144,151 @@ export const RegisterPage = () => {
                     },
                 }}
             />
-            <div className="w-full max-w-md space-y-8">
-                <div className="flex flex-col items-center">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-600 text-white mb-4">
-                        <BookOpen className="h-7 w-7" />
+
+            <div className="w-full max-w-md space-y-8 relative z-10">
+                <div className="flex flex-col items-center animate-in fade-in slide-in-from-top-4 duration-1000">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-500 text-white mb-6 shadow-2xl shadow-purple-500/50 animate-in zoom-in duration-500">
+                        <BookOpen className="h-9 w-9" />
                     </div>
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                        Create an account
+                    <h2 className="text-4xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
+                        Create an Account
                     </h2>
-                    <p className="mt-2 text-sm text-slate-600">
+                    <p className="mt-3 text-sm text-slate-400">
                         Join thousands of learners and instructors today
                     </p>
                 </div>
 
-                <Card className="border-slate-200 shadow-xl">
-                    <CardContent className="pt-6">
-                        {error && (
-                            <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                <span className="block sm:inline">{error}</span>
-                            </div>
-                        )}
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <Input
-                                label="Full Name"
-                                placeholder="John Doe"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required
-                            />
-                            <Input
-                                label="Email address"
-                                type="email"
-                                placeholder="you@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                            <Input
-                                label="Password"
-                                type="password"
-                                placeholder="Create a password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                helperText="Must be at least 8 characters"
-                            />
-                            <Select
-                                label="I want to"
-                                options={[
-                                    {
-                                        value: 'STUDENT',
-                                        label: 'Learn new skills (Student)',
-                                    },
-                                    {
-                                        value: 'INSTRUCTOR',
-                                        label: 'Teach courses (Instructor)',
-                                    },
-                                ]}
-                                value={role}
-                                onChange={(e) => setRole(e.target.value as UserRole)}
-                            />
+                <div className="relative animate-in fade-in slide-in-from-bottom-4 duration-1000" style={{ animationDelay: '200ms' }}>
+                    {/* Animated rainbow border */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 animate-pulse" />
 
-                            <div className="flex items-center space-x-2">
-                                <input
-                                    id="terms"
-                                    type="checkbox"
-                                    className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
-                                    required
-                                />
-                                <label htmlFor="terms" className="text-sm text-slate-600">
-                                    I agree to the{' '}
-                                    <Link
-                                        href="/terms"
-                                        className="text-primary-600 hover:underline"
-                                    >
-                                        Terms of Service
-                                    </Link>{' '}
-                                    and{' '}
-                                    <Link
-                                        href="/privacy"
-                                        className="text-primary-600 hover:underline"
-                                    >
-                                        Privacy Policy
-                                    </Link>
-                                </label>
-                            </div>
+                    <div className="relative bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-800 overflow-hidden">
+                        {/* Glassmorphism overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/0 pointer-events-none" />
 
-                            <Button type="submit" className="w-full text-white bg-blue-600"
-                                isLoading={isLoading}
-                            >
-                                Create Account
-                            </Button>
-                        </form>
-
-                        <div className="mt-6">
-                            <div className="relative">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-slate-200" />
+                        <div className="p-8">
+                            {error && (
+                                <div className="mb-6 bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg backdrop-blur-sm animate-in fade-in slide-in-from-top-2 duration-300" role="alert">
+                                    <span className="block sm:inline">{error}</span>
                                 </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="bg-white px-2 text-slate-500">
-                                        Or continue with
-                                    </span>
-                                </div>
-                            </div>
+                            )}
 
-                            <div className="mt-6 grid grid-cols-1 gap-3">
-                                <Button
-                                    variant="outline"
-                                    className="w-full"
-                                    onClick={handleGoogleLogin}
-                                    leftIcon={
-                                        <svg className="h-5 w-5" viewBox="0 0 24 24">
+                            <form onSubmit={handleSubmit} className="space-y-5">
+                                <div className="space-y-2 group">
+                                    <label className="text-sm font-medium text-slate-300">Full Name</label>
+                                    <input
+                                        type="text"
+                                        placeholder="John Doe"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                                    />
+                                </div>
+
+                                <div className="space-y-2 group">
+                                    <label className="text-sm font-medium text-slate-300">Email address</label>
+                                    <input
+                                        type="email"
+                                        placeholder="you@example.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                                    />
+                                </div>
+
+                                <div className="space-y-2 group">
+                                    <label className="text-sm font-medium text-slate-300">Password</label>
+                                    <input
+                                        type="password"
+                                        placeholder="Create a password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                                    />
+                                    <p className="text-xs text-slate-500 mt-1">Must be at least 8 characters</p>
+                                </div>
+
+                                <div className="space-y-2 group">
+                                    <label className="text-sm font-medium text-slate-300">I want to</label>
+                                    <select
+                                        value={role}
+                                        onChange={(e) => setRole(e.target.value as UserRole)}
+                                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                                    >
+                                        <option value="STUDENT">Learn new skills (Student)</option>
+                                        <option value="INSTRUCTOR">Teach courses (Instructor)</option>
+                                    </select>
+                                </div>
+
+                                <div className="flex items-start space-x-3 pt-2">
+                                    <input
+                                        id="terms"
+                                        type="checkbox"
+                                        className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-800/50 text-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-0 transition-all duration-200"
+                                        required
+                                    />
+                                    <label htmlFor="terms" className="text-sm text-slate-400 leading-relaxed">
+                                        I agree to the{' '}
+                                        <Link
+                                            href="/terms"
+                                            className="text-purple-400 hover:text-purple-300 transition-colors duration-200"
+                                        >
+                                            Terms of Service
+                                        </Link>{' '}
+                                        and{' '}
+                                        <Link
+                                            href="/privacy"
+                                            className="text-purple-400 hover:text-purple-300 transition-colors duration-200"
+                                        >
+                                            Privacy Policy
+                                        </Link>
+                                    </label>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className="w-full relative group overflow-hidden rounded-lg bg-gradient-to-r from-purple-600 to-cyan-600 p-0.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <div className="relative bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg px-6 py-3 transition-all duration-300 group-hover:from-purple-500 group-hover:to-cyan-500">
+                                        <span className="relative z-10 font-semibold text-white flex items-center justify-center">
+                                            {isLoading ? (
+                                                <>
+                                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    Creating account...
+                                                </>
+                                            ) : (
+                                                'Create Account'
+                                            )}
+                                        </span>
+                                    </div>
+                                </button>
+                            </form>
+
+                            <div className="mt-8">
+                                <div className="relative">
+                                    <div className="absolute inset-0 flex items-center">
+                                        <div className="w-full border-t border-slate-700" />
+                                    </div>
+                                    <div className="relative flex justify-center text-sm">
+                                        <span className="bg-slate-900 px-4 text-slate-400">
+                                            Or continue with
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="mt-6">
+                                    <button
+                                        onClick={handleGoogleLogin}
+                                        className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 group"
+                                    >
+                                        <svg className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
                                             <path
                                                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                                                 fill="#4285F4"
@@ -258,25 +306,25 @@ export const RegisterPage = () => {
                                                 fill="#EA4335"
                                             />
                                         </svg>
-                                    }
-                                >
-                                    Google
-                                </Button>
+                                        <span>Continue with Google</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </CardContent>
-                    <CardFooter className="justify-center border-t border-slate-100 bg-slate-50/50 py-4">
-                        <p className="text-sm text-slate-600">
-                            Already have an account?{' '}
-                            <Link
-                                href="/login"
-                                className="font-medium text-primary-600 hover:text-primary-500"
-                            >
-                                Sign in
-                            </Link>
-                        </p>
-                    </CardFooter>
-                </Card>
+
+                        <div className="border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm py-4 px-8">
+                            <p className="text-sm text-slate-400 text-center">
+                                Already have an account?{' '}
+                                <Link
+                                    href="/login"
+                                    className="font-medium text-purple-400 hover:text-purple-300 transition-colors duration-200"
+                                >
+                                    Sign in
+                                </Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

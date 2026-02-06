@@ -119,7 +119,32 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes border-beam {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) translateY(-100%);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(100%) translateY(100%);
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam var(--duration, 15s) linear infinite;
 }
