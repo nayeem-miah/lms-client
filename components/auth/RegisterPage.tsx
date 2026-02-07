@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import { useRegisterMutation } from '@/lib/redux/features/auth/authApi'
 import { UserRole } from '@/types/types'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button } from '../../components/ui/Button'
@@ -17,6 +17,7 @@ export const RegisterPage = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
     const [role, setRole] = useState<UserRole>('STUDENT')
     const [register, { isLoading }] = useRegisterMutation();
     const router = useRouter()
@@ -200,15 +201,83 @@ export const RegisterPage = () => {
 
                                 <div className="space-y-2 group">
                                     <label className="text-sm font-medium text-slate-300">Password</label>
-                                    <input
-                                        type="password"
-                                        placeholder="Create a password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
-                                    />
-                                    <p className="text-xs text-slate-500 mt-1">Must be at least 8 characters</p>
+                                    <div className="relative">
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            placeholder="Create a strong password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required
+                                            className="w-full px-4 py-3 pr-12 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors duration-200 focus:outline-none"
+                                        >
+                                            {showPassword ? (
+                                                <EyeOff className="h-5 w-5" />
+                                            ) : (
+                                                <Eye className="h-5 w-5" />
+                                            )}
+                                        </button>
+                                    </div>
+
+                                    {/* Password Strength Indicator */}
+                                    {password && (
+                                        <div className="mt-3 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                                    <div
+                                                        className={`h-full transition-all duration-500 ${password.length >= 12 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)
+                                                                ? 'w-full bg-gradient-to-r from-green-500 to-emerald-500'
+                                                                : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
+                                                                    ? 'w-3/4 bg-gradient-to-r from-yellow-500 to-orange-500'
+                                                                    : password.length >= 6
+                                                                        ? 'w-1/2 bg-gradient-to-r from-orange-500 to-red-500'
+                                                                        : 'w-1/4 bg-gradient-to-r from-red-500 to-red-600'
+                                                            }`}
+                                                    />
+                                                </div>
+                                                <span className={`text-xs font-medium ${password.length >= 12 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)
+                                                        ? 'text-green-400'
+                                                        : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
+                                                            ? 'text-yellow-400'
+                                                            : password.length >= 6
+                                                                ? 'text-orange-400'
+                                                                : 'text-red-400'
+                                                    }`}>
+                                                    {password.length >= 12 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)
+                                                        ? 'Strong'
+                                                        : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
+                                                            ? 'Good'
+                                                            : password.length >= 6
+                                                                ? 'Fair'
+                                                                : 'Weak'
+                                                    }
+                                                </span>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-2 text-xs">
+                                                <div className={`flex items-center gap-1.5 ${password.length >= 8 ? 'text-green-400' : 'text-slate-500'}`}>
+                                                    {password.length >= 8 ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
+                                                    <span>8+ characters</span>
+                                                </div>
+                                                <div className={`flex items-center gap-1.5 ${/[A-Z]/.test(password) ? 'text-green-400' : 'text-slate-500'}`}>
+                                                    {/[A-Z]/.test(password) ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
+                                                    <span>Uppercase</span>
+                                                </div>
+                                                <div className={`flex items-center gap-1.5 ${/[a-z]/.test(password) ? 'text-green-400' : 'text-slate-500'}`}>
+                                                    {/[a-z]/.test(password) ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
+                                                    <span>Lowercase</span>
+                                                </div>
+                                                <div className={`flex items-center gap-1.5 ${/[0-9]/.test(password) ? 'text-green-400' : 'text-slate-500'}`}>
+                                                    {/[0-9]/.test(password) ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
+                                                    <span>Number</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2 group">
