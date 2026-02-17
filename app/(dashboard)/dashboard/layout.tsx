@@ -19,7 +19,8 @@ import {
     FileText,
     MessageSquare,
     PlusCircle,
-    X
+    X,
+    Backpack
 } from 'lucide-react'
 import type { UserRole } from '@/types/user'
 import Link from 'next/link'
@@ -117,7 +118,7 @@ function Sidebar({ currentRole }: { currentRole: UserRole }) {
         } else {
             return [
                 ...commonItems,
-                { icon: 'BookOpen', label: 'My Courses', href: '/dashboard/my-courses' },
+                { icon: 'Backpack', label: 'My Enrollments', href: '/dashboard/my-enrollments' },
                 { icon: 'Calendar', label: 'Schedule', href: '/dashboard/schedule' },
                 { icon: 'DollarSign', label: 'Payment History', href: '/dashboard/payment-history' },
                 { icon: 'Trophy', label: 'Leaderboard', href: '/dashboard/leaderboard' },
@@ -201,7 +202,7 @@ function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClos
         } else {
             return [
                 ...commonItems,
-                { icon: 'BookOpen', label: 'My Courses', href: '/dashboard/my-courses' },
+                { icon: 'Backpack', label: 'My Enrollments', href: '/dashboard/my-enrollments' },
                 { icon: 'Calendar', label: 'Schedule', href: '/dashboard/schedule' },
                 { icon: 'DollarSign', label: 'Payment History', href: '/dashboard/payment-history' },
                 { icon: 'Trophy', label: 'Leaderboard', href: '/dashboard/leaderboard' },
@@ -332,6 +333,7 @@ function getIconComponent(iconName: string): React.ElementType {
         FileText,
         MessageSquare,
         PlusCircle,
+        Backpack,
     }
     return icons[iconName] || BarChart3
 }

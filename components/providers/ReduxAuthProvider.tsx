@@ -34,6 +34,15 @@ export default function ReduxAuthProvider({ children }: { children: React.ReactN
         } else if (isError) {
             console.error("Auth check failed:", error)
             dispatch(logOut())
+
+            // Redirect to login page if auth fails
+            if (typeof window !== 'undefined') {
+                const toast = require('react-hot-toast').default
+                toast.error('Please log in to continue.')
+                setTimeout(() => {
+                    window.location.href = '/login'
+                }, 1000)
+            }
         }
         dispatch(setLoading(isLoading))
     }, [userData, isSuccess, isError, isLoading, dispatch, error])

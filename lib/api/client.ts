@@ -56,6 +56,25 @@ async function client<T>(
         const response = await fetch(url, config);
         const responseData = await response.json();
 
+        // Check for 401 (Unauthorized) or 403 (Forbidden) - token expired or invalid
+        if (response.status === 401 || response.status === 403) {
+            console.log('Token expired or invalid, logging out...');
+
+            // Clear token from localStorage
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('accessToken');
+
+                // Dynamically import toast to avoid SSR issues
+                const toast = (await import('react-hot-toast')).default;
+                toast.error('Your session has expired. Please log in to continue.');
+
+                // Redirect to login page
+                window.location.href = '/login';
+            }
+
+            throw new Error('Session expired. Please log in again.');
+        }
+
         if (!response.ok) {
             throw new Error(responseData.message || 'Something went wrong');
         }
