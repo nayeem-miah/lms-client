@@ -12,14 +12,16 @@ import {
     User as UserIcon,
     X,
 } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
+import { Link, useRouter, usePathname } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 import { selectCurrentUser, selectIsAuthenticated, logOut } from '@/lib/redux/features/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { Avatar } from '../ui/Avater'
 import { Button } from '../ui/Button'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 export const Navbar = () => {
+    const t = useTranslations('Navbar')
     const dispatch = useAppDispatch()
     const isAuthenticated = useAppSelector(selectIsAuthenticated)
     const user = useAppSelector(selectCurrentUser)
@@ -48,7 +50,7 @@ export const Navbar = () => {
                             <BookOpen className="h-5 w-5" />
                         </div>
                         <span className="text-xl font-bold text-slate-900 hidden sm:block">
-                            EduPlatform
+                            {t('logoText')}
                         </span>
                     </Link>
                 </div>
@@ -59,30 +61,32 @@ export const Navbar = () => {
                         href="/"
                         className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
                     >
-                        Home
+                        {t('home')}
                     </Link>
                     <Link
                         href="/courses"
                         className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
                     >
-                        Browse Courses
+                        {t('browseCourses')}
                     </Link>
                     <Link
                         href="/about"
                         className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
                     >
-                        about
+                        {t('about')}
                     </Link>
                 </div>
 
                 {/* Right Side Actions */}
                 <div className="flex items-center gap-4">
+                    <LanguageSwitcher />
+
                     {/* Search - Desktop */}
                     <div className="hidden lg:flex relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                         <input
                             type="text"
-                            placeholder="Search courses..."
+                            placeholder={t('searchPlaceholder')}
                             className="h-9 w-64 rounded-full border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm focus:border-primary-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-100 transition-all"
                         />
                     </div>
@@ -137,7 +141,7 @@ export const Navbar = () => {
                                                 onClick={() => setIsProfileMenuOpen(false)}
                                             >
                                                 <LayoutDashboard className="h-4 w-4" />
-                                                Dashboard
+                                                {t('dashboard')}
                                             </Link>
                                             <Link
                                                 href="/profile"
@@ -145,7 +149,7 @@ export const Navbar = () => {
                                                 onClick={() => setIsProfileMenuOpen(false)}
                                             >
                                                 <UserIcon className="h-4 w-4" />
-                                                Profile
+                                                {t('profile')}
                                             </Link>
 
                                             <div className="my-1 border-t border-slate-100" />
@@ -155,7 +159,7 @@ export const Navbar = () => {
                                                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                                             >
                                                 <LogOut className="h-4 w-4" />
-                                                Sign out
+                                                {t('signOut')}
                                             </button>
                                         </motion.div>
                                     )}
@@ -170,13 +174,14 @@ export const Navbar = () => {
                                     size="sm"
                                     className="hidden sm:inline-flex"
                                 >
-                                    Log in
+                                    {t('logIn')}
                                 </Button>
                             </Link>
                             <Link href="/register">
                                 <Button
                                     variant='outline'
-                                    size="sm">Get Started
+                                    size="sm">
+                                    {t('getStarted')}
                                 </Button>
                             </Link>
                         </div>
@@ -220,14 +225,14 @@ export const Navbar = () => {
                                 className="block rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Home
+                                {t('home')}
                             </Link>
                             <Link
                                 href="/courses"
                                 className="block rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Browse Courses
+                                {t('browseCourses')}
                             </Link>
 
                             <Link
@@ -235,20 +240,20 @@ export const Navbar = () => {
                                 className="block rounded-lg px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                about
+                                {t('about')}
                             </Link>
                             {!isAuthenticated && (
                                 <div className="mt-4 flex flex-col gap-2">
                                     <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
                                         <Button variant="outline" className="w-full">
-                                            Log in
+                                            {t('logIn')}
                                         </Button>
                                     </Link>
                                     <Link
                                         href="/register"
                                         onClick={() => setIsMobileMenuOpen(false)}
                                     >
-                                        <Button className="w-full">Get Started</Button>
+                                        <Button className="w-full">{t('getStarted')}</Button>
                                     </Link>
                                 </div>
                             )}
@@ -259,3 +264,4 @@ export const Navbar = () => {
         </nav>
     )
 }
+

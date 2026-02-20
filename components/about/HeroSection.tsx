@@ -1,5 +1,7 @@
-/* eslint-disable react/no-unescaped-entities */
+import { useTranslations } from 'next-intl';
+
 export default function HeroSection() {
+    const t = useTranslations('About.hero');
     return (
         <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 text-white py-20 overflow-hidden">
             {/* Background Pattern */}
@@ -12,31 +14,30 @@ export default function HeroSection() {
                 <div className="max-w-4xl mx-auto text-center space-y-6">
                     <div className="inline-block">
                         <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
-                            About LearnCourse
+                            {t('badge')}
                         </span>
                     </div>
 
                     <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                        Empowering Learners Worldwide
+                        {t('title')}
                     </h1>
 
                     <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
-                        We're on a mission to make quality education accessible to everyone, everywhere.
-                        Join thousands of students learning from world-class instructors.
+                        {t('subtitle')}
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-4 pt-6">
                         <div className="bg-white/10 backdrop-blur-sm rounded-lg px-8 py-4">
                             <div className="text-3xl font-bold">50K+</div>
-                            <div className="text-sm text-blue-100">Active Students</div>
+                            <div className="text-sm text-blue-100">{t('stats.activeStudents')}</div>
                         </div>
                         <div className="bg-white/10 backdrop-blur-sm rounded-lg px-8 py-4">
                             <div className="text-3xl font-bold">500+</div>
-                            <div className="text-sm text-blue-100">Expert Instructors</div>
+                            <div className="text-sm text-blue-100">{t('stats.expertInstructors')}</div>
                         </div>
                         <div className="bg-white/10 backdrop-blur-sm rounded-lg px-8 py-4">
                             <div className="text-3xl font-bold">1000+</div>
-                            <div className="text-sm text-blue-100">Quality Courses</div>
+                            <div className="text-sm text-blue-100">{t('stats.qualityCourses')}</div>
                         </div>
                     </div>
                 </div>

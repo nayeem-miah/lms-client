@@ -6,7 +6,7 @@ import { logOut, selectCurrentToken, selectCurrentUser } from '@/lib/redux/featu
 import { useGetMyEnrollmentsQuery } from '@/lib/redux/features/enrollments/enrollmentsApi'
 import { Button } from '@/components/ui/Button'
 import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 
 export default function TestTokenExpiryPage() {
     const dispatch = useAppDispatch()

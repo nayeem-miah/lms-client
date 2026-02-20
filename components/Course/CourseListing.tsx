@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/Button"
 import { useGetAllCoursesQuery } from "@/lib/redux/features/courses/coursesApi"
 import { Course as ApiCourse, User } from "@/types/api"
 import { Course } from "@/types/types"
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/routing'
 import { Loader2, ChevronLeft, ChevronRight, BookOpen, RefreshCw, Search } from 'lucide-react'
 
 export const CourseListingPage = () => {
+    const t = useTranslations('CourseListing')
     const [page, setPage] = useState(1)
     const [searchTerm, setSearchTerm] = useState('')
     const [category, setCategory] = useState('')
@@ -69,7 +72,7 @@ export const CourseListingPage = () => {
         return (
             <div className="min-h-screen bg-slate-50 py-20 flex flex-col items-center justify-center space-y-4">
                 <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
-                <p className="text-slate-500 font-medium">Loading courses...</p>
+                <p className="text-slate-500 font-medium">{t('loading')}</p>
             </div>
         )
     }
@@ -79,15 +82,15 @@ export const CourseListingPage = () => {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div className="text-center md:text-left">
-                        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Discover Your Path</h1>
+                        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">{t('title')}</h1>
                         <p className="text-slate-600 mt-2 text-lg">
-                            Browse through our extensive library of professional courses.
+                            {t('subtitle')}
                         </p>
                     </div>
                     {isFetching && (
                         <div className="flex items-center text-slate-400 text-sm font-medium animate-pulse">
                             <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                            Updating results...
+                            {t('updating')}
                         </div>
                     )}
                 </div>
@@ -107,20 +110,20 @@ export const CourseListingPage = () => {
                         <div className="mb-4 inline-flex p-4 bg-red-50 rounded-full">
                             <BookOpen className="w-8 h-8 text-red-400" />
                         </div>
-                        <p className="text-slate-800 font-bold text-xl mb-2">Oops! Something went wrong</p>
-                        <p className="text-slate-500 mb-6 font-medium italic">We couldn't load the courses at this moment.</p>
-                        <Button variant="primary" onClick={() => window.location.reload()}>Try Again</Button>
+                        <p className="text-slate-800 font-bold text-xl mb-2">{t('errorTitle')}</p>
+                        <p className="text-slate-500 mb-6 font-medium italic">{t('errorSubtitle')}</p>
+                        <Button variant="primary" onClick={() => window.location.reload()}>{t('tryAgain')}</Button>
                     </div>
                 ) : courses.length === 0 ? (
                     <div className="text-center py-24 bg-white rounded-3xl border border-slate-200 shadow-sm">
                         <div className="mb-4 inline-flex p-6 bg-slate-50 rounded-full">
                             <Search className="w-10 h-10 text-slate-300" />
                         </div>
-                        <h3 className="text-2xl font-bold text-slate-800">No courses found</h3>
+                        <h3 className="text-2xl font-bold text-slate-800">{t('noCoursesFound')}</h3>
                         <p className="text-slate-500 mt-2 max-w-md mx-auto">
-                            We couldn't find any courses matching your current filters. Try resetting or using different keywords.
+                            {t('noCoursesSubtitle')}
                         </p>
-                        <Button variant="outline" className="mt-8 px-8" onClick={handleReset}>Clear All Filters</Button>
+                        <Button variant="outline" className="mt-8 px-8" onClick={handleReset}>{t('clearFilters')}</Button>
                     </div>
                 ) : (
                     <>
@@ -134,7 +137,7 @@ export const CourseListingPage = () => {
                         {data?.meta && data.meta.totalPages > 1 && (
                             <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10 border-t border-slate-200">
                                 <p className="text-sm text-slate-500 font-medium font-mono uppercase tracking-wider">
-                                    Displaying <span className="text-slate-900 font-bold">{courses.length}</span> of {data.meta.total} courses
+                                    {t('pagination.displaying')} <span className="text-slate-900 font-bold">{courses.length}</span> {t('pagination.of')} {data.meta.total} {t('pagination.courses')}
                                 </p>
                                 <div className="flex items-center space-x-2">
                                     <Button
@@ -145,7 +148,7 @@ export const CourseListingPage = () => {
                                         className="rounded-xl"
                                     >
                                         <ChevronLeft className="w-4 h-4 mr-1" />
-                                        Prev
+                                        {t('pagination.prev')}
                                     </Button>
 
                                     <div className="flex items-center space-x-1">
@@ -170,7 +173,7 @@ export const CourseListingPage = () => {
                                         onClick={() => setPage(p => p + 1)}
                                         className="rounded-xl"
                                     >
-                                        Next
+                                        {t('pagination.next')}
                                         <ChevronRight className="w-4 h-4 ml-1" />
                                     </Button>
                                 </div>

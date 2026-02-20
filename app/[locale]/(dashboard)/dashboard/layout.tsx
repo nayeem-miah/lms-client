@@ -23,8 +23,8 @@ import {
     Backpack
 } from 'lucide-react'
 import type { UserRole } from '@/types/user'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { Link, usePathname } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 export default function DashboardLayout({
@@ -37,18 +37,19 @@ export default function DashboardLayout({
     const currentRole = (user?.role as UserRole) || 'STUDENT'
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
 
+    const t = useTranslations('Dashboard.layout')
     const roleConfig = {
-        ADMIN: { name: 'Admin', icon: Shield, color: 'from-amber-500 to-orange-600' },
-        STUDENT: { name: 'Student', icon: User, color: 'from-cyan-500 to-blue-600' },
-        INSTRUCTOR: { name: 'Instructor', icon: BookOpen, color: 'from-purple-500 to-pink-600' }
+        ADMIN: { name: t('adminMode'), icon: Shield, color: 'from-amber-500 to-orange-600' },
+        STUDENT: { name: t('studentMode'), icon: User, color: 'from-cyan-500 to-blue-600' },
+        INSTRUCTOR: { name: t('instructorMode'), icon: BookOpen, color: 'from-purple-500 to-pink-600' }
     }
 
     if (isLoading) {
-        return <div className="flex min-h-screen bg-slate-900 justify-center items-center text-slate-100 italic">Preparing your learning journey...</div>
+        return <div className="flex min-h-screen bg-slate-900 justify-center items-center text-slate-100 italic">{t('preparing')}</div>
     }
 
     if (!user) {
-        return <div className="flex min-h-screen bg-slate-900 justify-center items-center text-slate-100">Please log in to continue.</div>
+        return <div className="flex min-h-screen bg-slate-900 justify-center items-center text-slate-100">{t('pleaseLogin')}</div>
     }
 
     return (
@@ -92,37 +93,38 @@ export default function DashboardLayout({
 }
 
 function Sidebar({ currentRole }: { currentRole: UserRole }) {
+    const t = useTranslations('Dashboard.sidebar')
     const pathname = usePathname()
     const getNavItems = (role: UserRole) => {
         const commonItems = [
-            { icon: 'BarChart3', label: 'Dashboard', href: '/dashboard' },
+            { icon: 'BarChart3', label: t('dashboard'), href: '/dashboard' },
         ]
 
         if (role === 'ADMIN') {
             return [
                 ...commonItems,
-                { icon: 'Users', label: 'Users', href: '/dashboard/users' },
-                { icon: 'BookOpen', label: 'Courses', href: '/dashboard/courses-management' },
-                { icon: 'DollarSign', label: 'Revenue', href: '/dashboard/revenue' },
-                { icon: 'Settings', label: 'Settings', href: '/dashboard/settings' },
+                { icon: 'Users', label: t('users'), href: '/dashboard/users' },
+                { icon: 'BookOpen', label: t('courses'), href: '/dashboard/courses-management' },
+                { icon: 'DollarSign', label: t('revenue'), href: '/dashboard/revenue' },
+                { icon: 'Settings', label: t('settings'), href: '/dashboard/settings' },
             ]
         } else if (role === 'INSTRUCTOR') {
             return [
                 ...commonItems,
-                { icon: 'PlusCircle', label: 'Create Course', href: '/dashboard/create-course' },
-                { icon: 'BookOpen', label: 'My Courses', href: '/dashboard/my-courses' },
-                { icon: 'Users', label: 'Students', href: '/dashboard/students-management' },
-                { icon: 'FileText', label: 'Assignments', href: '/dashboard/assignments' },
-                { icon: 'MessageSquare', label: 'Discussions', href: '/dashboard/discussions' },
+                { icon: 'PlusCircle', label: t('createCourse'), href: '/dashboard/create-course' },
+                { icon: 'BookOpen', label: t('myCourses'), href: '/dashboard/my-courses' },
+                { icon: 'Users', label: t('students'), href: '/dashboard/students-management' },
+                { icon: 'FileText', label: t('assignments'), href: '/dashboard/assignments' },
+                { icon: 'MessageSquare', label: t('discussions'), href: '/dashboard/discussions' },
             ]
         } else {
             return [
                 ...commonItems,
-                { icon: 'Backpack', label: 'My Enrollments', href: '/dashboard/my-enrollments' },
-                { icon: 'Calendar', label: 'Schedule', href: '/dashboard/schedule' },
-                { icon: 'DollarSign', label: 'Payment History', href: '/dashboard/payment-history' },
-                { icon: 'Trophy', label: 'Leaderboard', href: '/dashboard/leaderboard' },
-                { icon: 'Award', label: 'Certificates', href: '/dashboard/certificates' },
+                { icon: 'Backpack', label: t('myEnrollments'), href: '/dashboard/my-enrollments' },
+                { icon: 'Calendar', label: t('schedule'), href: '/dashboard/schedule' },
+                { icon: 'DollarSign', label: t('paymentHistory'), href: '/dashboard/payment-history' },
+                { icon: 'Trophy', label: t('leaderboard'), href: '/dashboard/leaderboard' },
+                { icon: 'Award', label: t('certificates'), href: '/dashboard/certificates' },
             ]
         }
     }
@@ -139,7 +141,7 @@ function Sidebar({ currentRole }: { currentRole: UserRole }) {
                         </div>
                         <div>
                             <h1 className="text-lg font-bold text-slate-100">EduLearn</h1>
-                            <p className="text-xs text-slate-500">Learning Platform</p>
+                            <p className="text-xs text-slate-500">{t('learningPlatform')}</p>
                         </div>
                     </div>
                 </Link>
@@ -168,7 +170,7 @@ function Sidebar({ currentRole }: { currentRole: UserRole }) {
             <div className="p-4 border-t border-slate-800">
                 <Link href="/dashboard/settings" className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors">
                     <Settings className="w-5 h-5" />
-                    <span className="font-medium text-sm">Settings</span>
+                    <span className="font-medium text-sm">{t('settings')}</span>
                 </Link>
             </div>
         </div>
@@ -176,37 +178,38 @@ function Sidebar({ currentRole }: { currentRole: UserRole }) {
 }
 
 function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClose: () => void }) {
+    const t = useTranslations('Dashboard.sidebar')
     const pathname = usePathname()
     const getNavItems = (role: UserRole) => {
         const commonItems = [
-            { icon: 'BarChart3', label: 'Dashboard', href: '/dashboard' },
+            { icon: 'BarChart3', label: t('dashboard'), href: '/dashboard' },
         ]
 
         if (role === 'ADMIN') {
             return [
                 ...commonItems,
-                { icon: 'Users', label: 'Users', href: '/dashboard/users' },
-                { icon: 'BookOpen', label: 'Courses', href: '/dashboard/courses-management' },
-                { icon: 'DollarSign', label: 'Revenue', href: '/dashboard/revenue' },
-                { icon: 'Settings', label: 'Settings', href: '/dashboard/settings' },
+                { icon: 'Users', label: t('users'), href: '/dashboard/users' },
+                { icon: 'BookOpen', label: t('courses'), href: '/dashboard/courses-management' },
+                { icon: 'DollarSign', label: t('revenue'), href: '/dashboard/revenue' },
+                { icon: 'Settings', label: t('settings'), href: '/dashboard/settings' },
             ]
         } else if (role === 'INSTRUCTOR') {
             return [
                 ...commonItems,
-                { icon: 'PlusCircle', label: 'Create Course', href: '/dashboard/create-course' },
-                { icon: 'BookOpen', label: 'My Courses', href: '/dashboard/my-courses' },
-                { icon: 'Users', label: 'Students', href: '/dashboard/students-management' },
-                { icon: 'FileText', label: 'Assignments', href: '/dashboard/assignments' },
-                { icon: 'MessageSquare', label: 'Discussions', href: '/dashboard/discussions' },
+                { icon: 'PlusCircle', label: t('createCourse'), href: '/dashboard/create-course' },
+                { icon: 'BookOpen', label: t('myCourses'), href: '/dashboard/my-courses' },
+                { icon: 'Users', label: t('students'), href: '/dashboard/students-management' },
+                { icon: 'FileText', label: t('assignments'), href: '/dashboard/assignments' },
+                { icon: 'MessageSquare', label: t('discussions'), href: '/dashboard/discussions' },
             ]
         } else {
             return [
                 ...commonItems,
-                { icon: 'Backpack', label: 'My Enrollments', href: '/dashboard/my-enrollments' },
-                { icon: 'Calendar', label: 'Schedule', href: '/dashboard/schedule' },
-                { icon: 'DollarSign', label: 'Payment History', href: '/dashboard/payment-history' },
-                { icon: 'Trophy', label: 'Leaderboard', href: '/dashboard/leaderboard' },
-                { icon: 'Award', label: 'Certificates', href: '/dashboard/certificates' },
+                { icon: 'Backpack', label: t('myEnrollments'), href: '/dashboard/my-enrollments' },
+                { icon: 'Calendar', label: t('schedule'), href: '/dashboard/schedule' },
+                { icon: 'DollarSign', label: t('paymentHistory'), href: '/dashboard/payment-history' },
+                { icon: 'Trophy', label: t('leaderboard'), href: '/dashboard/leaderboard' },
+                { icon: 'Award', label: t('certificates'), href: '/dashboard/certificates' },
             ]
         }
     }
@@ -224,7 +227,7 @@ function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClos
                         </div>
                         <div>
                             <h1 className="text-lg font-bold text-slate-100">EduLearn</h1>
-                            <p className="text-xs text-slate-500">Learning Platform</p>
+                            <p className="text-xs text-slate-500">{t('learningPlatform')}</p>
                         </div>
                     </div>
                 </Link>
@@ -266,7 +269,7 @@ function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClos
                     className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors"
                 >
                     <Settings className="w-5 h-5" />
-                    <span className="font-medium text-sm">Settings</span>
+                    <span className="font-medium text-sm">{t('settings')}</span>
                 </Link>
             </div>
         </div>
@@ -278,6 +281,7 @@ function Header({ currentRole, roleConfig, onMenuClick }: {
     roleConfig: { [key in UserRole]: { name: string, icon: any, color: string } }
     onMenuClick: () => void
 }) {
+    const t = useTranslations('Dashboard.layout')
     return (
         <div className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
             <div className="max-w-7xl mx-auto px-6 py-4">
@@ -293,7 +297,7 @@ function Header({ currentRole, roleConfig, onMenuClick }: {
                             <Search className="w-5 h-5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                             <input
                                 type="text"
-                                placeholder="Search..."
+                                placeholder={t('search')}
                                 className="bg-slate-800 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-sm text-slate-300 placeholder-slate-500 focus:outline-none focus:border-cyan-500 w-64"
                             />
                         </div>
@@ -302,7 +306,7 @@ function Header({ currentRole, roleConfig, onMenuClick }: {
                     <div className="flex items-center space-x-3">
                         <div className="hidden sm:flex items-center space-x-2 bg-slate-800 border border-slate-700 rounded-lg p-1 px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-slate-700 to-slate-800">
                             <Shield className="w-4 h-4 text-cyan-400" />
-                            <span>{roleConfig[currentRole].name} Mode</span>
+                            <span>{roleConfig[currentRole].name}</span>
                         </div>
 
                         <button className="relative p-2 hover:bg-slate-800 rounded-lg transition-colors">

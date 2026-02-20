@@ -5,8 +5,10 @@ import { Button } from '../../components/ui/Button'
 import { Input } from '../../components/ui/Input'
 import { Card, CardContent, CardFooter } from '../../components/ui/Card'
 import { BookOpen, ArrowLeft, CheckCircle } from 'lucide-react'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 export const ForgotPasswordPage = () => {
+    const t = useTranslations('Auth.forgotPassword')
     const [email, setEmail] = useState('')
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -26,11 +28,10 @@ export const ForgotPasswordPage = () => {
                         <BookOpen className="h-7 w-7" />
                     </div>
                     <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                        Reset Password
+                        {t('title')}
                     </h2>
                     <p className="mt-2 text-sm text-slate-600 text-center">
-                        Enter your email address and we'll send you a link to reset your
-                        password.
+                        {t('subtitle')}
                     </p>
                 </div>
 
@@ -42,10 +43,10 @@ export const ForgotPasswordPage = () => {
                                     <CheckCircle className="h-6 w-6 text-green-600" />
                                 </div>
                                 <h3 className="text-lg font-medium text-slate-900">
-                                    Check your email
+                                    {t('successTitle')}
                                 </h3>
                                 <p className="mt-2 text-sm text-slate-600">
-                                    We've sent a password reset link to{' '}
+                                    {t('successDesc')}{' '}
                                     <span className="font-medium text-slate-900">{email}</span>
                                 </p>
                                 <Button
@@ -53,13 +54,13 @@ export const ForgotPasswordPage = () => {
                                     className="mt-6 w-full"
                                     onClick={() => setIsSubmitted(false)}
                                 >
-                                    Try another email
+                                    {t('tryAnother')}
                                 </Button>
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <Input
-                                    label="Email address"
+                                    label={t('emailLabel')}
                                     type="email"
                                     placeholder="you@example.com"
                                     value={email}
@@ -68,7 +69,7 @@ export const ForgotPasswordPage = () => {
                                 />
 
                                 <Button type="submit" className="w-full  text-white bg-blue-600 hover:bg-blue-700" isLoading={isLoading}>
-                                    Send Reset Link
+                                    {t('sendLink')}
                                 </Button>
                             </form>
                         )}
@@ -79,7 +80,7 @@ export const ForgotPasswordPage = () => {
                             className="flex items-center text-sm font-medium text-slate-600 hover:text-slate-900"
                         >
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Back to login
+                            {t('backToLogin')}
                         </Link>
                     </CardFooter>
                 </Card>

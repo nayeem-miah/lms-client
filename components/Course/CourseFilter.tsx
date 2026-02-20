@@ -1,4 +1,5 @@
 import { Search, SlidersHorizontal, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Input } from '../ui/Input'
 import { Select } from '../ui/Select'
 import { Button } from '../ui/Button'
@@ -22,23 +23,24 @@ export const CourseFilter = ({
     setSortBy,
     onReset
 }: CourseFilterProps) => {
+    const t = useTranslations('CourseFilter')
 
     const categories = [
-        { value: '', label: 'All Categories' },
-        { value: 'Web Development', label: 'Web Development' },
-        { value: 'Mobile Development', label: 'Mobile Development' },
-        { value: 'Data Science', label: 'Data Science' },
-        { value: 'Machine Learning', label: 'Machine Learning' },
-        { value: 'UI/UX Design', label: 'UI/UX Design' },
-        { value: 'Digital Marketing', label: 'Digital Marketing' },
-        { value: 'Business', label: 'Business' },
+        { value: '', label: t('categories.all') },
+        { value: 'Web Development', label: t('categories.web') },
+        { value: 'Mobile Development', label: t('categories.mobile') },
+        { value: 'Data Science', label: t('categories.dataScience') },
+        { value: 'Machine Learning', label: t('categories.ml') },
+        { value: 'UI/UX Design', label: t('categories.uiux') },
+        { value: 'Digital Marketing', label: t('categories.marketing') },
+        { value: 'Business', label: t('categories.business') },
     ]
 
     const sortOptions = [
-        { value: '-createdAt', label: 'Newest First' },
-        { value: '-totalEnrollments', label: 'Most Popular' },
-        { value: 'price', label: 'Price: Low to High' },
-        { value: '-price', label: 'Price: High to Low' },
+        { value: '-createdAt', label: t('sortOptions.newest') },
+        { value: '-totalEnrollments', label: t('sortOptions.popular') },
+        { value: 'price', label: t('sortOptions.priceLow') },
+        { value: '-price', label: t('sortOptions.priceHigh') },
     ]
 
     return (
@@ -46,9 +48,9 @@ export const CourseFilter = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-5 items-end">
                 {/* Search */}
                 <div className="lg:col-span-5">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">Search Courses</label>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">{t('searchLabel')}</label>
                     <Input
-                        placeholder="What do you want to learn?"
+                        placeholder={t('searchPlaceholder')}
                         icon={<Search className="h-4 w-4 text-slate-400" />}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -58,7 +60,7 @@ export const CourseFilter = ({
 
                 {/* Category */}
                 <div className="lg:col-span-3">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">Category</label>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">{t('categoryLabel')}</label>
                     <Select
                         options={categories}
                         value={category}
@@ -69,7 +71,7 @@ export const CourseFilter = ({
 
                 {/* Sort */}
                 <div className="lg:col-span-3">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">Sort By</label>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">{t('sortLabel')}</label>
                     <Select
                         options={sortOptions}
                         value={sortBy}
@@ -84,10 +86,10 @@ export const CourseFilter = ({
                         variant="outline"
                         className="w-full h-12 border-slate-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 rounded-xl transition-all duration-300"
                         onClick={onReset}
-                        title="Reset Filters"
+                        title={t('resetFilters')}
                     >
                         <X className="h-5 w-5" />
-                        <span className="lg:hidden ml-2 font-medium">Reset Filters</span>
+                        <span className="lg:hidden ml-2 font-medium">{t('resetFilters')}</span>
                     </Button>
                 </div>
             </div>

@@ -5,7 +5,7 @@ import { DollarSign, Search, Calendar, Landmark, Receipt, ExternalLink, Eye, Fil
 import { useGetMyPaymentsQuery } from '@/lib/redux/features/payments/paymentsApi'
 import { Payment } from '@/types/api'
 import { Button } from '@/components/ui/Button'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { Star } from 'lucide-react'
 import { Modal } from '@/components/ui/Model'
 import { useState } from 'react'
@@ -150,7 +150,7 @@ export default function PaymentHistoryPage() {
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-2 text-slate-400">
-                                            <Link 
+                                            <Link
                                                 href={`/courses/${typeof payment.courseId === 'object' ? payment.courseId?._id : payment.courseId}`}
                                                 title="View Course"
                                             >
@@ -158,7 +158,7 @@ export default function PaymentHistoryPage() {
                                                     <Eye className="h-4 w-4" />
                                                 </button>
                                             </Link>
-                                            <button 
+                                            <button
                                                 onClick={() => handleViewReceipt(payment)}
                                                 className="p-2 hover:text-emerald-400 hover:bg-slate-700 rounded-lg transition-all"
                                                 title="View Receipt"

@@ -1,6 +1,6 @@
 "use client"
 
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, Link } from '@/i18n/routing'
 import { motion } from 'framer-motion'
 import {
     BookOpen,
@@ -20,7 +20,6 @@ import {
 } from 'lucide-react'
 import { useGetCourseByIdQuery, useDeleteCourseMutation } from '@/lib/redux/features/courses/coursesApi'
 import { toast } from 'react-hot-toast'
-import Link from 'next/link'
 
 export default function CourseDetailsPage() {
     const { id } = useParams()

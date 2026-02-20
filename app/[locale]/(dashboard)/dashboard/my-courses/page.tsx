@@ -7,10 +7,9 @@ import { useAppSelector } from '@/lib/redux/hooks'
 import { selectCurrentUser } from '@/lib/redux/features/auth/authSlice'
 import { Course, Enrollment } from '@/types/api'
 import { useState } from 'react'
-import Link from 'next/link'
+import { Link, useRouter } from '@/i18n/routing'
 import { toast } from 'react-hot-toast'
 import { Button } from '@/components/ui/Button'
-import { useRouter } from 'next/navigation'
 
 export default function MyCoursesPage() {
     const user = useAppSelector(selectCurrentUser)

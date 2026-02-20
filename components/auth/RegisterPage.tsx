@@ -4,16 +4,18 @@ import React, { useState } from 'react'
 import { useRegisterMutation } from '@/lib/redux/features/auth/authApi'
 import { UserRole } from '@/types/types'
 import { BookOpen, Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { Link, useRouter } from '@/i18n/routing'
 import { Button } from '../../components/ui/Button'
 import { Card, CardContent, CardFooter } from '../../components/ui/Card'
 import { Input } from '../../components/ui/Input'
 import { Select } from '../../components/ui/Select'
+import { useTranslations } from 'next-intl'
 import toast, { Toaster } from 'react-hot-toast'
 
 
 export const RegisterPage = () => {
+    const tAuth = useTranslations('Auth')
+    const t = (key: string) => tAuth(`register.${key}`)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -34,7 +36,7 @@ export const RegisterPage = () => {
         setIsSubmitting(true)
 
         // Show loading toast
-        const loadingToast = toast.loading('Creating your account...')
+        const loadingToast = toast.loading(t('creatingToast'))
 
         try {
             console.log('Registration payload:', { name, email, password, role })
@@ -50,7 +52,7 @@ export const RegisterPage = () => {
 
             if (isSuccess) {
                 // Show success toast
-                toast.success('Account created successfully! Please log in.', {
+                toast.success(t('successToast'), {
                     duration: 4000,
                     icon: '🎉',
                 })
@@ -108,7 +110,7 @@ export const RegisterPage = () => {
         const token = urlParams.get('token');
         if (token) {
             localStorage.setItem('accessToken', token);
-            toast.success('Signed in with Google!');
+            toast.success(tAuth('login.googleSuccessToast'));
             router.push('/dashboard');
         }
     }, [router]);
@@ -152,10 +154,10 @@ export const RegisterPage = () => {
                         <BookOpen className="h-9 w-9" />
                     </div>
                     <h2 className="text-4xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
-                        Create an Account
+                        {t('title')}
                     </h2>
                     <p className="mt-3 text-sm text-slate-400">
-                        Join thousands of learners and instructors today
+                        {t('subtitle')}
                     </p>
                 </div>
 
@@ -176,10 +178,10 @@ export const RegisterPage = () => {
 
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 <div className="space-y-2 group">
-                                    <label className="text-sm font-medium text-slate-300">Full Name</label>
+                                    <label className="text-sm font-medium text-slate-300">{t('nameLabel')}</label>
                                     <input
                                         type="text"
-                                        placeholder="John Doe"
+                                        placeholder={t('namePlaceholder')}
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         required
@@ -188,10 +190,10 @@ export const RegisterPage = () => {
                                 </div>
 
                                 <div className="space-y-2 group">
-                                    <label className="text-sm font-medium text-slate-300">Email address</label>
+                                    <label className="text-sm font-medium text-slate-300">{t('emailLabel')}</label>
                                     <input
                                         type="email"
-                                        placeholder="you@example.com"
+                                        placeholder={t('emailPlaceholder')}
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
@@ -200,11 +202,11 @@ export const RegisterPage = () => {
                                 </div>
 
                                 <div className="space-y-2 group">
-                                    <label className="text-sm font-medium text-slate-300">Password</label>
+                                    <label className="text-sm font-medium text-slate-300">{t('passwordLabel')}</label>
                                     <div className="relative">
                                         <input
                                             type={showPassword ? "text" : "password"}
-                                            placeholder="Create a strong password"
+                                            placeholder={t('passwordPlaceholder')}
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             required
@@ -230,30 +232,30 @@ export const RegisterPage = () => {
                                                 <div className="flex-1 h-1.5 bg-slate-700 rounded-full overflow-hidden">
                                                     <div
                                                         className={`h-full transition-all duration-500 ${password.length >= 12 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)
-                                                                ? 'w-full bg-gradient-to-r from-green-500 to-emerald-500'
-                                                                : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
-                                                                    ? 'w-3/4 bg-gradient-to-r from-yellow-500 to-orange-500'
-                                                                    : password.length >= 6
-                                                                        ? 'w-1/2 bg-gradient-to-r from-orange-500 to-red-500'
-                                                                        : 'w-1/4 bg-gradient-to-r from-red-500 to-red-600'
+                                                            ? 'w-full bg-gradient-to-r from-green-500 to-emerald-500'
+                                                            : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
+                                                                ? 'w-3/4 bg-gradient-to-r from-yellow-500 to-orange-500'
+                                                                : password.length >= 6
+                                                                    ? 'w-1/2 bg-gradient-to-r from-orange-500 to-red-500'
+                                                                    : 'w-1/4 bg-gradient-to-r from-red-500 to-red-600'
                                                             }`}
                                                     />
                                                 </div>
                                                 <span className={`text-xs font-medium ${password.length >= 12 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)
-                                                        ? 'text-green-400'
-                                                        : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
-                                                            ? 'text-yellow-400'
-                                                            : password.length >= 6
-                                                                ? 'text-orange-400'
-                                                                : 'text-red-400'
+                                                    ? 'text-green-400'
+                                                    : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
+                                                        ? 'text-yellow-400'
+                                                        : password.length >= 6
+                                                            ? 'text-orange-400'
+                                                            : 'text-red-400'
                                                     }`}>
                                                     {password.length >= 12 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)
-                                                        ? 'Strong'
+                                                        ? t('passwordStrength.strong')
                                                         : password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)
-                                                            ? 'Good'
+                                                            ? t('passwordStrength.good')
                                                             : password.length >= 6
-                                                                ? 'Fair'
-                                                                : 'Weak'
+                                                                ? t('passwordStrength.fair')
+                                                                : t('passwordStrength.weak')
                                                     }
                                                 </span>
                                             </div>
@@ -261,19 +263,19 @@ export const RegisterPage = () => {
                                             <div className="grid grid-cols-2 gap-2 text-xs">
                                                 <div className={`flex items-center gap-1.5 ${password.length >= 8 ? 'text-green-400' : 'text-slate-500'}`}>
                                                     {password.length >= 8 ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
-                                                    <span>8+ characters</span>
+                                                    <span>{t('passwordStrength.chars')}</span>
                                                 </div>
                                                 <div className={`flex items-center gap-1.5 ${/[A-Z]/.test(password) ? 'text-green-400' : 'text-slate-500'}`}>
                                                     {/[A-Z]/.test(password) ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
-                                                    <span>Uppercase</span>
+                                                    <span>{t('passwordStrength.upper')}</span>
                                                 </div>
                                                 <div className={`flex items-center gap-1.5 ${/[a-z]/.test(password) ? 'text-green-400' : 'text-slate-500'}`}>
                                                     {/[a-z]/.test(password) ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
-                                                    <span>Lowercase</span>
+                                                    <span>{t('passwordStrength.lower')}</span>
                                                 </div>
                                                 <div className={`flex items-center gap-1.5 ${/[0-9]/.test(password) ? 'text-green-400' : 'text-slate-500'}`}>
                                                     {/[0-9]/.test(password) ? <CheckCircle2 className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
-                                                    <span>Number</span>
+                                                    <span>{t('passwordStrength.number')}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -281,14 +283,14 @@ export const RegisterPage = () => {
                                 </div>
 
                                 <div className="space-y-2 group">
-                                    <label className="text-sm font-medium text-slate-300">I want to</label>
+                                    <label className="text-sm font-medium text-slate-300">{t('roleLabel')}</label>
                                     <select
                                         value={role}
                                         onChange={(e) => setRole(e.target.value as UserRole)}
                                         className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-slate-600"
                                     >
-                                        <option value="STUDENT">Learn new skills (Student)</option>
-                                        <option value="INSTRUCTOR">Teach courses (Instructor)</option>
+                                        <option value="STUDENT">{t('roleStudent')}</option>
+                                        <option value="INSTRUCTOR">{t('roleInstructor')}</option>
                                     </select>
                                 </div>
 
@@ -300,19 +302,19 @@ export const RegisterPage = () => {
                                         required
                                     />
                                     <label htmlFor="terms" className="text-sm text-slate-400 leading-relaxed">
-                                        I agree to the{' '}
+                                        {t('agreeTo')}{' '}
                                         <Link
                                             href="/terms"
                                             className="text-purple-400 hover:text-purple-300 transition-colors duration-200"
                                         >
-                                            Terms of Service
+                                            {t('terms')}
                                         </Link>{' '}
-                                        and{' '}
+                                        {t('and')}{' '}
                                         <Link
                                             href="/privacy"
                                             className="text-purple-400 hover:text-purple-300 transition-colors duration-200"
                                         >
-                                            Privacy Policy
+                                            {t('privacy')}
                                         </Link>
                                     </label>
                                 </div>
@@ -330,10 +332,10 @@ export const RegisterPage = () => {
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                     </svg>
-                                                    Creating account...
+                                                    {t('creatingAccount')}
                                                 </>
                                             ) : (
-                                                'Create Account'
+                                                t('createAccountButton')
                                             )}
                                         </span>
                                     </div>
@@ -347,7 +349,7 @@ export const RegisterPage = () => {
                                     </div>
                                     <div className="relative flex justify-center text-sm">
                                         <span className="bg-slate-900 px-4 text-slate-400">
-                                            Or continue with
+                                            {t('orContinueWith')}
                                         </span>
                                     </div>
                                 </div>
@@ -358,24 +360,13 @@ export const RegisterPage = () => {
                                         className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white hover:bg-slate-800 hover:border-slate-600 transition-all duration-300 group"
                                     >
                                         <svg className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
-                                            <path
-                                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                                                fill="#4285F4"
-                                            />
-                                            <path
-                                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                                                fill="#34A853"
-                                            />
-                                            <path
-                                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                                                fill="#FBBC05"
-                                            />
-                                            <path
-                                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                                                fill="#EA4335"
-                                            />
+                                            {/* Google SVG path stays same */}
+                                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                                         </svg>
-                                        <span>Continue with Google</span>
+                                        <span>{t('continueWithGoogle')}</span>
                                     </button>
                                 </div>
                             </div>
@@ -383,12 +374,12 @@ export const RegisterPage = () => {
 
                         <div className="border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm py-4 px-8">
                             <p className="text-sm text-slate-400 text-center">
-                                Already have an account?{' '}
+                                {t('alreadyHaveAccount')}{' '}
                                 <Link
                                     href="/login"
                                     className="font-medium text-purple-400 hover:text-purple-300 transition-colors duration-200"
                                 >
-                                    Sign in
+                                    {t('signInLink')}
                                 </Link>
                             </p>
                         </div>

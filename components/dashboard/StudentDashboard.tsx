@@ -6,6 +6,8 @@ import { selectCurrentUser } from '@/lib/redux/features/auth/authSlice'
 import { motion } from 'framer-motion'
 import { BookOpen, Clock, Trophy, TrendingUp, CheckCircle2, Award, PlayCircle, Users, Video, Star, Flame, ChevronRight } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { Link } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 import type { StatsCardProps, CourseCardProps } from '@/types/dashboard'
 const progressData = [
     { day: 'Sun', hours: 2.5 },
@@ -18,6 +20,7 @@ const progressData = [
 ]
 
 export default function StudentDashboard() {
+    const t = useTranslations('Dashboard.student')
     const user = useAppSelector(selectCurrentUser)
     const { data: enrollmentsData, isLoading } = useGetMyEnrollmentsQuery(undefined)
     const enrollments: Enrollment[] = enrollmentsData || []
@@ -31,40 +34,40 @@ export default function StudentDashboard() {
         <div className="space-y-6">
             {/* Welcome */}
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                <h1 className="text-3xl font-bold text-slate-100 mb-2">Welcome back, {user?.name || 'Student'}! 👋</h1>
-                <p className="text-slate-400">Ready to learn something new today? Let's make progress towards your goals.</p>
+                <h1 className="text-3xl font-bold text-slate-100 mb-2">{t('welcome')}, {user?.name || 'Student'}! 👋</h1>
+                <p className="text-slate-400">{t('subtitle')}</p>
             </motion.div>
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <StatsCard
                     icon={BookOpen}
-                    label="Active Courses"
+                    label={t('stats.activeCourses')}
                     value={isLoading ? "..." : activeCourses.toString()}
                     trend="+2 this month"
                     color="bg-cyan-500"
                     delay={0.1}
                 />
-                <StatsCard icon={Clock} label="Learning Time" value="24h" trend="+5.2h" color="bg-blue-500" delay={0.2} />
-                <StatsCard icon={CheckCircle2} label="Completed Lessons" value="45" trend="+12 this week" color="bg-emerald-500" delay={0.3} />
-                <StatsCard icon={Trophy} label="Earned Badges" value="15" trend="+3 new" color="bg-yellow-500" delay={0.4} />
+                <StatsCard icon={Clock} label={t('stats.learningTime')} value="24h" trend="+5.2h" color="bg-blue-500" delay={0.2} />
+                <StatsCard icon={CheckCircle2} label={t('stats.completedLessons')} value="45" trend="+12 this week" color="bg-emerald-500" delay={0.3} />
+                <StatsCard icon={Trophy} label={t('stats.earnedBadges')} value="15" trend="+3 new" color="bg-yellow-500" delay={0.4} />
             </div>
 
             {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-bold text-slate-100">Ongoing Courses</h2>
+                        <h2 className="text-xl font-bold text-slate-100">{t('ongoingCourses')}</h2>
                         <button className="text-cyan-400 hover:text-cyan-300 text-sm font-medium flex items-center">
-                            View All <ChevronRight className="w-4 h-4 ml-1" />
+                            {t('viewAll')} <ChevronRight className="w-4 h-4 ml-1" />
                         </button>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         {isLoading ? (
-                            <p className="text-slate-400 col-span-2">Loading courses...</p>
+                            <p className="text-slate-400 col-span-2">{t('loading')}</p>
                         ) : enrollments.length === 0 ? (
-                            <p className="text-slate-400 col-span-2">No ongoing courses found.</p>
+                            <p className="text-slate-400 col-span-2">{t('noOngoing')}</p>
                         ) : (
                             enrollments.slice(0, 4).map((enrollment, index) => {
                                 const course = enrollment.courseId as Course;
@@ -87,7 +90,7 @@ export default function StudentDashboard() {
                     {/* Progress Chart */}
                     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
                         className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-                        <h3 className="text-lg font-semibold text-slate-100 mb-6">Weekly Progress</h3>
+                        <h3 className="text-lg font-semibold text-slate-100 mb-6">{t('weeklyProgress')}</h3>
                         <div className="h-64">
                             <ResponsiveContainer width="100%" height="100%">
                                 <AreaChart data={progressData}>
@@ -146,12 +149,12 @@ function CourseCard({ title, progress, instructor, thumbnail, lessons, duration,
             <div className={`h-40 ${thumbnail} relative`}>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
                 <div className="absolute top-3 right-3 bg-slate-900/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
-                    <span className="text-xs text-cyan-400 font-semibold">{progress}% Completed</span>
+                    <span className="text-xs text-cyan-400 font-semibold">{progress}% {useTranslations('Dashboard.student.course')('completed')}</span>
                 </div>
                 <div className="absolute bottom-3 left-3 flex items-center space-x-2">
                     <div className="bg-slate-900/90 backdrop-blur-sm px-2 py-1 rounded-md flex items-center">
                         <Video className="w-3 h-3 text-slate-400 mr-1" />
-                        <span className="text-xs text-slate-300">{lessons} lessons</span>
+                        <span className="text-xs text-slate-300">{lessons} {useTranslations('Dashboard.student.course')('lessons')}</span>
                     </div>
                     <div className="bg-slate-900/90 backdrop-blur-sm px-2 py-1 rounded-md flex items-center">
                         <Clock className="w-3 h-3 text-slate-400 mr-1" />
@@ -172,7 +175,7 @@ function CourseCard({ title, progress, instructor, thumbnail, lessons, duration,
                     </div>
                     <button className="w-full bg-slate-900 hover:bg-cyan-500/10 text-slate-300 hover:text-cyan-400 py-2 rounded-lg text-sm font-medium transition-all border border-slate-700 hover:border-cyan-500/50 flex items-center justify-center">
                         <PlayCircle className="w-4 h-4 mr-2" />
-                        Continue Learning
+                        {useTranslations('Dashboard.student.course')('continue')}
                     </button>
                 </div>
             </div>
@@ -192,7 +195,7 @@ function LeaderboardWidget() {
             className="bg-slate-800 border border-slate-700 rounded-xl p-5">
             <h3 className="text-lg font-semibold text-slate-100 flex items-center mb-4">
                 <Trophy className="w-5 h-5 text-yellow-500 mr-2" />
-                Leaderboard
+                {useTranslations('Dashboard.student')('leaderboard')}
             </h3>
             <div className="space-y-2">
                 {leaders.map((leader) => (
@@ -223,13 +226,13 @@ function StreakWidget() {
                     <Flame className="w-6 h-6 text-orange-400" />
                 </div>
                 <div>
-                    <h3 className="text-lg font-semibold text-slate-100">Daily Streak</h3>
-                    <p className="text-xs text-slate-400">Keep up the good work!</p>
+                    <h3 className="text-lg font-semibold text-slate-100">{useTranslations('Dashboard.student.streak')('title')}</h3>
+                    <p className="text-xs text-slate-400">{useTranslations('Dashboard.student.streak')('subtitle')}</p>
                 </div>
             </div>
             <div className="text-center py-4">
                 <div className="text-5xl font-bold text-orange-400 mb-2">7</div>
-                <p className="text-sm text-slate-300">days in a row</p>
+                <p className="text-sm text-slate-300">{useTranslations('Dashboard.student.streak')('daysInARow')}</p>
             </div>
             <div className="flex justify-center space-x-2 mb-3">
                 {[1, 2, 3, 4, 5, 6, 7].map((day) => (
@@ -238,7 +241,7 @@ function StreakWidget() {
                     </div>
                 ))}
             </div>
-            <p className="text-xs text-center text-slate-400">Great job! Keep pushing towards your goals 🎯</p>
+            <p className="text-xs text-center text-slate-400">{useTranslations('Dashboard.student.streak')('congrats')}</p>
         </motion.div>
     )
 }

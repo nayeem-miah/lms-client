@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { useRouter, useParams } from 'next/navigation'
+import { useRouter, useParams } from '@/i18n/routing'
 import {
     BookOpen,
     Upload,

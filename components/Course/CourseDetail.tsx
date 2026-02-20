@@ -1,8 +1,9 @@
 "use client"
 import React from 'react'
 import { useParams } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 import { useGetCourseByIdQuery } from '@/lib/redux/features/courses/coursesApi'
-import { useCheckEnrollmentQuery, useCreateEnrollmentMutation, useGetMyEnrollmentsQuery } from '@/lib/redux/features/enrollments/enrollmentsApi'
+import { useCreateEnrollmentMutation, useGetMyEnrollmentsQuery } from '@/lib/redux/features/enrollments/enrollmentsApi'
 import { useCreateStripeSessionMutation } from '@/lib/redux/features/payments/paymentsApi'
 import { selectIsAuthenticated } from '@/lib/redux/features/auth/authSlice'
 import { useAppSelector } from '@/lib/redux/hooks'
@@ -13,7 +14,6 @@ import { Avatar } from '@/components/ui/Avater'
 import { BookOpen, Clock, Users, PlayCircle, Star, Shield, CheckCircle, Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Course, User } from '@/types/api'
-import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
 import { ReviewSection } from './ReviewSection'
 

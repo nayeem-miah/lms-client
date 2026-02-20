@@ -15,7 +15,8 @@ import {
     Award,
     BookOpen,
 } from 'lucide-react'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 
 // Mock Data
 const featuredCourses: Course[] = [
@@ -119,7 +120,9 @@ const plans: SubscriptionPlan[] = [
         ],
     },
 ]
+
 export const LandingPage = () => {
+    const t = useTranslations('LandingPage')
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Section */}
@@ -143,21 +146,18 @@ export const LandingPage = () => {
                             }}
                         >
                             <Badge variant="accent" className="mb-6">
-                                New: AI-Powered Learning Paths
+                                {t('newBadge')}
                             </Badge>
                             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6">
-                                Master New Skills with{' '}
-                                <span className="text-primary-400">Expert-Led</span> Courses
+                                {t('heroTitle')}
                             </h1>
                             <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-                                Unlock your potential with our comprehensive library of courses.
-                                Learn from industry experts and get certified in development,
-                                design, business, and more.
+                                {t('heroSubtitle')}
                             </p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                 <Link href="/courses">
                                     <Button size="lg" className="w-full sm:w-auto text-base px-8">
-                                        Explore Courses
+                                        {t('exploreCourses')}
                                     </Button>
                                 </Link>
                                 <Link href="/register">
@@ -166,33 +166,34 @@ export const LandingPage = () => {
                                         size="lg"
                                         className="w-full sm:w-auto text-base px-8 border-slate-600 text-white hover:bg-slate-800 hover:text-white hover:border-slate-500"
                                     >
-                                        Start Free Trial
+                                        {t('startFreeTrial')}
                                     </Button>
                                 </Link>
                             </div>
                         </motion.div>
                     </div>
 
+
                     {/* Stats */}
                     <div className="mt-16 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-slate-800 pt-8">
                         {[
                             {
-                                label: 'Active Students',
+                                label: t('stats.activeStudents'),
                                 value: '50k+',
                                 icon: Users,
                             },
                             {
-                                label: 'Total Courses',
+                                label: t('stats.totalCourses'),
                                 value: '1,200+',
                                 icon: BookOpen,
                             },
                             {
-                                label: 'Expert Instructors',
+                                label: t('stats.expertInstructors'),
                                 value: '300+',
                                 icon: Award,
                             },
                             {
-                                label: 'Course Rating',
+                                label: t('stats.courseRating'),
                                 value: '4.8/5',
                                 icon: Star,
                             },
@@ -231,10 +232,10 @@ export const LandingPage = () => {
                     <div className="flex justify-between items-end mb-10">
                         <div>
                             <h2 className="text-3xl font-bold text-slate-900 mb-2">
-                                Featured Courses
+                                {t('featuredCourses.title')}
                             </h2>
                             <p className="text-slate-600">
-                                Hand-picked courses to get you started
+                                {t('featuredCourses.subtitle')}
                             </p>
                         </div>
                         <Link href="/courses">
@@ -243,7 +244,7 @@ export const LandingPage = () => {
                                 className="hidden sm:inline-flex"
                                 rightIcon={<ArrowRight className="h-4 w-4" />}
                             >
-                                View All
+                                {t('featuredCourses.viewAll')}
                             </Button>
                         </Link>
                     </div>
@@ -275,7 +276,7 @@ export const LandingPage = () => {
                     <div className="mt-8 text-center sm:hidden">
                         <Link href="/courses">
                             <Button variant="outline" className="w-full">
-                                View All Courses
+                                {t('featuredCourses.viewAllCourses')}
                             </Button>
                         </Link>
                     </div>
@@ -287,31 +288,28 @@ export const LandingPage = () => {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                            How It Works
+                            {t('howItWorks.title')}
                         </h2>
                         <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Start your learning journey in three simple steps
+                            {t('howItWorks.subtitle')}
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                         {[
                             {
-                                title: '1. Choose a Plan',
-                                description:
-                                    'Select a subscription plan that fits your needs or buy individual courses.',
+                                title: t('howItWorks.step1.title'),
+                                description: t('howItWorks.step1.description'),
                                 icon: CheckCircle,
                             },
                             {
-                                title: '2. Start Learning',
-                                description:
-                                    'Access high-quality video lessons, quizzes, and projects anytime, anywhere.',
+                                title: t('howItWorks.step2.title'),
+                                description: t('howItWorks.step2.description'),
                                 icon: PlayCircle,
                             },
                             {
-                                title: '3. Get Certified',
-                                description:
-                                    'Complete courses and earn certificates to showcase your new skills.',
+                                title: t('howItWorks.step3.title'),
+                                description: t('howItWorks.step3.description'),
                                 icon: Award,
                             },
                         ].map((step, index) => (
@@ -339,10 +337,10 @@ export const LandingPage = () => {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                            Simple, Transparent Pricing
+                            {t('pricing.title')}
                         </h2>
                         <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                            Choose the plan that's right for you. Cancel anytime.
+                            {t('pricing.subtitle')}
                         </p>
                     </div>
 
@@ -382,19 +380,17 @@ export const LandingPage = () => {
 
                         <div className="relative z-10 text-center max-w-2xl mx-auto">
                             <h2 className="text-3xl font-bold text-black mb-6">
-                                Become an Instructor
+                                {t('instructor.title')}
                             </h2>
                             <p className="text-lg text-black mb-8">
-                                Share your knowledge with millions of students worldwide. Join
-                                our community of expert instructors and earn money doing what
-                                you love.
+                                {t('instructor.subtitle')}
                             </p>
                             <Button
                                 size="lg"
                                 variant="secondary"
                                 className="bg-white text-primary-600 hover:bg-slate-100"
                             >
-                                Start Teaching Today
+                                {t('instructor.button')}
                             </Button>
                         </div>
                     </div>

@@ -5,7 +5,8 @@ import { motion } from 'framer-motion'
 import { BookOpen, Users, Video, TrendingUp, Clock, MessageSquare, Star, DollarSign, BarChart3, Calendar, FileText, CheckCircle2, Plus } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import type { StatsCardProps } from '@/types/dashboard'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 
 const enrollmentData = [
     { month: 'Jan', students: 45 },
@@ -24,6 +25,7 @@ const coursePerformance = [
 ]
 
 export default function InstructorDashboard() {
+    const t = useTranslations('Dashboard.instructor')
     const { data: coursesData, isLoading } = useGetMyCoursesQuery(undefined)
     const courses: Course[] = coursesData || []
 
@@ -38,8 +40,8 @@ export default function InstructorDashboard() {
             {/* Welcome */}
             <div className="flex items-center justify-between">
                 <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                    <h1 className="text-3xl font-bold text-slate-100 mb-2">Instructor Dashboard 📚</h1>
-                    <p className="text-slate-400">Manage your courses and students effectively</p>
+                    <h1 className="text-3xl font-bold text-slate-100 mb-2">{t('title')}</h1>
+                    <p className="text-slate-400">{t('subtitle')}</p>
                 </motion.div>
                 <Link href="/dashboard/create-course">
                     <motion.button
@@ -50,7 +52,7 @@ export default function InstructorDashboard() {
                         className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-lg font-medium shadow-lg shadow-purple-500/30 transition-all"
                     >
                         <Plus className="w-5 h-5" />
-                        <span>Create Course</span>
+                        <span>{t('createCourse')}</span>
                     </motion.button>
                 </Link>
             </div>
@@ -59,7 +61,7 @@ export default function InstructorDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <StatsCard
                     icon={BookOpen}
-                    label="Total Courses"
+                    label={t('stats.totalCourses')}
                     value={isLoading ? "..." : courses.length.toString()}
                     trend="+2 new"
                     color="bg-purple-500"
@@ -67,7 +69,7 @@ export default function InstructorDashboard() {
                 />
                 <StatsCard
                     icon={Users}
-                    label="Total Students"
+                    label={t('stats.totalStudents')}
                     value={isLoading ? "..." : totalStudents.toString()}
                     trend="+25 this month"
                     color="bg-cyan-500"
@@ -75,13 +77,13 @@ export default function InstructorDashboard() {
                 />
                 <StatsCard
                     icon={Star}
-                    label="Average Rating"
+                    label={t('stats.avgRating')}
                     value={isLoading ? "..." : averageRating}
                     trend="+0.2"
                     color="bg-yellow-500"
                     delay={0.3}
                 />
-                <StatsCard icon={DollarSign} label="Monthly Revenue" value="৳15,000" trend="+12%" color="bg-emerald-500" delay={0.4} />
+                <StatsCard icon={DollarSign} label={t('stats.monthlyRevenue')} value="৳15,000" trend="+12%" color="bg-emerald-500" delay={0.4} />
             </div>
 
             {/* Charts - Keeping mock data for charts as they need aggregate history not available in simplified API */}
@@ -89,7 +91,7 @@ export default function InstructorDashboard() {
                 {/* Enrollment Trend */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
                     className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-slate-100 mb-6">Student Enrollment Trend</h3>
+                    <h3 className="text-lg font-semibold text-slate-100 mb-6">{t('charts.enrollmentTrend')}</h3>
                     <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={enrollmentData}>
@@ -106,7 +108,7 @@ export default function InstructorDashboard() {
                 {/* Course Performance */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}
                     className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-slate-100 mb-6">Course Performance</h3>
+                    <h3 className="text-lg font-semibold text-slate-100 mb-6">{t('charts.performance')}</h3>
                     <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={coursePerformance}>
@@ -156,15 +158,16 @@ function StatsCard({ icon: Icon, label, value, trend, color, delay }: StatsCardP
 }
 
 function MyCourses({ courses, isLoading }: { courses: Course[], isLoading: boolean }) {
+    const t = useTranslations('Dashboard.instructor')
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
             className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-slate-100 mb-4">My Courses</h3>
+            <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('myCourses')}</h3>
             <div className="space-y-4">
                 {isLoading ? (
-                    <p className="text-slate-400">Loading...</p>
+                    <p className="text-slate-400">{t('loading')}</p>
                 ) : courses.length === 0 ? (
-                    <p className="text-slate-400">No courses found.</p>
+                    <p className="text-slate-400">{t('noCourses')}</p>
                 ) : (
                     courses.map((course, i) => (
                         <div key={course._id} className="bg-slate-900 border border-slate-700 rounded-lg p-4 hover:border-cyan-500/50 transition-all cursor-pointer">
@@ -174,7 +177,7 @@ function MyCourses({ courses, isLoading }: { courses: Course[], isLoading: boole
                                     <div className="flex items-center space-x-4 text-sm text-slate-400">
                                         <span className="flex items-center">
                                             <Users className="w-4 h-4 mr-1" />
-                                            {course.totalEnrollments || 0} Students
+                                            {course.totalEnrollments || 0} {t('students')}
                                         </span>
                                         <span className="flex items-center">
                                             <Star className="w-4 h-4 mr-1 text-yellow-500" />
@@ -184,7 +187,7 @@ function MyCourses({ courses, isLoading }: { courses: Course[], isLoading: boole
                                 </div>
                                 <div className="text-right">
                                     <p className="text-emerald-400 font-semibold font-mono">৳{course.price}</p>
-                                    <p className="text-xs text-slate-500">Price</p>
+                                    <p className="text-xs text-slate-500">{t('price')}</p>
                                 </div>
                             </div>
                             {/* Static progress bar as placeholder */}
@@ -198,17 +201,19 @@ function MyCourses({ courses, isLoading }: { courses: Course[], isLoading: boole
 }
 
 function RecentActivity() {
+    const t = useTranslations('Dashboard.instructor')
+    const tAct = useTranslations('Dashboard.instructor.activities')
     const activities = [
-        { icon: MessageSquare, text: 'New question posted', time: '10 mins ago', color: 'bg-cyan-500' },
-        { icon: CheckCircle2, text: 'Assignment submitted', time: '30 mins ago', color: 'bg-emerald-500' },
-        { icon: Star, text: 'New review received', time: '1 hour ago', color: 'bg-yellow-500' },
-        { icon: Users, text: 'New student enrolled', time: '2 hours ago', color: 'bg-purple-500' },
+        { icon: MessageSquare, text: tAct('newQuestion'), time: `10 ${tAct('minsAgo')}`, color: 'bg-cyan-500' },
+        { icon: CheckCircle2, text: tAct('assignmentSubmitted'), time: `30 ${tAct('minsAgo')}`, color: 'bg-emerald-500' },
+        { icon: Star, text: tAct('newReview'), time: `1 ${tAct('hourAgo')}`, color: 'bg-yellow-500' },
+        { icon: Users, text: tAct('newStudent'), time: `2 ${tAct('hoursAgo')}`, color: 'bg-purple-500' },
     ]
 
     return (
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}
             className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-slate-100 mb-4">Recent Activity</h3>
+            <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('recentActivity')}</h3>
             <div className="space-y-4">
                 {activities.map((activity, i) => (
                     <div key={i} className="flex items-start space-x-3">

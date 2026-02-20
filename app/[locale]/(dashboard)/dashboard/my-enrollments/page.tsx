@@ -5,9 +5,8 @@ import { BookOpen, Clock, Star, PlayCircle, TrendingUp, Award, Calendar } from '
 import { useGetMyEnrollmentsQuery } from '@/lib/redux/features/enrollments/enrollmentsApi'
 import { Course, Enrollment } from '@/types/api'
 import { useState } from 'react'
-import Link from 'next/link'
+import { Link, useRouter } from '@/i18n/routing'
 import { Button } from '@/components/ui/Button'
-import { useRouter } from 'next/navigation'
 
 export default function MyEnrollmentsPage() {
     const router = useRouter()
@@ -68,7 +67,7 @@ export default function MyEnrollmentsPage() {
                             <TrendingUp className="h-8 w-8 text-purple-400" />
                             <div className="h-12 w-12 bg-purple-500/20 rounded-full flex items-center justify-center">
                                 <span className="text-2xl font-bold text-purple-400">
-                                    {Math.round(enrollments.reduce((acc, e) => acc + (e.progress || 0), 0) / enrollments.length)}%
+                                    {Math.round(enrollments.reduce((acc: number, e: Enrollment) => acc + (e.progress || 0), 0) / enrollments.length)}%
                                 </span>
                             </div>
                         </div>
@@ -81,7 +80,7 @@ export default function MyEnrollmentsPage() {
                             <Award className="h-8 w-8 text-emerald-400" />
                             <div className="h-12 w-12 bg-emerald-500/20 rounded-full flex items-center justify-center">
                                 <span className="text-2xl font-bold text-emerald-400">
-                                    {enrollments.filter(e => (e.progress || 0) === 100).length}
+                                    {enrollments.filter((e: Enrollment) => (e.progress || 0) === 100).length}
                                 </span>
                             </div>
                         </div>

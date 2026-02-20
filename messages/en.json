@@ -1,0 +1,295 @@
+{
+  "Navbar": {
+    "logoText": "EduPlatform",
+    "home": "Home",
+    "browseCourses": "Browse Courses",
+    "about": "About",
+    "searchPlaceholder": "Search courses...",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "signOut": "Sign out",
+    "logIn": "Log in",
+    "getStarted": "Get Started"
+  },
+  "LandingPage": {
+    "heroTitle": "Expand Your Knowledge with eduPlatform",
+    "heroSubtitle": "Master new skills with our comprehensive courses. Real-world projects, expert-led instruction, and a community of millions.",
+    "exploreCourses": "Explore Courses",
+    "newBadge": "New: AI-Powered Learning Paths",
+    "startFreeTrial": "Start Free Trial",
+    "stats": {
+      "activeStudents": "Active Students",
+      "totalCourses": "Total Courses",
+      "expertInstructors": "Expert Instructors",
+      "courseRating": "Course Rating"
+    },
+    "featuredCourses": {
+      "title": "Featured Courses",
+      "subtitle": "Hand-picked courses to get you started",
+      "viewAll": "View All",
+      "viewAllCourses": "View All Courses"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Start your learning journey in three simple steps",
+      "step1": {
+        "title": "1. Choose a Plan",
+        "description": "Select a subscription plan that fits your needs or buy individual courses."
+      },
+      "step2": {
+        "title": "2. Start Learning",
+        "description": "Access high-quality video lessons, quizzes, and projects anytime, anywhere."
+      },
+      "step3": {
+        "title": "3. Get Certified",
+        "description": "Complete courses and earn certificates to showcase your new skills."
+      }
+    },
+    "pricing": {
+      "title": "Simple, Transparent Pricing",
+      "subtitle": "Choose the plan that's right for you. Cancel anytime."
+    },
+    "instructor": {
+      "title": "Become an Instructor",
+      "subtitle": "Share your knowledge with millions of students worldwide. Join our community of expert instructors and earn money doing what you love.",
+      "button": "Start Teaching Today"
+    },
+    "watchDemo": "Watch Demo"
+  },
+  "Footer": {
+    "description": "Empowering learners worldwide with accessible, high-quality education. Join our community today.",
+    "platform": "Platform",
+    "support": "Support",
+    "subscribeTitle": "Subscribe to our newsletter",
+    "subscribeDesc": "The latest news, articles, and resources, sent to your inbox weekly.",
+    "subscribePlaceholder": "Enter your email",
+    "subscribeButton": "Subscribe",
+    "rights": "All rights reserved."
+  },
+  "Auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account to continue learning",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "Forgot password?",
+      "signInButton": "Sign in",
+      "signingIn": "Signing in...",
+      "orContinueWith": "Or continue with",
+      "continueWithGoogle": "Continue with Google",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "successToast": "Welcome back!",
+      "googleSuccessToast": "Signed in with Google!",
+      "signingInToast": "Signing you in..."
+    },
+    "register": {
+      "title": "Create an Account",
+      "subtitle": "Join thousands of learners and instructors today",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Create a strong password",
+      "roleLabel": "I want to",
+      "roleStudent": "Learn new skills (Student)",
+      "roleInstructor": "Teach courses (Instructor)",
+      "agreeTo": "I agree to the",
+      "terms": "Terms of Service",
+      "and": "and",
+      "privacy": "Privacy Policy",
+      "createAccountButton": "Create Account",
+      "creatingAccount": "Creating account...",
+      "orContinueWith": "Or continue with",
+      "continueWithGoogle": "Continue with Google",
+      "alreadyHaveAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "successToast": "Account created successfully! Please log in.",
+      "creatingToast": "Creating your account...",
+      "passwordStrength": {
+        "strong": "Strong",
+        "good": "Good",
+        "fair": "Fair",
+        "weak": "Weak",
+        "chars": "8+ characters",
+        "upper": "Uppercase",
+        "lower": "Lowercase",
+        "number": "Number"
+      }
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your email address and we'll send you a link to reset your password.",
+      "successTitle": "Check your email",
+      "successDesc": "We've sent a password reset link to",
+      "tryAnother": "Try another email",
+      "emailLabel": "Email address",
+      "sendLink": "Send Reset Link",
+      "backToLogin": "Back to login"
+    }
+  },
+  "Dashboard": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "courses": "Courses",
+      "revenue": "Revenue",
+      "settings": "Settings",
+      "createCourse": "Create Course",
+      "myCourses": "My Courses",
+      "students": "Students",
+      "assignments": "Assignments",
+      "discussions": "Discussions",
+      "myEnrollments": "My Enrollments",
+      "schedule": "Schedule",
+      "paymentHistory": "Payment History",
+      "leaderboard": "Leaderboard",
+      "certificates": "Certificates",
+      "learningPlatform": "Learning Platform"
+    },
+    "layout": {
+      "preparing": "Preparing your learning journey...",
+      "pleaseLogin": "Please log in to continue.",
+      "search": "Search...",
+      "adminMode": "Admin Mode",
+      "studentMode": "Student Mode",
+      "instructorMode": "Instructor Mode"
+    },
+    "instructor": {
+      "title": "Instructor Dashboard 📚",
+      "subtitle": "Manage your courses and students effectively",
+      "createCourse": "Create Course",
+      "stats": {
+        "totalCourses": "Total Courses",
+        "totalStudents": "Total Students",
+        "avgRating": "Average Rating",
+        "monthlyRevenue": "Monthly Revenue"
+      },
+      "charts": {
+        "enrollmentTrend": "Student Enrollment Trend",
+        "performance": "Course Performance"
+      },
+      "myCourses": "My Courses",
+      "recentActivity": "Recent Activity",
+      "loading": "Loading...",
+      "noCourses": "No courses found.",
+      "students": "Students",
+      "price": "Price",
+      "activities": {
+        "newQuestion": "New question posted",
+        "assignmentSubmitted": "Assignment submitted",
+        "newReview": "New review received",
+        "newStudent": "New student enrolled",
+        "minsAgo": "mins ago",
+        "hourAgo": "hour ago",
+        "hoursAgo": "hours ago"
+      }
+    },
+    "student": {
+      "welcome": "Welcome back",
+      "subtitle": "Ready to learn something new today? Let's make progress towards your goals.",
+      "stats": {
+        "activeCourses": "Active Courses",
+        "learningTime": "Learning Time",
+        "completedLessons": "Completed Lessons",
+        "earnedBadges": "Earned Badges"
+      },
+      "ongoingCourses": "Ongoing Courses",
+      "viewAll": "View All",
+      "loading": "Loading courses...",
+      "noOngoing": "No ongoing courses found.",
+      "weeklyProgress": "Weekly Progress",
+      "course": {
+        "completed": "Completed",
+        "lessons": "lessons",
+        "continue": "Continue Learning"
+      },
+      "leaderboard": "Leaderboard",
+      "streak": {
+        "title": "Daily Streak",
+        "subtitle": "Keep up the good work!",
+        "daysInARow": "days in a row",
+        "congrats": "Great job! Keep pushing towards your goals 🎯"
+      }
+    },
+    "admin": {
+      "title": "Admin Dashboard 🎯",
+      "subtitle": "System Overview and Management",
+      "stats": {
+        "totalUsers": "Total Users",
+        "totalCourses": "Total Courses",
+        "totalRevenue": "Total Revenue",
+        "activeNow": "Active Now"
+      },
+      "charts": {
+        "growth": "Platform Growth",
+        "distribution": "User Distribution"
+      },
+      "recentActivity": "Recent Activity",
+      "systemAlerts": "System Alerts"
+    }
+  },
+  "CourseListing": {
+    "loading": "Loading courses...",
+    "title": "Discover Your Path",
+    "subtitle": "Browse through our extensive library of professional courses.",
+    "updating": "Updating results...",
+    "errorTitle": "Oops! Something went wrong",
+    "errorSubtitle": "We couldn't load the courses at this moment.",
+    "tryAgain": "Try Again",
+    "noCoursesFound": "No courses found",
+    "noCoursesSubtitle": "We couldn't find any courses matching your current filters. Try resetting or using different keywords.",
+    "clearFilters": "Clear All Filters",
+    "pagination": {
+      "displaying": "Displaying",
+      "of": "of",
+      "courses": "courses",
+      "prev": "Prev",
+      "next": "Next"
+    }
+  },
+  "About": {
+    "hero": {
+      "badge": "About EduPlatform",
+      "title": "Empowering Learners Worldwide",
+      "subtitle": "We're on a mission to make quality education accessible to everyone, everywhere. Join thousands of students learning from world-class instructors.",
+      "stats": {
+        "activeStudents": "Active Students",
+        "expertInstructors": "Expert Instructors",
+        "qualityCourses": "Quality Courses"
+      }
+    }
+  },
+  "Course": {
+    "popular": "Popular",
+    "lessons": "lessons",
+    "by": "by",
+    "students": "students"
+  },
+  "CourseFilter": {
+    "searchLabel": "Search Courses",
+    "searchPlaceholder": "What do you want to learn?",
+    "categoryLabel": "Category",
+    "sortLabel": "Sort By",
+    "resetFilters": "Reset Filters",
+    "categories": {
+      "all": "All Categories",
+      "web": "Web Development",
+      "mobile": "Mobile Development",
+      "dataScience": "Data Science",
+      "ml": "Machine Learning",
+      "uiux": "UI/UX Design",
+      "marketing": "Digital Marketing",
+      "business": "Business"
+    },
+    "sortOptions": {
+      "newest": "Newest First",
+      "popular": "Most Popular",
+      "priceLow": "Price: Low to High",
+      "priceHigh": "Price: High to Low"
+    }
+  }
+}

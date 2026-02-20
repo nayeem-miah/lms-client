@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 import { motion } from 'framer-motion'
 import { CheckCircle, ArrowRight, PlayCircle, Home, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/Button'

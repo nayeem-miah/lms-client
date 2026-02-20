@@ -4,7 +4,7 @@ import { User, UserRole } from '@/types/types'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { useLoginMutation, useRegisterMutation } from '@/lib/redux/features/auth/authApi'
 import { setCredentials, logOut } from '@/lib/redux/features/auth/authSlice'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 import React from 'react'
 
 interface AuthContextType {

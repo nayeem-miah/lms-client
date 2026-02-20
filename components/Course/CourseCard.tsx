@@ -4,12 +4,14 @@ import { Card, CardContent, CardFooter } from '../ui/Card'
 import { Badge } from '../ui/Badge'
 import { Rating } from '../ui/Rating'
 import { Avatar } from '../ui/Avater'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 
 interface CourseCardProps {
     course: Course
 }
 export const CourseCard = ({ course }: CourseCardProps) => {
+    const t = useTranslations('Course')
     return (
         <Link href={`/courses/${course.id}`} className="block h-full cursor-pointer">
             <Card hoverEffect className="h-full flex flex-col overflow-hidden group">
@@ -29,7 +31,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
                         </Badge>
                         {course.isPopular && (
                             <Badge variant="accent" className="shadow-sm">
-                                Popular
+                                {t('popular')}
                             </Badge>
                         )}
                     </div>
@@ -42,7 +44,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
                             <span>{course.duration}</span>
                             <span>•</span>
                             <BookOpen className="h-3.5 w-3.5" />
-                            <span>{course.lessons} lessons</span>
+                            <span>{course.lessons} {t('lessons')}</span>
                         </div>
                         <Badge variant="outline" size="sm" className="text-xs font-normal">
                             {course.level}
@@ -70,7 +72,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
                             className="h-6 w-6"
                         />
                         <span className="text-sm text-slate-600 truncate">
-                            by{' '}
+                            {t('by')}{' '}
                             <span className="font-medium text-slate-900">
                                 {course.instructor.name}
                             </span>
@@ -81,7 +83,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
                 <CardFooter className="p-5 pt-0 border-t border-slate-100 mt-auto flex items-center justify-between bg-slate-50/50">
                     <div className="flex items-center gap-1.5 text-sm text-slate-500">
                         <Users className="h-4 w-4" />
-                        <span>{course.students.toLocaleString()} students</span>
+                        <span>{course.students.toLocaleString()} {t('students')}</span>
                     </div>
                     <div className="text-lg font-bold text-primary-600">
                         ৳{course.price}

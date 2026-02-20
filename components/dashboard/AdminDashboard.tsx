@@ -3,6 +3,7 @@ import { useGetDashboardSummaryQuery } from '@/lib/redux/features/dashboard/dash
 import { motion } from 'framer-motion'
 import { Users, BookOpen, DollarSign, TrendingUp, UserCheck, AlertCircle, BarChart3, Settings } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { useTranslations } from 'next-intl'
 import type { StatsCardProps } from '@/types/dashboard'
 
 const statsData = [
@@ -21,21 +22,22 @@ const userDistribution = [
 ]
 
 export default function AdminDashboard() {
+    const t = useTranslations('Dashboard.admin')
     const { data: summary, isLoading } = useGetDashboardSummaryQuery(undefined)
 
     return (
         <div className="space-y-6">
             {/* Welcome Section */}
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                <h1 className="text-3xl font-bold text-slate-100 mb-2">Admin Dashboard 🎯</h1>
-                <p className="text-slate-400">System Overview and Management</p>
+                <h1 className="text-3xl font-bold text-slate-100 mb-2">{t('title')}</h1>
+                <p className="text-slate-400">{t('subtitle')}</p>
             </motion.div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatsCard
                     icon={Users}
-                    label="Total Users"
+                    label={t('stats.totalUsers')}
                     value={isLoading ? "..." : (summary?.totalUsers || 0).toLocaleString()}
                     trend="+12%"
                     color="bg-cyan-500"
@@ -43,7 +45,7 @@ export default function AdminDashboard() {
                 />
                 <StatsCard
                     icon={BookOpen}
-                    label="Total Courses"
+                    label={t('stats.totalCourses')}
                     value={isLoading ? "..." : (summary?.totalCourses || 0).toLocaleString()}
                     trend="+5%"
                     color="bg-purple-500"
@@ -51,7 +53,7 @@ export default function AdminDashboard() {
                 />
                 <StatsCard
                     icon={DollarSign}
-                    label="Total Revenue"
+                    label={t('stats.totalRevenue')}
                     value={isLoading ? "..." : `৳${(summary?.totalRevenue || 0).toLocaleString()}`}
                     trend="+18%"
                     color="bg-emerald-500"
@@ -59,7 +61,7 @@ export default function AdminDashboard() {
                 />
                 <StatsCard
                     icon={UserCheck}
-                    label="Active Now"
+                    label={t('stats.activeNow')}
                     value={isLoading ? "..." : "42"}
                     trend="Live"
                     color="bg-blue-500"
@@ -72,7 +74,7 @@ export default function AdminDashboard() {
                 {/* Revenue Chart */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
                     className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-slate-100 mb-6">Platform Growth</h3>
+                    <h3 className="text-lg font-semibold text-slate-100 mb-6">{t('charts.growth')}</h3>
                     <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={statsData}>
@@ -95,7 +97,7 @@ export default function AdminDashboard() {
                 {/* User Distribution */}
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
                     className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-slate-100 mb-4">User Distribution</h3>
+                    <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('charts.distribution')}</h3>
                     <div className="h-48">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
@@ -148,6 +150,7 @@ function StatsCard({ icon: Icon, label, value, trend, color, delay }: StatsCardP
 }
 
 function RecentActivity() {
+    const t = useTranslations('Dashboard.admin')
     const activities = [
         { user: 'Rahul Ahmed', action: 'enrolled in a new course', time: '5 mins ago' },
         { user: 'Sarah Khan', action: 'completed a course', time: '15 mins ago' },
@@ -157,7 +160,7 @@ function RecentActivity() {
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
             className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-slate-100 mb-4">Recent Activity</h3>
+            <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('recentActivity')}</h3>
             <div className="space-y-4">
                 {activities.map((activity, i) => (
                     <div key={i} className="flex items-start space-x-3 pb-3 border-b border-slate-700 last:border-0">
@@ -176,6 +179,7 @@ function RecentActivity() {
 }
 
 function SystemAlerts() {
+    const t = useTranslations('Dashboard.admin')
     const alerts = [
         { type: 'warning', message: 'High server load', time: '10 mins ago' },
         { type: 'info', message: 'New update available', time: '1 hour ago' },
@@ -185,7 +189,7 @@ function SystemAlerts() {
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
             className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-slate-100 mb-4">System Alerts</h3>
+            <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('systemAlerts')}</h3>
             <div className="space-y-3">
                 {alerts.map((alert, i) => (
                     <div key={i} className={`p-3 rounded-lg border ${alert.type === 'warning' ? 'bg-yellow-500/10 border-yellow-500/30' :

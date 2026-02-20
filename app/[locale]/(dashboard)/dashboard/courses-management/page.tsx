@@ -21,7 +21,7 @@ import {
 } from '@/lib/redux/features/courses/coursesApi'
 import { Course } from '@/types/api'
 import { useState } from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { toast } from 'react-hot-toast'
 
 export default function CoursesManagementPage() {

@@ -6,13 +6,15 @@ import {
     Linkedin,
     Twitter
 } from 'lucide-react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { Link, usePathname } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 
 
 export const Footer = () => {
+    const t = useTranslations('Footer')
+    const nt = useTranslations('Navbar')
     const pathname = usePathname()
 
     if (pathname?.startsWith('/dashboard')) {
@@ -32,8 +34,7 @@ export const Footer = () => {
                             <span className="text-xl font-bold">EduPlatform</span>
                         </Link>
                         <p className="text-sm leading-6 text-slate-400">
-                            Empowering learners worldwide with accessible, high-quality
-                            education. Join our community today.
+                            {t('description')}
                         </p>
                         <div className="flex space-x-6">
                             <a
@@ -68,7 +69,7 @@ export const Footer = () => {
                         <div className="md:grid md:grid-cols-2 md:gap-8">
                             <div>
                                 <h3 className="text-sm font-semibold leading-6 text-white">
-                                    Platform
+                                    {t('platform')}
                                 </h3>
                                 <ul role="list" className="mt-6 space-y-4">
                                     <li>
@@ -76,7 +77,7 @@ export const Footer = () => {
                                             href="/courses"
                                             className="text-sm leading-6 hover:text-white"
                                         >
-                                            Browse Courses
+                                            {nt('browseCourses')}
                                         </Link>
                                     </li>
                                     <li>
@@ -107,7 +108,7 @@ export const Footer = () => {
                             </div>
                             <div className="mt-10 md:mt-0">
                                 <h3 className="text-sm font-semibold leading-6 text-white">
-                                    Support
+                                    {t('support')}
                                 </h3>
                                 <ul role="list" className="mt-6 space-y-4">
                                     <li>
@@ -150,21 +151,20 @@ export const Footer = () => {
                         <div className="md:grid md:grid-cols-1">
                             <div>
                                 <h3 className="text-sm font-semibold leading-6 text-white">
-                                    Subscribe to our newsletter
+                                    {t('subscribeTitle')}
                                 </h3>
                                 <p className="mt-2 text-sm leading-6 text-slate-400">
-                                    The latest news, articles, and resources, sent to your inbox
-                                    weekly.
+                                    {t('subscribeDesc')}
                                 </p>
                                 <form className="mt-6 sm:flex sm:max-w-md">
                                     <Input
                                         type="email"
-                                        placeholder="Enter your email"
+                                        placeholder={t('subscribePlaceholder')}
                                         className="w-full bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:ring-primary-500"
                                     />
                                     <div className="mt-4 sm:ml-4 sm:mt-0">
                                         <Button variant="primary" className="w-full">
-                                            Subscribe
+                                            {t('subscribeButton')}
                                         </Button>
                                     </div>
                                 </form>
@@ -175,11 +175,11 @@ export const Footer = () => {
 
                 <div className="mt-16 border-t border-slate-800 pt-8 sm:mt-20 lg:mt-24">
                     <p className="text-xs leading-5 text-slate-500">
-                        &copy; {new Date().getFullYear()} EduPlatform, Inc. All rights
-                        reserved.
+                        &copy; {new Date().getFullYear()} EduPlatform, Inc. {t('rights')}
                     </p>
                 </div>
             </div>
         </footer>
     )
 }
+
