@@ -1,20 +1,19 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useRouter } from '@/i18n/routing'
+import { useGetCourseByIdQuery, useUpdateCourseMutation } from '@/lib/redux/features/courses/coursesApi'
 import { motion } from 'framer-motion'
-import { useRouter, useParams } from '@/i18n/routing'
 import {
+    ArrowLeft,
     BookOpen,
-    Upload,
-    DollarSign,
-    Tag,
     FileText,
     Image as ImageIcon,
-    ArrowLeft,
+    Loader2,
     Save,
-    Loader2
+    Upload
 } from 'lucide-react'
-import { useGetCourseByIdQuery, useUpdateCourseMutation } from '@/lib/redux/features/courses/coursesApi'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function EditCoursePage() {

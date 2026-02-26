@@ -1,24 +1,23 @@
 "use client"
 
-import { useParams, useRouter, Link } from '@/i18n/routing'
+import { Link, useRouter } from '@/i18n/routing'
+import { useDeleteCourseMutation, useGetCourseByIdQuery } from '@/lib/redux/features/courses/coursesApi'
 import { motion } from 'framer-motion'
 import {
-    BookOpen,
-    Clock,
-    User,
-    ChevronLeft,
-    Tag,
     BarChart,
+    BookOpen,
     Calendar,
-    DollarSign,
-    Users,
-    Star,
-    Edit,
-    Trash2,
     CheckCircle2,
-    Loader2
+    ChevronLeft,
+    Clock,
+    Edit,
+    Loader2,
+    Star,
+    Tag,
+    Trash2,
+    Users
 } from 'lucide-react'
-import { useGetCourseByIdQuery, useDeleteCourseMutation } from '@/lib/redux/features/courses/coursesApi'
+import { useParams } from 'next/navigation'
 import { toast } from 'react-hot-toast'
 
 export default function CourseDetailsPage() {

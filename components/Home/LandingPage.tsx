@@ -126,9 +126,9 @@ export const LandingPage = () => {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-slate-900 pt-16 pb-20 lg:pt-24 lg:pb-28">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-10" />
-                <div className="absolute inset-0  from-slate-900/80 to-slate-900" />
+            <section className="relative overflow-hidden bg-slate-950 pt-16 pb-20 lg:pt-24 lg:pb-28">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-5" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-900" />
 
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center max-w-3xl mx-auto">
@@ -156,7 +156,7 @@ export const LandingPage = () => {
                             </p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                                 <Link href="/courses">
-                                    <Button size="lg" className="w-full sm:w-auto text-base px-8">
+                                    <Button size="lg" className="w-full sm:w-auto text-base px-8 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-none shadow-lg shadow-cyan-500/20">
                                         {t('exploreCourses')}
                                     </Button>
                                 </Link>
@@ -227,21 +227,21 @@ export const LandingPage = () => {
             </section>
 
             {/* Featured Courses */}
-            <section className="py-20 bg-slate-50">
+            <section className="py-20 bg-slate-900 border-t border-slate-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-end mb-10">
                         <div>
-                            <h2 className="text-3xl font-bold text-slate-900 mb-2">
+                            <h2 className="text-3xl font-bold text-slate-100 mb-2">
                                 {t('featuredCourses.title')}
                             </h2>
-                            <p className="text-slate-600">
+                            <p className="text-slate-400">
                                 {t('featuredCourses.subtitle')}
                             </p>
                         </div>
                         <Link href="/courses">
                             <Button
                                 variant="ghost"
-                                className="hidden sm:inline-flex"
+                                className="hidden sm:inline-flex text-cyan-400 hover:text-cyan-300 hover:bg-slate-800"
                                 rightIcon={<ArrowRight className="h-4 w-4" />}
                             >
                                 {t('featuredCourses.viewAll')}
@@ -284,13 +284,13 @@ export const LandingPage = () => {
             </section>
 
             {/* How It Works */}
-            <section className="py-20 bg-white">
+            <section className="py-20 bg-slate-800/30 border-t border-slate-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                        <h2 className="text-3xl font-bold text-slate-100 mb-4">
                             {t('howItWorks.title')}
                         </h2>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                             {t('howItWorks.subtitle')}
                         </p>
                     </div>
@@ -315,15 +315,15 @@ export const LandingPage = () => {
                         ].map((step, index) => (
                             <div
                                 key={index}
-                                className="flex flex-col items-center text-center"
+                                className="flex flex-col items-center text-center group"
                             >
-                                <div className="mb-6 rounded-full bg-primary-50 p-6 text-primary-600">
+                                <div className="mb-6 rounded-2xl bg-slate-900 p-6 text-cyan-500 border border-slate-700 group-hover:border-cyan-500/50 transition-all shadow-xl">
                                     <step.icon className="h-10 w-10" />
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-3">
+                                <h3 className="text-xl font-bold text-slate-100 mb-3 italic">
                                     {step.title}
                                 </h3>
-                                <p className="text-slate-600 leading-relaxed">
+                                <p className="text-slate-400 leading-relaxed">
                                     {step.description}
                                 </p>
                             </div>
@@ -333,13 +333,13 @@ export const LandingPage = () => {
             </section>
 
             {/* Pricing */}
-            <section className="py-20 bg-slate-50">
+            <section className="py-20 bg-slate-900 border-t border-slate-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                        <h2 className="text-3xl font-bold text-slate-100 mb-4">
                             {t('pricing.title')}
                         </h2>
-                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                             {t('pricing.subtitle')}
                         </p>
                     </div>
@@ -372,23 +372,22 @@ export const LandingPage = () => {
             </section>
 
             {/* Instructor CTA */}
-            <section className="py-20 bg-white">
+            <section className="py-20 bg-slate-950 border-t border-slate-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="rounded-2xl bg-primary-600 px-6 py-16 sm:p-16 md:p-20 overflow-hidden relative">
-                        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-primary-500 rounded-full opacity-50 blur-3xl" />
-                        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-primary-700 rounded-full opacity-50 blur-3xl" />
+                    <div className="rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 px-6 py-16 sm:p-16 md:p-20 overflow-hidden relative">
+                        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-cyan-500 rounded-full opacity-10 blur-3xl" />
+                        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-purple-600 rounded-full opacity-10 blur-3xl" />
 
                         <div className="relative z-10 text-center max-w-2xl mx-auto">
-                            <h2 className="text-3xl font-bold text-black mb-6">
+                            <h2 className="text-3xl font-bold text-slate-100 mb-6 italic">
                                 {t('instructor.title')}
                             </h2>
-                            <p className="text-lg text-black mb-8">
+                            <p className="text-lg text-slate-400 mb-8">
                                 {t('instructor.subtitle')}
                             </p>
                             <Button
                                 size="lg"
-                                variant="secondary"
-                                className="bg-white text-primary-600 hover:bg-slate-100"
+                                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white border-none shadow-xl shadow-purple-500/20 px-10"
                             >
                                 {t('instructor.button')}
                             </Button>

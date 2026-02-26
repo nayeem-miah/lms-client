@@ -19,17 +19,17 @@ export const Badge = ({
 }: BadgeProps) => {
     const variants = {
         default:
-            'border-transparent bg-primary-100 text-primary-700 hover:bg-primary-200',
+            'border-cyan-500/20 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20',
         secondary:
-            'border-transparent bg-slate-100 text-slate-900 hover:bg-slate-200',
-        outline: 'text-slate-950 border-slate-200',
-        destructive: 'border-transparent bg-red-100 text-red-700 hover:bg-red-200',
+            'border-slate-700 bg-slate-800 text-slate-100 hover:bg-slate-700',
+        outline: 'text-slate-400 border-slate-700 hover:bg-slate-800',
+        destructive: 'border-rose-500/20 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20',
         success:
-            'border-transparent bg-green-100 text-green-700 hover:bg-green-200',
+            'border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20',
         warning:
-            'border-transparent bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
+            'border-amber-500/20 bg-amber-500/10 text-amber-500 hover:bg-amber-500/20',
         accent:
-            'border-transparent bg-accent-100 text-accent-800 hover:bg-accent-200',
+            'border-purple-500/20 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20',
     }
     const sizes = {
         sm: 'px-2 py-0.5 text-[10px]',

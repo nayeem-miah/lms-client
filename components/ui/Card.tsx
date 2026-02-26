@@ -10,9 +10,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             <motion.div
                 ref={ref}
                 className={cn(
-                    'rounded-xl border border-slate-200 bg-white text-slate-950 shadow-sm',
+                    'rounded-xl border border-slate-800 bg-slate-900 text-slate-100 shadow-sm',
                     hoverEffect &&
-                    'hover:shadow-lg hover:border-primary-200 transition-all duration-300 cursor-pointer',
+                    'hover:shadow-2xl hover:shadow-cyan-500/10 hover:border-cyan-500/50 transition-all duration-300 cursor-pointer',
                     className,
                 )}
                 whileHover={
@@ -48,7 +48,7 @@ export const CardTitle = forwardRef<
     <h3
         ref={ref}
         className={cn(
-            'font-semibold leading-none tracking-tight text-slate-900',
+            'font-semibold leading-none tracking-tight text-slate-100',
             className,
         )}
         {...props}
@@ -59,7 +59,7 @@ export const CardDescription = forwardRef<
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-slate-500', className)} {...props} />
+    <p ref={ref} className={cn('text-sm text-slate-400', className)} {...props} />
 ))
 CardDescription.displayName = 'CardDescription'
 export const CardContent = forwardRef<

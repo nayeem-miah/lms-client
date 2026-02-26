@@ -27,15 +27,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ) => {
         const variants = {
             primary:
-                'bg-primary-600 text-white hover:bg-primary-700 shadow-sm hover:shadow focus:ring-primary-500',
+                'bg-cyan-600 text-white hover:bg-cyan-500 shadow-lg shadow-cyan-500/20 focus:ring-cyan-500',
             secondary:
-                'bg-secondary-500 text-white hover:bg-secondary-600 shadow-sm hover:shadow focus:ring-secondary-500',
+                'bg-slate-800 text-slate-100 hover:bg-slate-700 shadow-sm focus:ring-slate-700',
             outline:
-                'border-2 border-slate-200 bg-transparent text-slate-700 hover:border-primary-600 hover:text-primary-600 focus:ring-primary-500',
+                'border border-slate-700 bg-transparent text-slate-300 hover:border-cyan-500 hover:text-cyan-400 focus:ring-cyan-500',
             ghost:
-                'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus:ring-slate-500',
+                'bg-transparent text-slate-400 hover:bg-slate-800 hover:text-slate-100 focus:ring-slate-700',
             danger:
-                'bg-red-500 text-white hover:bg-red-600 shadow-sm hover:shadow focus:ring-red-500',
+                'bg-rose-500 text-white hover:bg-rose-600 shadow-lg shadow-rose-500/20 focus:ring-rose-500',
         }
         const sizes = {
             sm: 'h-8 px-3 text-xs',

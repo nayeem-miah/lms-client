@@ -70,20 +70,20 @@ export const CourseListingPage = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-slate-50 py-20 flex flex-col items-center justify-center space-y-4">
-                <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
-                <p className="text-slate-500 font-medium">{t('loading')}</p>
+            <div className="min-h-screen bg-slate-950 py-20 flex flex-col items-center justify-center space-y-4">
+                <Loader2 className="w-12 h-12 text-cyan-600 animate-spin" />
+                <p className="text-slate-400 font-medium">{t('loading')}</p>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 py-8 md:py-12">
+        <div className="min-h-screen bg-slate-950 py-8 md:py-12">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div className="text-center md:text-left">
-                        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">{t('title')}</h1>
-                        <p className="text-slate-600 mt-2 text-lg">
+                        <h1 className="text-4xl font-extrabold text-slate-100 tracking-tight">{t('title')}</h1>
+                        <p className="text-slate-400 mt-2 text-lg">
                             {t('subtitle')}
                         </p>
                     </div>
@@ -106,21 +106,21 @@ export const CourseListingPage = () => {
                 />
 
                 {error ? (
-                    <div className="text-center py-20 bg-white rounded-3xl border border-slate-200">
-                        <div className="mb-4 inline-flex p-4 bg-red-50 rounded-full">
-                            <BookOpen className="w-8 h-8 text-red-400" />
+                    <div className="text-center py-20 bg-slate-900 rounded-3xl border border-slate-800">
+                        <div className="mb-4 inline-flex p-4 bg-rose-500/10 rounded-full">
+                            <BookOpen className="w-8 h-8 text-rose-500" />
                         </div>
-                        <p className="text-slate-800 font-bold text-xl mb-2">{t('errorTitle')}</p>
-                        <p className="text-slate-500 mb-6 font-medium italic">{t('errorSubtitle')}</p>
-                        <Button variant="primary" onClick={() => window.location.reload()}>{t('tryAgain')}</Button>
+                        <p className="text-slate-100 font-bold text-xl mb-2">{t('errorTitle')}</p>
+                        <p className="text-slate-400 mb-6 font-medium italic">{t('errorSubtitle')}</p>
+                        <Button onClick={() => window.location.reload()}>{t('tryAgain')}</Button>
                     </div>
                 ) : courses.length === 0 ? (
-                    <div className="text-center py-24 bg-white rounded-3xl border border-slate-200 shadow-sm">
-                        <div className="mb-4 inline-flex p-6 bg-slate-50 rounded-full">
-                            <Search className="w-10 h-10 text-slate-300" />
+                    <div className="text-center py-24 bg-slate-900 rounded-3xl border border-slate-800 shadow-xl">
+                        <div className="mb-4 inline-flex p-6 bg-slate-800 rounded-full">
+                            <Search className="w-10 h-10 text-slate-600" />
                         </div>
-                        <h3 className="text-2xl font-bold text-slate-800">{t('noCoursesFound')}</h3>
-                        <p className="text-slate-500 mt-2 max-w-md mx-auto">
+                        <h3 className="text-2xl font-bold text-slate-100">{t('noCoursesFound')}</h3>
+                        <p className="text-slate-400 mt-2 max-w-md mx-auto">
                             {t('noCoursesSubtitle')}
                         </p>
                         <Button variant="outline" className="mt-8 px-8" onClick={handleReset}>{t('clearFilters')}</Button>
@@ -135,9 +135,9 @@ export const CourseListingPage = () => {
 
                         {/* Pagination */}
                         {data?.meta && data.meta.totalPages > 1 && (
-                            <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10 border-t border-slate-200">
-                                <p className="text-sm text-slate-500 font-medium font-mono uppercase tracking-wider">
-                                    {t('pagination.displaying')} <span className="text-slate-900 font-bold">{courses.length}</span> {t('pagination.of')} {data.meta.total} {t('pagination.courses')}
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10 border-t border-slate-800">
+                                <p className="text-sm text-slate-400 font-medium font-mono uppercase tracking-wider">
+                                    {t('pagination.displaying')} <span className="text-slate-100 font-bold">{courses.length}</span> {t('pagination.of')} {data.meta.total} {t('pagination.courses')}
                                 </p>
                                 <div className="flex items-center space-x-2">
                                     <Button
@@ -157,8 +157,8 @@ export const CourseListingPage = () => {
                                                 key={i}
                                                 onClick={() => setPage(i + 1)}
                                                 className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${page === i + 1
-                                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
-                                                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+                                                    ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/20'
+                                                    : 'text-slate-500 hover:bg-slate-800 hover:text-slate-100'
                                                     }`}
                                             >
                                                 {i + 1}

@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 {label && (
                     <label
                         htmlFor={props.id}
-                        className="text-sm font-medium text-slate-700 block"
+                        className="text-sm font-medium text-slate-300 block"
                     >
                         {label}
                     </label>
@@ -34,10 +34,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         ref={ref}
                         type={inputType}
                         className={cn(
-                            'flex h-10 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200',
+                            'flex h-10 w-full rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-inner',
                             icon && 'pl-10',
                             (isPasswordField && showPasswordToggle !== false) && 'pr-10',
-                            error && 'border-red-500 focus:ring-red-500',
+                            error && 'border-rose-500 focus:ring-rose-500',
                             className,
                         )}
                         {...props}
@@ -58,10 +58,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     )}
                 </div>
                 {helperText && !error && (
-                    <p className="text-xs text-slate-500">{helperText}</p>
+                    <p className="text-xs text-slate-500 italic">{helperText}</p>
                 )}
                 {error && (
-                    <div className="flex items-center text-red-500 text-xs mt-1">
+                    <div className="flex items-center text-rose-400 text-xs mt-1">
                         <AlertCircle className="h-3 w-3 mr-1" />
                         <span>{error}</span>
                     </div>

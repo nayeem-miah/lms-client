@@ -44,47 +44,47 @@ export const CourseFilter = ({
     ]
 
     return (
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-10">
+        <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl mb-10">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-5 items-end">
                 {/* Search */}
                 <div className="lg:col-span-5">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">{t('searchLabel')}</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block ml-1">{t('searchLabel')}</label>
                     <Input
                         placeholder={t('searchPlaceholder')}
-                        icon={<Search className="h-4 w-4 text-slate-400" />}
+                        icon={<Search className="h-4 w-4 text-slate-500" />}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="bg-slate-50 border-slate-200 h-12 rounded-xl focus:ring-blue-500/20"
+                        className="bg-slate-800 border-slate-700 h-12 rounded-xl focus:ring-cyan-500/20"
                     />
                 </div>
 
                 {/* Category */}
                 <div className="lg:col-span-3">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">{t('categoryLabel')}</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block ml-1">{t('categoryLabel')}</label>
                     <Select
                         options={categories}
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        className="bg-slate-50 border-slate-200 h-12 rounded-xl focus:ring-blue-500/20"
+                        className="bg-slate-800 border-slate-700 h-12 rounded-xl focus:ring-cyan-500/20"
                     />
                 </div>
 
                 {/* Sort */}
                 <div className="lg:col-span-3">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">{t('sortLabel')}</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block ml-1">{t('sortLabel')}</label>
                     <Select
                         options={sortOptions}
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
-                        className="bg-slate-50 border-slate-200 h-12 rounded-xl focus:ring-blue-500/20"
+                        className="bg-slate-800 border-slate-700 h-12 rounded-xl focus:ring-cyan-500/20"
                     />
                 </div>
 
                 {/* Reset Button */}
                 <div className="lg:col-span-1">
                     <Button
-                        variant="outline"
-                        className="w-full h-12 border-slate-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 rounded-xl transition-all duration-300"
+                        variant="ghost"
+                        className="w-full h-12 border border-slate-700 hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/20 rounded-xl transition-all duration-300"
                         onClick={onReset}
                         title={t('resetFilters')}
                     >

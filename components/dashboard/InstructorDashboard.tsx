@@ -1,12 +1,12 @@
 "use client"
+import { Link } from '@/i18n/routing'
 import { useGetMyCoursesQuery } from '@/lib/redux/features/courses/coursesApi'
 import { Course } from '@/types/api'
-import { motion } from 'framer-motion'
-import { BookOpen, Users, Video, TrendingUp, Clock, MessageSquare, Star, DollarSign, BarChart3, Calendar, FileText, CheckCircle2, Plus } from 'lucide-react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import type { StatsCardProps } from '@/types/dashboard'
-import { Link } from '@/i18n/routing'
+import { motion } from 'framer-motion'
+import { BarChart3, BookOpen, CheckCircle2, DollarSign, Eye, MessageSquare, Plus, Star, TrendingUp, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 const enrollmentData = [
     { month: 'Jan', students: 45 },
@@ -26,14 +26,20 @@ const coursePerformance = [
 
 export default function InstructorDashboard() {
     const t = useTranslations('Dashboard.instructor')
-    const { data: coursesData, isLoading } = useGetMyCoursesQuery(undefined)
-    const courses: Course[] = coursesData || []
+    const { data: courses, isLoading } = useGetMyCoursesQuery(undefined)
 
-
-    const totalStudents = courses.reduce((acc, course) => acc + (course.totalEnrollments || 0), 0)
-    const averageRating = courses.length > 0
-        ? (courses.reduce((acc, course) => acc + (course.ratingAvg || 0), 0) / courses.length).toFixed(1)
+    const totalStudents = courses?.reduce((acc: number, course: Course) => acc + (course.totalEnrollments || 0), 0) || 0
+    const averageRating = courses && courses.length > 0
+        ? (courses.reduce((acc: number, course: Course) => acc + (course.ratingAvg || 0), 0) / courses.length).toFixed(1)
         : '0.0';
+
+    const totalRevenue = courses?.reduce((acc: number, course: Course) => acc + ((course.totalEnrollments || 0) * (course.price || 0)), 0) || 0
+
+    const coursePerformance = courses?.slice(0, 5).map((course: Course) => ({
+        course: course.title.length > 10 ? course.title.substring(0, 10) + '...' : course.title,
+        students: course.totalEnrollments || 0,
+        rating: course.ratingAvg || 0
+    })) || []
 
     return (
         <div className="space-y-6">
@@ -62,7 +68,7 @@ export default function InstructorDashboard() {
                 <StatsCard
                     icon={BookOpen}
                     label={t('stats.totalCourses')}
-                    value={isLoading ? "..." : courses.length.toString()}
+                    value={isLoading ? "..." : (courses?.length || 0).toString()}
                     trend="+2 new"
                     color="bg-purple-500"
                     delay={0.1}
@@ -70,7 +76,7 @@ export default function InstructorDashboard() {
                 <StatsCard
                     icon={Users}
                     label={t('stats.totalStudents')}
-                    value={isLoading ? "..." : totalStudents.toString()}
+                    value={isLoading ? "..." : totalStudents.toLocaleString()}
                     trend="+25 this month"
                     color="bg-cyan-500"
                     delay={0.2}
@@ -83,12 +89,19 @@ export default function InstructorDashboard() {
                     color="bg-yellow-500"
                     delay={0.3}
                 />
-                <StatsCard icon={DollarSign} label={t('stats.monthlyRevenue')} value="৳15,000" trend="+12%" color="bg-emerald-500" delay={0.4} />
+                <StatsCard
+                    icon={DollarSign}
+                    label={t('stats.monthlyRevenue')}
+                    value={isLoading ? "..." : `৳${totalRevenue.toLocaleString()}`}
+                    trend="+12%"
+                    color="bg-emerald-500"
+                    delay={0.4}
+                />
             </div>
 
-            {/* Charts - Keeping mock data for charts as they need aggregate history not available in simplified API */}
+            {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Enrollment Trend */}
+                {/* Enrollment Trend - Mock data as we don't have historical data yet */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
                     className="bg-slate-800 border border-slate-700 rounded-xl p-6">
                     <h3 className="text-lg font-semibold text-slate-100 mb-6">{t('charts.enrollmentTrend')}</h3>
@@ -105,7 +118,7 @@ export default function InstructorDashboard() {
                     </div>
                 </motion.div>
 
-                {/* Course Performance */}
+                {/* Course Performance - Real data from courses */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}
                     className="bg-slate-800 border border-slate-700 rounded-xl p-6">
                     <h3 className="text-lg font-semibold text-slate-100 mb-6">{t('charts.performance')}</h3>
@@ -126,7 +139,7 @@ export default function InstructorDashboard() {
             {/* My Courses & Recent Activity */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
-                    <MyCourses courses={courses} isLoading={isLoading} />
+                    <MyCourses courses={courses || []} isLoading={isLoading} />
                 </div>
                 <div>
                     <RecentActivity />
@@ -165,33 +178,60 @@ function MyCourses({ courses, isLoading }: { courses: Course[], isLoading: boole
             <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('myCourses')}</h3>
             <div className="space-y-4">
                 {isLoading ? (
-                    <p className="text-slate-400">{t('loading')}</p>
+                    <div className="space-y-3">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="h-24 bg-slate-900/50 rounded-lg animate-pulse" />
+                        ))}
+                    </div>
                 ) : courses.length === 0 ? (
-                    <p className="text-slate-400">{t('noCourses')}</p>
+                    <div className="text-center py-8">
+                        <BookOpen className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                        <p className="text-slate-400">{t('noCourses')}</p>
+                    </div>
                 ) : (
                     courses.map((course, i) => (
-                        <div key={course._id} className="bg-slate-900 border border-slate-700 rounded-lg p-4 hover:border-cyan-500/50 transition-all cursor-pointer">
+                        <div key={course._id} className="bg-slate-900 border border-slate-700 rounded-lg p-4 hover:border-cyan-500/30 transition-all group">
                             <div className="flex items-start justify-between mb-3">
-                                <div className="flex-1">
-                                    <h4 className="text-slate-100 font-semibold mb-2">{course.title}</h4>
-                                    <div className="flex items-center space-x-4 text-sm text-slate-400">
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <h4 className="text-slate-100 font-semibold truncate group-hover:text-cyan-400 transition-colors">{course.title}</h4>
+                                        <span className="px-2 py-0.5 text-[10px] bg-slate-800 text-slate-400 rounded-full border border-slate-700 uppercase tracking-tight">{course.category}</span>
+                                    </div>
+                                    <div className="flex items-center space-x-4 text-xs text-slate-500">
                                         <span className="flex items-center">
-                                            <Users className="w-4 h-4 mr-1" />
+                                            <Users className="w-3.5 h-3.5 mr-1" />
                                             {course.totalEnrollments || 0} {t('students')}
                                         </span>
                                         <span className="flex items-center">
-                                            <Star className="w-4 h-4 mr-1 text-yellow-500" />
-                                            {course.ratingAvg || 'N/A'}
+                                            <Star className="w-3.5 h-3.5 mr-1 text-yellow-500" />
+                                            {course.ratingAvg || '0.0'}
                                         </span>
                                     </div>
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-emerald-400 font-semibold font-mono">৳{course.price}</p>
-                                    <p className="text-xs text-slate-500">{t('price')}</p>
+                                <div className="flex items-center gap-2 ml-4">
+                                    <Link href={`/dashboard/courses/${course._id}`}>
+                                        <button className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition-all">
+                                            <Eye className="w-4 h-4" />
+                                        </button>
+                                    </Link>
+                                    <Link href={`/dashboard/courses/${course._id}/edit`}>
+                                        <button className="p-2 text-slate-400 hover:text-purple-400 hover:bg-slate-800 rounded-lg transition-all">
+                                            <BarChart3 className="w-4 h-4" />
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
-                            {/* Static progress bar as placeholder */}
-                            <div className={`h-1.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full`} />
+                            <div className="flex items-center justify-between mt-4">
+                                <div className="flex-1 mr-6">
+                                    <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"
+                                            style={{ width: `${Math.min((course.totalEnrollments || 0) * 2, 100)}%` }} // Just some visual representation
+                                        />
+                                    </div>
+                                </div>
+                                <p className="text-emerald-400 font-bold font-mono text-sm whitespace-nowrap">৳{course.price}</p>
+                            </div>
                         </div>
                     ))
                 )}
