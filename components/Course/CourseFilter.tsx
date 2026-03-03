@@ -1,8 +1,9 @@
-import { Search, SlidersHorizontal, X } from 'lucide-react'
+import { Search, SlidersHorizontal, X, Filter, ChevronDown } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Input } from '../ui/Input'
 import { Select } from '../ui/Select'
 import { Button } from '../ui/Button'
+import { motion } from 'framer-motion'
 
 interface CourseFilterProps {
     searchTerm: string
@@ -44,55 +45,73 @@ export const CourseFilter = ({
     ]
 
     return (
-        <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl mb-10">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-5 items-end">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-slate-900/40 backdrop-blur-xl rounded-[2.5rem] border border-slate-800/50 p-8 shadow-2xl mb-16 relative overflow-hidden group"
+        >
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/[0.02] to-transparent pointer-events-none"></div>
+
+            <div className="flex flex-col lg:flex-row gap-8 items-end relative z-10">
                 {/* Search */}
-                <div className="lg:col-span-5">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block ml-1">{t('searchLabel')}</label>
-                    <Input
-                        placeholder={t('searchPlaceholder')}
-                        icon={<Search className="h-4 w-4 text-slate-500" />}
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="bg-slate-800 border-slate-700 h-12 rounded-xl focus:ring-cyan-500/20"
-                    />
+                <div className="flex-1 w-full group">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4 italic group-hover:text-cyan-400 transition-colors">
+                        {t('searchLabel')}
+                    </label>
+                    <div className="relative">
+                        <Input
+                            placeholder={t('searchPlaceholder')}
+                            icon={<Search className="h-4 w-4 text-cyan-500/50 group-hover:text-cyan-400 transition-colors" />}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="bg-slate-950/50 border-slate-800/50 h-16 rounded-[1.25rem] focus:ring-cyan-500/20 px-14 text-slate-100 font-medium placeholder:text-slate-600 border-2 focus:border-cyan-500/30 transition-all"
+                        />
+                    </div>
                 </div>
 
                 {/* Category */}
-                <div className="lg:col-span-3">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block ml-1">{t('categoryLabel')}</label>
-                    <Select
-                        options={categories}
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="bg-slate-800 border-slate-700 h-12 rounded-xl focus:ring-cyan-500/20"
-                    />
+                <div className="w-full lg:w-64 group/select">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4 italic group-hover/select:text-purple-400 transition-colors">
+                        {t('categoryLabel')}
+                    </label>
+                    <div className="relative">
+                        <Select
+                            options={categories}
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="bg-slate-950/50 border-slate-800/50 h-16 rounded-[1.25rem] focus:ring-purple-500/20 text-slate-100 font-medium border-2 focus:border-purple-500/30 appearance-none transition-all cursor-pointer"
+                        />
+                    </div>
                 </div>
 
                 {/* Sort */}
-                <div className="lg:col-span-3">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block ml-1">{t('sortLabel')}</label>
-                    <Select
-                        options={sortOptions}
-                        value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
-                        className="bg-slate-800 border-slate-700 h-12 rounded-xl focus:ring-cyan-500/20"
-                    />
+                <div className="w-full lg:w-64 group/select">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4 italic group-hover/select:text-amber-400 transition-colors">
+                        {t('sortLabel')}
+                    </label>
+                    <div className="relative">
+                        <Select
+                            options={sortOptions}
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="bg-slate-950/50 border-slate-800/50 h-16 rounded-[1.25rem] focus:ring-amber-500/20 text-slate-100 font-medium border-2 focus:border-amber-500/30 appearance-none transition-all cursor-pointer"
+                        />
+                    </div>
                 </div>
 
                 {/* Reset Button */}
-                <div className="lg:col-span-1">
+                <div className="w-full lg:w-auto">
                     <Button
                         variant="ghost"
-                        className="w-full h-12 border border-slate-700 hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/20 rounded-xl transition-all duration-300"
+                        className="w-full lg:w-16 h-16 bg-slate-950/50 border-2 border-slate-800/50 hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/50 rounded-[1.25rem] transition-all duration-300 group/reset active:scale-95 flex items-center justify-center shadow-lg hover:shadow-rose-500/10"
                         onClick={onReset}
                         title={t('resetFilters')}
                     >
-                        <X className="h-5 w-5" />
-                        <span className="lg:hidden ml-2 font-medium">{t('resetFilters')}</span>
+                        <X className="h-6 w-6 group-hover/reset:rotate-90 transition-transform duration-500" />
+                        <span className="lg:hidden ml-3 font-black uppercase italic tracking-widest text-xs">{t('resetFilters')}</span>
                     </Button>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }

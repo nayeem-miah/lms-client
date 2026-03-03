@@ -54,7 +54,22 @@
       "subtitle": "Share your knowledge with millions of students worldwide. Join our community of expert instructors and earn money doing what you love.",
       "button": "Start Teaching Today"
     },
-    "watchDemo": "Watch Demo"
+    "watchDemo": "Watch Demo",
+    "categories": {
+      "title": "Explore Top Categories",
+      "subtitle": "Choose from a wide range of subjects to start your learning journey"
+    },
+    "trustedBy": {
+      "title": "Trusted by teams at"
+    },
+    "testimonials": {
+      "title": "What Our Students Say",
+      "subtitle": "Join thousands of satisfied learners who have transformed their careers"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about the platform"
+    }
   },
   "Footer": {
     "description": "Empowering learners worldwide with accessible, high-quality education. Join our community today.",

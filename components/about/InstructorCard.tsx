@@ -9,24 +9,24 @@ interface InstructorCardProps {
 
 export default function InstructorCard({ instructor }: InstructorCardProps) {
     return (
-        <div className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+        <div className="bg-slate-950 border border-slate-800 rounded-3xl shadow-2xl hover:shadow-cyan-500/10 hover:border-cyan-500/30 transition-all duration-500 overflow-hidden group">
             {/* Instructor Image */}
-            <div className="relative h-64 bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden">
+            <div className="relative h-72 bg-slate-900 overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-40 h-40 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white text-5xl font-bold">
+                    <div className="w-44 h-44 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-white text-5xl font-black italic shadow-2xl shadow-cyan-500/20 group-hover:scale-105 transition-transform duration-500">
                         {instructor.name.split(' ').map(n => n[0]).join('')}
                     </div>
                 </div>
                 {/* Image overlay on hover */}
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-sm flex items-center justify-center gap-4">
                     {instructor.socialLinks?.twitter && (
                         <a
                             href={instructor.socialLinks.twitter}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-blue-400 hover:text-white transition-colors"
+                            className="w-12 h-12 bg-slate-900 border border-slate-700 text-slate-300 rounded-full flex items-center justify-center hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all duration-300"
                         >
-                            <Twitter size={20} />
+                            <Twitter size={22} />
                         </a>
                     )}
                     {instructor.socialLinks?.linkedin && (
@@ -34,9 +34,9 @@ export default function InstructorCard({ instructor }: InstructorCardProps) {
                             href={instructor.socialLinks.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors"
+                            className="w-12 h-12 bg-slate-900 border border-slate-700 text-slate-300 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300"
                         >
-                            <Linkedin size={20} />
+                            <Linkedin size={22} />
                         </a>
                     )}
                     {instructor.socialLinks?.github && (
@@ -44,50 +44,40 @@ export default function InstructorCard({ instructor }: InstructorCardProps) {
                             href={instructor.socialLinks.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-800 hover:text-white transition-colors"
+                            className="w-12 h-12 bg-slate-900 border border-slate-700 text-slate-300 rounded-full flex items-center justify-center hover:bg-white hover:text-slate-950 hover:border-white transition-all duration-300"
                         >
-                            <Github size={20} />
-                        </a>
-                    )}
-                    {instructor.socialLinks?.website && (
-                        <a
-                            href={instructor.socialLinks.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-colors"
-                        >
-                            <ExternalLink size={20} />
+                            <Github size={22} />
                         </a>
                     )}
                 </div>
             </div>
 
             {/* Instructor Info */}
-            <div className="p-6">
-                <h3 className="text-2xl font-bold mb-1">{instructor.name}</h3>
-                <p className="text-blue-600 font-medium mb-3">{instructor.title}</p>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{instructor.bio}</p>
+            <div className="p-8">
+                <h3 className="text-2xl font-black text-slate-100 mb-1 italic tracking-tight group-hover:text-cyan-400 transition-colors">{instructor.name}</h3>
+                <p className="text-cyan-500 font-bold text-sm uppercase tracking-widest mb-4 italic">{instructor.title}</p>
+                <p className="text-slate-400 text-sm mb-6 line-clamp-3 font-medium leading-relaxed">{instructor.bio}</p>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-semibold">{instructor.rating}</span>
+                <div className="flex items-center gap-6 mb-6 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <div className="flex items-center gap-2">
+                        <Star className="w-4 h-4 fill-cyan-400 text-cyan-400" />
+                        <span className="text-slate-200">{instructor.rating}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        <span>{(instructor.students / 1000).toFixed(1)}K students</span>
+                    <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-slate-500" />
+                        <span className="text-slate-200">{(instructor.students / 1000).toFixed(1)}K</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                        <BookOpen className="w-4 h-4" />
-                        <span>{instructor.courses} courses</span>
+                    <div className="flex items-center gap-2">
+                        <BookOpen className="w-4 h-4 text-slate-500" />
+                        <span className="text-slate-200">{instructor.courses}</span>
                     </div>
                 </div>
 
                 {/* Expertise Tags */}
                 <div className="flex flex-wrap gap-2">
                     {instructor.expertise.slice(0, 4).map((skill, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
+                        <Badge key={index} variant="secondary" className="bg-slate-900 text-slate-400 border-slate-800 text-[10px] uppercase font-black tracking-tighter px-2 py-0.5">
                             {skill}
                         </Badge>
                     ))}

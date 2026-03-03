@@ -22,160 +22,166 @@ export const ProfilePage = () => {
     if (!user) return <div className="flex items-center justify-center min-h-screen">Loading profile...</div>
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-8"
-            >
-                {/* Header Section */}
-                <div className="relative">
-                    <div className="h-48 w-full rounded-2xl bg-gradient-to-r from-primary-600 to-indigo-600 shadow-lg" />
-                    <div className="absolute -bottom-12 left-8 flex items-end space-x-6">
-                        <div className="relative group">
-                            <Avatar
-                                src={user.profilePhoto}
-                                alt={user.name}
-                                size="xl"
-                                className="border-4 border-white shadow-xl ring-2 ring-primary-500/20"
-                            />
-                            <button className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-lg border border-slate-100 hover:bg-slate-50 transition-colors">
-                                <Camera className="h-4 w-4 text-slate-600" />
-                            </button>
+        <div className="min-h-screen bg-slate-950">
+            <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-8"
+                >
+                    {/* Header Section */}
+                    <div className="relative">
+                        <div className="h-48 w-full rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700 shadow-2xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -mr-20 -mt-20" />
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl -ml-20 -mb-20" />
                         </div>
-                        <div className="pb-4">
-                            <div className="flex items-center space-x-3 mb-1">
-                                {isEditing ? (
-                                    <div className="flex items-center space-x-2">
-                                        <Input
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            className="h-8 py-0 min-w-[200px]"
-                                        />
-                                        <button onClick={handleUpdate} className="text-emerald-500 hover:text-emerald-600 p-1">
-                                            <Check className="h-5 w-5" />
-                                        </button>
-                                        <button onClick={() => setIsEditing(false)} className="text-red-500 hover:text-red-600 p-1">
-                                            <X className="h-5 w-5" />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <>
-                                        <h1 className="text-2xl font-bold text-slate-900">{user.name}</h1>
-                                        <button onClick={() => setIsEditing(true)} className="text-slate-400 hover:text-primary-600 transition-colors">
-                                            <Edit2 className="h-4 w-4" />
-                                        </button>
-                                    </>
-                                )}
+                        <div className="absolute -bottom-12 left-8 flex items-end space-x-6">
+                            <div className="relative group">
+                                <Avatar
+                                    src={user.profilePhoto}
+                                    alt={user.name}
+                                    size="xl"
+                                    className="border-4 border-slate-950 shadow-2xl ring-2 ring-cyan-500/20"
+                                />
+                                <button className="absolute bottom-0 right-0 p-2 bg-slate-900 rounded-full shadow-lg border border-slate-700 hover:bg-slate-800 transition-colors text-cyan-400">
+                                    <Camera className="h-4 w-4" />
+                                </button>
                             </div>
-                            <div className="flex items-center space-x-3 text-slate-500">
-                                <span className="flex items-center text-xs font-medium px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100">
-                                    <ShieldCheck className="h-3 w-3 mr-1" />
-                                    {user.role}
-                                </span>
-                                <span className="text-sm">Member since {new Date(user.createdAt || '').toLocaleDateString()}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Content Grid */}
-                <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* Left Column: Info Card */}
-                    <div className="space-y-6">
-                        <Card>
-                            <CardContent className="p-6">
-                                <h3 className="font-semibold text-slate-900 mb-4 flex items-center">
-                                    <User className="h-4 w-4 mr-2" />
-                                    About Me
-                                </h3>
-                                <div className="space-y-4">
-                                    <div className="flex items-center text-sm">
-                                        <Mail className="h-4 w-4 text-slate-400 mr-3 shrink-0" />
-                                        <span className="text-slate-600 truncate">{user.email}</span>
-                                    </div>
-                                    <div className="flex items-center text-sm">
-                                        <Shield className="h-4 w-4 text-slate-400 mr-3 shrink-0" />
-                                        <span className="text-slate-600">Account Role: {user.role}</span>
-                                    </div>
-                                    <div className="flex items-center text-sm">
-                                        <Clock className="h-4 w-4 text-slate-400 mr-3 shrink-0" />
-                                        <span className="text-slate-600 truncate">Last Login: Just now</span>
-                                    </div>
+                            <div className="pb-4">
+                                <div className="flex items-center space-x-3 mb-1">
+                                    {isEditing ? (
+                                        <div className="flex items-center space-x-2">
+                                            <Input
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                                className="h-8 py-0 min-w-[200px]"
+                                            />
+                                            <button onClick={handleUpdate} className="text-emerald-500 hover:text-emerald-600 p-1">
+                                                <Check className="h-5 w-5" />
+                                            </button>
+                                            <button onClick={() => setIsEditing(false)} className="text-red-500 hover:text-red-600 p-1">
+                                                <X className="h-5 w-5" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <h1 className="text-3xl font-bold text-slate-100 italic tracking-tight">{user.name}</h1>
+                                            <button onClick={() => setIsEditing(true)} className="text-slate-500 hover:text-cyan-400 transition-colors p-1">
+                                                <Edit2 className="h-4 w-4" />
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
-                                <div className="mt-6 pt-6 border-t border-slate-100">
-                                    <Button variant="outline" className="w-full text-sm">
-                                        Change Password
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {/* Stats Banner */}
-                        <div className="bg-slate-900 rounded-xl p-6 text-white overflow-hidden relative">
-                            <div className="relative z-10">
-                                <p className="text-slate-400 text-sm mb-1">Total Learning</p>
-                                <h2 className="text-3xl font-bold mb-4">২৪ ঘণ্টা</h2>
-                                <div className="flex items-center text-xs text-primary-400">
-                                    <TrendingUp className="h-3 w-3 mr-1" />
-                                    <span>+১২% This month</span>
+                                <div className="flex items-center space-x-3 text-slate-400">
+                                    <span className="flex items-center text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase tracking-wider">
+                                        <ShieldCheck className="h-3 w-3 mr-1.5" />
+                                        {user.role}
+                                    </span>
+                                    <span className="text-sm font-medium">Member since {new Date(user.createdAt || '').toLocaleDateString()}</span>
                                 </div>
                             </div>
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/10 blur-3xl -mr-16 -mt-16 rounded-full" />
                         </div>
                     </div>
 
-                    {/* Right Column: Activity/Tabs */}
-                    <div className="md:col-span-2 space-y-6">
-                        <Card>
-                            <CardContent className="p-0">
-                                <div className="flex border-b border-slate-100">
-                                    <button className="px-6 py-4 text-sm font-medium text-primary-600 border-b-2 border-primary-600">
-                                        My Courses
-                                    </button>
-                                    <button className="px-6 py-4 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors">
-                                        Achievements
-                                    </button>
-                                    <button className="px-6 py-4 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors">
-                                        History
-                                    </button>
-                                </div>
-                                <div className="p-6">
+                    {/* Content Grid */}
+                    <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Left Column: Info Card */}
+                        <div className="space-y-6">
+                            <Card className="bg-slate-900 border-slate-800 shadow-xl overflow-hidden">
+                                <CardContent className="p-6">
+                                    <h3 className="font-bold text-slate-100 mb-6 flex items-center italic">
+                                        <User className="h-4 w-4 mr-2 text-cyan-500" />
+                                        About Me
+                                    </h3>
                                     <div className="space-y-4">
-                                        <div className="flex items-center space-x-4 p-4 rounded-xl border border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer group">
-                                            <div className="h-12 w-12 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
-                                                <BookOpen className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-semibold text-slate-900 truncate">Advanced React Patters</p>
-                                                <p className="text-xs text-slate-500">85% Completed • Next lesson: Render Props</p>
-                                            </div>
-                                            <div className="w-24 bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                                <div className="bg-emerald-500 h-full w-[85%]" />
-                                            </div>
+                                        <div className="flex items-center text-sm">
+                                            <Mail className="h-4 w-4 text-slate-500 mr-3 shrink-0" />
+                                            <span className="text-slate-300 truncate font-medium">{user.email}</span>
                                         </div>
-                                        <div className="flex items-center space-x-4 p-4 rounded-xl border border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer group">
-                                            <div className="h-12 w-12 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
-                                                <BookOpen className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-semibold text-slate-900 truncate">UI/UX Design Systems</p>
-                                                <p className="text-xs text-slate-500">20% Completed • Next lesson: Color Theory</p>
-                                            </div>
-                                            <div className="w-24 bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                                <div className="bg-blue-500 h-full w-[20%]" />
-                                            </div>
+                                        <div className="flex items-center text-sm">
+                                            <Shield className="h-4 w-4 text-slate-500 mr-3 shrink-0" />
+                                            <span className="text-slate-300 font-medium">Account Role: {user.role}</span>
+                                        </div>
+                                        <div className="flex items-center text-sm">
+                                            <Clock className="h-4 w-4 text-slate-500 mr-3 shrink-0" />
+                                            <span className="text-slate-300 truncate font-medium">Last Login: Just now</span>
                                         </div>
                                     </div>
-                                    <Button variant="ghost" className="w-full mt-6 text-sm text-slate-500">
-                                        View all enrollments
-                                    </Button>
+                                    <div className="mt-6 pt-6 border-t border-slate-800">
+                                        <Button variant="outline" className="w-full text-sm border-slate-700 hover:bg-slate-800 text-slate-300">
+                                            Change Password
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            {/* Stats Banner */}
+                            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white overflow-hidden relative shadow-xl">
+                                <div className="relative z-10">
+                                    <p className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-1">Total Learning</p>
+                                    <h2 className="text-3xl font-extrabold mb-4 italic text-slate-100">২৪ ঘণ্টা</h2>
+                                    <div className="flex items-center text-xs font-bold text-cyan-400">
+                                        <TrendingUp className="h-3 w-3 mr-1.5" />
+                                        <span>+১২% This month</span>
+                                    </div>
                                 </div>
-                            </CardContent>
-                        </Card>
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-3xl -mr-16 -mt-16 rounded-full" />
+                                <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-600/5 blur-2xl -ml-12 -mb-12 rounded-full" />
+                            </div>
+                        </div>
+
+                        {/* Right Column: Activity/Tabs */}
+                        <div className="md:col-span-2 space-y-6">
+                            <Card className="bg-slate-900 border-slate-800 shadow-xl overflow-hidden">
+                                <CardContent className="p-0">
+                                    <div className="flex border-b border-slate-800 bg-slate-950/50">
+                                        <button className="px-6 py-4 text-sm font-bold text-cyan-400 border-b-2 border-cyan-400 uppercase tracking-wider italic">
+                                            My Courses
+                                        </button>
+                                        <button className="px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider">
+                                            Achievements
+                                        </button>
+                                        <button className="px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider">
+                                            History
+                                        </button>
+                                    </div>
+                                    <div className="p-6 bg-slate-900">
+                                        <div className="space-y-4">
+                                            <div className="flex items-center space-x-4 p-4 rounded-xl border border-slate-800 bg-slate-950/30 hover:bg-slate-800 hover:border-cyan-500/30 transition-all cursor-pointer group">
+                                                <div className="h-12 w-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                                                    <BookOpen className="h-6 w-6" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-bold text-slate-100 truncate">Advanced React Patters</p>
+                                                    <p className="text-xs text-slate-400 font-medium tracking-tight">85% Completed • Next: Render Props</p>
+                                                </div>
+                                                <div className="w-24 bg-slate-800 h-2 rounded-full overflow-hidden shadow-inner">
+                                                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full w-[85%] rounded-full shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center space-x-4 p-4 rounded-xl border border-slate-800 bg-slate-950/30 hover:bg-slate-800 hover:border-blue-500/30 transition-all cursor-pointer group">
+                                                <div className="h-12 w-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 border border-blue-500/20 group-hover:scale-110 transition-transform">
+                                                    <BookOpen className="h-6 w-6" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-bold text-slate-100 truncate">UI/UX Design Systems</p>
+                                                    <p className="text-xs text-slate-400 font-medium tracking-tight">20% Completed • Next: Color Theory</p>
+                                                </div>
+                                                <div className="w-24 bg-slate-800 h-2 rounded-full overflow-hidden shadow-inner">
+                                                    <div className="bg-gradient-to-r from-blue-600 to-blue-400 h-full w-[20%] rounded-full shadow-[0_0_8px_rgba(59,130,246,0.4)]" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Button variant="ghost" className="w-full mt-6 text-sm text-slate-500 hover:text-cyan-400 hover:bg-slate-800 rounded-xl transition-all">
+                                            View all enrollments
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
-                </div>
-            </motion.div>
+                </motion.div>
+            </div>
         </div>
     )
 }

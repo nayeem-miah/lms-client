@@ -33,12 +33,13 @@ export default function StatsSection() {
     ];
 
     return (
-        <section className="py-20 bg-white">
-            <div className="container mx-auto px-4">
+        <section className="py-24 bg-slate-950 relative overflow-hidden">
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-[120px]"></div>
+            <div className="container mx-auto px-4 relative z-10">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4">Our Impact in Numbers</h2>
-                        <p className="text-xl text-gray-600">
+                        <h2 className="text-4xl md:text-5xl font-black mb-4 text-slate-100 italic tracking-tight">Our Impact in Numbers</h2>
+                        <p className="text-xl text-slate-400 font-medium">
                             Growing every day, making education accessible worldwide
                         </p>
                     </div>
