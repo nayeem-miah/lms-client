@@ -48,7 +48,7 @@ export default function ReduxAuthProvider({ children }: { children: React.ReactN
     }, [userData, isSuccess, isError, isLoading, dispatch, error])
 
     if (!isMounted) {
-        return <div className="flex min-h-screen items-center justify-center bg-slate-50">
+        return <div className="flex min-h-screen items-center justify-center bg-slate-950">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
         </div>
     }

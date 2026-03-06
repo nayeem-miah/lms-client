@@ -21,33 +21,33 @@ export const ForgotPasswordPage = () => {
         setIsSubmitted(true)
     }
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
             <div className="w-full max-w-md space-y-8">
                 <div className="flex flex-col items-center">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-600 text-white mb-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-violet-600 text-white mb-4">
                         <BookOpen className="h-7 w-7" />
                     </div>
-                    <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                    <h2 className="text-3xl font-bold tracking-tight text-white">
                         {t('title')}
                     </h2>
-                    <p className="mt-2 text-sm text-slate-600 text-center">
+                    <p className="mt-2 text-sm text-slate-400 text-center">
                         {t('subtitle')}
                     </p>
                 </div>
 
-                <Card className="border-slate-200 shadow-xl">
+                <Card className="border-slate-800 bg-slate-900 shadow-2xl shadow-black/40">
                     <CardContent className="pt-6">
                         {isSubmitted ? (
                             <div className="text-center py-4">
-                                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-                                    <CheckCircle className="h-6 w-6 text-green-600" />
+                                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 border border-emerald-500/20 mb-4">
+                                    <CheckCircle className="h-6 w-6 text-emerald-400" />
                                 </div>
-                                <h3 className="text-lg font-medium text-slate-900">
+                                <h3 className="text-lg font-medium text-slate-100">
                                     {t('successTitle')}
                                 </h3>
-                                <p className="mt-2 text-sm text-slate-600">
+                                <p className="mt-2 text-sm text-slate-400">
                                     {t('successDesc')}{' '}
-                                    <span className="font-medium text-slate-900">{email}</span>
+                                    <span className="font-medium text-slate-200">{email}</span>
                                 </p>
                                 <Button
                                     variant="outline"
@@ -68,16 +68,16 @@ export const ForgotPasswordPage = () => {
                                     required
                                 />
 
-                                <Button type="submit" className="w-full  text-white bg-blue-600 hover:bg-blue-700" isLoading={isLoading}>
+                                <Button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 border-none" isLoading={isLoading}>
                                     {t('sendLink')}
                                 </Button>
                             </form>
                         )}
                     </CardContent>
-                    <CardFooter className="justify-center border-t border-slate-100 bg-slate-50/50 py-4">
+                    <CardFooter className="justify-center border-t border-slate-800/60 bg-slate-950/30 py-4">
                         <Link
                             href="/login"
-                            className="flex items-center text-sm font-medium text-slate-600 hover:text-slate-900"
+                            className="flex items-center text-sm font-medium text-slate-400 hover:text-white transition-colors"
                         >
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             {t('backToLogin')}

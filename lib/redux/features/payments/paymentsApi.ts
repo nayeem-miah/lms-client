@@ -25,7 +25,11 @@ export const paymentsApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            transformResponse: (response: any) => response.data,
+            transformResponse: (response: any) => {
+                // Response shape: { success, data: { checkoutUrl } }
+                return response?.data ?? response
+            },
+            invalidatesTags: ['Payment', 'Enrollment'],
         }),
         getMyPayments: builder.query({
             query: () => '/payments/me',

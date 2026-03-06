@@ -30,7 +30,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
 
     if (isLoading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-slate-50">
+            <div className="flex min-h-screen items-center justify-center bg-slate-950">
                 <div className="flex flex-col items-center space-y-4">
                     <Loader2 className="w-12 h-12 text-primary-600 animate-spin" />
                     <p className="text-slate-500 font-medium">Verifying access...</p>

@@ -4,10 +4,16 @@ import { apiSlice } from '../../api/apiSlice'
 export const enrollmentsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getMyEnrollments: builder.query({
-            query: () => '/enrollments/me',
+            query: (params?: any) => ({
+                url: '/enrollments/me',
+                params,
+            }),
             providesTags: ['Enrollment'],
             transformResponse: (response: any) => {
-                return response.data;
+                // Handle both array response and wrapped { data: [...] } format
+                if (Array.isArray(response)) return response
+                if (Array.isArray(response?.data)) return response.data
+                return []
             },
         }),
         createEnrollment: builder.mutation({
