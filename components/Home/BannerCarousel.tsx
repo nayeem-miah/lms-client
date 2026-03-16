@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, PlayCircle, ArrowRight, Sparkles, Globe, Zap } from 'lucide-react'
+import { ChevronLeft, ChevronRight, PlayCircle, ArrowRight, Sparkles, Globe, Zap, Brain } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Link } from '@/i18n/routing'
@@ -12,7 +12,7 @@ const BANNERS = [
         id: 1,
         title: "Master the Future of Web Development",
         subtitle: "Join over 50,000 students learning Next.js 15, React 19, and Modern AI Integration. Stay ahead of the curve with our expert-led masterclasses.",
-        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=2000&q=80",
+        image: "/banner-web-dev.png",
         badge: "Leading Platform",
         accent: "from-cyan-500 to-blue-600",
         icon: <Zap className="w-5 h-5" />,
@@ -21,7 +21,7 @@ const BANNERS = [
         id: 2,
         title: "Design Systems & UI/UX Mastery",
         subtitle: "From wireframes to premium components. Learn how to build scalable design systems that power world-class applications.",
-        image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=2000&q=80",
+        image: "/banner-design.png",
         badge: "Premium Content",
         accent: "from-purple-600 to-pink-600",
         icon: <Sparkles className="w-5 h-5" />,
@@ -30,10 +30,19 @@ const BANNERS = [
         id: 3,
         title: "Global Community of Lifelong Learners",
         subtitle: "Connect with experts and peers from around the world. Collaborate on real-world projects and build your professional network.",
-        image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2000&q=80",
+        image: "/banner-community-abstract.png",
         badge: "Community Choice",
         accent: "from-emerald-500 to-teal-600",
         icon: <Globe className="w-5 h-5" />,
+    },
+    {
+        id: 4,
+        title: "AI & Machine Learning Revolution",
+        subtitle: "Harness the power of Artificial Intelligence. Learn to build intelligent systems, LLM applications, and predictive models.",
+        image: "/banner-ai.png",
+        badge: "Trending Tech",
+        accent: "from-amber-500 to-orange-600",
+        icon: <Brain className="w-5 h-5" />,
     },
 ]
 
