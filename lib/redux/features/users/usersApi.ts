@@ -3,9 +3,17 @@ import { apiSlice } from '../../api/apiSlice'
 export const usersApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllUsers: builder.query({
-            query: () => '/users',
+            query: (params) => ({
+                url: '/users',
+                params
+            }),
             providesTags: ['User'],
-            transformResponse: (response: any) => response.data,
+            transformResponse: (response: any) => {
+                return {
+                    users: response.data,
+                    meta: response.meta
+                };
+            },
         }),
         updateUserRole: builder.mutation({
             query: ({ id, role }) => ({

@@ -31,6 +31,7 @@ import { Link } from '@/i18n/routing'
 import { useTranslations } from 'next-intl'
 import { BannerCarousel } from './BannerCarousel'
 import { useGetAllCoursesQuery } from '@/lib/redux/features/courses/coursesApi'
+import { useGetAllUsersQuery } from '@/lib/redux/features/users/usersApi'
 import { useMemo, useState } from 'react'
 
 // Mock Data
@@ -132,7 +133,9 @@ const faqs = [
 export const LandingPage = () => {
     const t = useTranslations('LandingPage')
 
-    const { data: coursesData, isLoading } = useGetAllCoursesQuery({ limit: 6, sort: '-createdAt' })
+    const { data: coursesData, isLoading: isCoursesLoading } = useGetAllCoursesQuery({ limit: 6, sort: '-createdAt' })
+    const { data: studentsData } = useGetAllUsersQuery({ role: 'STUDENT', limit: 1 })
+    const { data: instructorsData } = useGetAllUsersQuery({ role: 'INSTRUCTOR', limit: 1 })
 
     const courses = useMemo(() => {
         if (!coursesData?.courses || !Array.isArray(coursesData.courses)) return []
@@ -164,6 +167,24 @@ export const LandingPage = () => {
             }
         })
     }, [coursesData])
+    console.log("coursesData", coursesData)
+
+    const stats = useMemo(() => {
+
+        const totalCourses = coursesData?.meta?.total || courses.length;
+        const totalStudents = studentsData?.meta?.total || courses.reduce((sum, c) => sum + (c.students || 0), 0);
+        const uniqueInstructors = instructorsData?.meta?.total || new Set(courses.map(c => c.instructor.id)).size;
+        const avgRating = courses.length > 0
+            ? (courses.reduce((sum, c) => sum + (c.rating || 0), 0) / courses.length).toFixed(1)
+            : '4.8';
+
+        return [
+            { label: t('stats.activeStudents'), value: `${totalStudents}+`, icon: Users, color: 'text-cyan-400' },
+            { label: t('stats.totalCourses'), value: `${totalCourses}+`, icon: BookOpen, color: 'text-purple-400' },
+            { label: t('stats.expertInstructors'), value: `${uniqueInstructors}+`, icon: Award, color: 'text-pink-400' },
+            { label: t('stats.courseRating'), value: `${avgRating}/5`, icon: Star, color: 'text-yellow-400' },
+        ];
+    }, [coursesData, studentsData, instructorsData, courses, t]);
 
     const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -198,33 +219,36 @@ export const LandingPage = () => {
             <section className="bg-slate-900 py-24 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_50%,rgba(6,182,212,0.03),transparent)] pointer-events-none"></div>
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-                        {[
-                            { label: t('stats.activeStudents'), value: '50k+', icon: Users, color: 'text-cyan-400' },
-                            { label: t('stats.totalCourses'), value: '1,200+', icon: BookOpen, color: 'text-purple-400' },
-                            { label: t('stats.expertInstructors'), value: '300+', icon: Award, color: 'text-pink-400' },
-                            { label: t('stats.courseRating'), value: '4.8/5', icon: Star, color: 'text-yellow-400' },
-                        ].map((stat, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1, duration: 0.5 }}
-                                className="relative group p-10 rounded-[2.5rem] bg-slate-950/60 border border-slate-800 hover:border-cyan-500/30 transition-all duration-500 text-center shadow-2xl backdrop-blur-sm"
-                            >
-                                <div className={`mb-6 inline-flex rounded-2xl bg-slate-900/50 p-5 ${stat.color} border border-slate-800 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}>
-                                    <stat.icon className="h-8 w-8" />
-                                </div>
-                                <div className="text-4xl font-black text-white italic tracking-tighter mb-2">
-                                    {stat.value}
-                                </div>
-                                <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
-                                    {stat.label}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
+                    {isCoursesLoading ? (
+                        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+                            {[1, 2, 3, 4].map((i) => (
+                                <div key={i} className="h-48 rounded-[2.5rem] bg-slate-800/50 animate-pulse border border-slate-700/50" />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+                            {stats.map((stat, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                                    className="relative group p-10 rounded-[2.5rem] bg-slate-950/60 border border-slate-800 hover:border-cyan-500/30 transition-all duration-500 text-center shadow-2xl backdrop-blur-sm"
+                                >
+                                    <div className={`mb-6 inline-flex rounded-2xl bg-slate-900/50 p-5 ${stat.color} border border-slate-800 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}>
+                                        <stat.icon className="h-8 w-8" />
+                                    </div>
+                                    <div className="text-4xl font-black text-white italic tracking-tighter mb-2">
+                                        {stat.value}
+                                    </div>
+                                    <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-relaxed">
+                                        {stat.label}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -360,7 +384,7 @@ export const LandingPage = () => {
                         </Link>
                     </div>
 
-                    {isLoading ? (
+                    {isCoursesLoading ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                             {[1, 2, 3, 4, 5, 6].map((i) => (
                                 <div key={i} className="h-[450px] bg-slate-900 animate-pulse rounded-[2.5rem] border border-slate-800 shadow-xl" />

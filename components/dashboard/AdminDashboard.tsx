@@ -1,12 +1,16 @@
 "use client"
 import { useGetDashboardSummaryQuery } from '@/lib/redux/features/dashboard/dashboardApi'
+import { useGetAllUsersQuery } from '@/lib/redux/features/users/usersApi'
+import { useGetRevenueStatsQuery } from '@/lib/redux/features/payments/paymentsApi'
 import { motion } from 'framer-motion'
 import { Users, BookOpen, DollarSign, TrendingUp, UserCheck, AlertCircle, BarChart3, Settings } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { useTranslations } from 'next-intl'
+import { useMemo } from 'react'
 import type { StatsCardProps } from '@/types/dashboard'
 
-const statsData = [
+// Fallback mock data
+const MOCK_STATS_DATA = [
     { name: 'Jan', users: 400, revenue: 2400, courses: 24 },
     { name: 'Feb', users: 300, revenue: 1398, courses: 22 },
     { name: 'Mar', users: 600, revenue: 9800, courses: 29 },
@@ -15,15 +19,37 @@ const statsData = [
     { name: 'Jun', users: 900, revenue: 3800, courses: 42 },
 ]
 
-const userDistribution = [
-    { name: 'Student', value: 850, color: '#06b6d4' },
-    { name: 'Instructor', value: 45, color: '#8b5cf6' },
-    { name: 'Admin', value: 5, color: '#f59e0b' },
-]
+
 
 export default function AdminDashboard() {
     const t = useTranslations('Dashboard.admin')
     const { data: summary, isLoading } = useGetDashboardSummaryQuery(undefined)
+    
+    // Fetch counts for each role
+    const { data: studentsData } = useGetAllUsersQuery({ role: 'STUDENT', limit: 1 })
+    const { data: instructorsData } = useGetAllUsersQuery({ role: 'INSTRUCTOR', limit: 1 })
+    const { data: adminsData } = useGetAllUsersQuery({ role: 'ADMIN', limit: 1 })
+    
+    // Fetch monthly revenue stats
+    const { data: revenueStats } = useGetRevenueStatsQuery(undefined)
+
+    const statsData = useMemo(() => {
+        if (revenueStats && Array.isArray(revenueStats) && revenueStats.length > 0) {
+            return revenueStats.map((item: any) => ({
+                name: item.month, // Assumes backend returns { month: 'Jan', revenue: 1000 }
+                revenue: item.revenue || item.amount || 0,
+                users: item.users || 0, // Fallback to 0 if not provided
+                courses: item.courses || 0
+            }));
+        }
+        return MOCK_STATS_DATA;
+    }, [revenueStats])
+
+    const userDistribution = useMemo(() => [
+        { name: 'Student', value: studentsData?.meta?.total || 0, color: '#06b6d4' },
+        { name: 'Instructor', value: instructorsData?.meta?.total || 0, color: '#8b5cf6' },
+        { name: 'Admin', value: adminsData?.meta?.total || 0, color: '#f59e0b' },
+    ], [studentsData, instructorsData, adminsData])
 
     return (
         <div className="space-y-6">
