@@ -21,13 +21,14 @@ import { toast } from 'react-hot-toast'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 
 export default function UsersManagementPage() {
-    const { data: users, isLoading, error } = useGetAllUsersQuery({})
+    const { data: userData, isLoading, error } = useGetAllUsersQuery({})
     const [deleteUser] = useDeleteUserMutation()
     const [updateUserRole] = useUpdateUserRoleMutation()
     const [searchQuery, setSearchQuery] = useState('')
 
+    const users = userData?.users || []
+
     const filteredUsers = useMemo(() => {
-        if (!users) return []
         return users.filter((user: User) =>
             user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             user.email.toLowerCase().includes(searchQuery.toLowerCase())
