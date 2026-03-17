@@ -163,6 +163,7 @@
       "paymentHistory": "পেমেন্ট ইতিহাস",
       "leaderboard": "লিডারবোর্ড",
       "certificates": "সার্টিফিকেট",
+      "enrollmentHistory": "এনরোলমেন্ট ইতিহাস",
       "learningPlatform": "লার্নিং প্ল্যাটফর্ম"
     },
     "layout": {
@@ -189,6 +190,7 @@
       },
       "myCourses": "আমার কোর্সসমূহ",
       "recentActivity": "সাম্প্রতিক কার্যকলাপ",
+      "noRecentActivity": "কোন সাম্প্রতিক কার্যকলাপ পাওয়া যায়নি।",
       "loading": "লোড হচ্ছে...",
       "noCourses": "কোন কোর্স পাওয়া যায়নি।",
       "students": "শিক্ষার্থী",
@@ -244,7 +246,18 @@
         "distribution": "ব্যবহারকারী বন্টন"
       },
       "recentActivity": "সাম্প্রতিক কার্যকলাপ",
-      "systemAlerts": "সিস্টেম অ্যালার্ট"
+      "noRecentActivity": "কোন সাম্প্রতিক কার্যকলাপ পাওয়া যায়নি।",
+      "systemAlerts": "সিস্টেম অ্যালার্ট",
+      "activities": {
+        "newEnrollment": "নতুন কোর্সে ইনরোল করেছে",
+        "courseCompleted": "কোর্স সম্পন্ন করেছে",
+        "assignmentSubmitted": "অ্যাসাইনমেন্ট জমা দিয়েছে",
+        "newReview": "নতুন রিভিউ পাওয়া গেছে",
+        "newTeacher": "প্রশিক্ষক হিসেবে যোগ দিয়েছে",
+        "minsAgo": "মিনিট আগে",
+        "hourAgo": "ঘণ্টা আগে",
+        "hoursAgo": "ঘণ্টা আগে"
+      }
     }
   },
   "CourseListing": {

@@ -98,3 +98,11 @@ export interface DashboardSummary {
   totalCourses: number;
   totalRevenue: number;
 }
+
+export interface Activity {
+  _id: string;
+  type: 'QUESTION' | 'ASSIGNMENT' | 'REVIEW' | 'STUDENT' | 'ENROLLMENT';
+  userName?: string;
+  courseTitle?: string;
+  createdAt: string;
+}

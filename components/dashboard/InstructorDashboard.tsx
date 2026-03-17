@@ -1,7 +1,8 @@
 "use client"
 import { Link } from '@/i18n/routing'
 import { useGetMyCoursesQuery } from '@/lib/redux/features/courses/coursesApi'
-import { Course } from '@/types/api'
+import { useGetInstructorActivitiesQuery } from '@/lib/redux/features/dashboard/dashboardApi'
+import { Course, Activity } from '@/types/api'
 import type { StatsCardProps } from '@/types/dashboard'
 import { motion } from 'framer-motion'
 import { BarChart3, BookOpen, CheckCircle2, DollarSign, Eye, MessageSquare, Plus, Star, TrendingUp, Users } from 'lucide-react'
@@ -243,29 +244,76 @@ function MyCourses({ courses, isLoading }: { courses: Course[], isLoading: boole
 function RecentActivity() {
     const t = useTranslations('Dashboard.instructor')
     const tAct = useTranslations('Dashboard.instructor.activities')
-    const activities = [
-        { icon: MessageSquare, text: tAct('newQuestion'), time: `10 ${tAct('minsAgo')}`, color: 'bg-cyan-500' },
-        { icon: CheckCircle2, text: tAct('assignmentSubmitted'), time: `30 ${tAct('minsAgo')}`, color: 'bg-emerald-500' },
-        { icon: Star, text: tAct('newReview'), time: `1 ${tAct('hourAgo')}`, color: 'bg-yellow-500' },
-        { icon: Users, text: tAct('newStudent'), time: `2 ${tAct('hoursAgo')}`, color: 'bg-purple-500' },
-    ]
+    const { data: activitiesData, isLoading } = useGetInstructorActivitiesQuery(undefined)
+
+    const getActivityConfig = (type: string) => {
+        switch (type.toUpperCase()) {
+            case 'QUESTION':
+                return { icon: MessageSquare, color: 'bg-cyan-500', text: tAct('newQuestion') }
+            case 'ASSIGNMENT':
+                return { icon: CheckCircle2, color: 'bg-emerald-500', text: tAct('assignmentSubmitted') }
+            case 'REVIEW':
+                return { icon: Star, color: 'bg-yellow-500', text: tAct('newReview') }
+            case 'STUDENT':
+            case 'ENROLLMENT':
+                return { icon: Users, color: 'bg-purple-500', text: tAct('newStudent') }
+            default:
+                return { icon: BookOpen, color: 'bg-slate-500', text: 'New Activity' }
+        }
+    }
+
+    const formatTime = (time: string) => {
+        // Simple logic for "mins ago", "hour ago", etc.
+        // In a real app, use a lib like date-fns/formatDistanceToNow
+        const now = new Date();
+        const past = new Date(time);
+        const diffMs = now.getTime() - past.getTime();
+        const diffMins = Math.floor(diffMs / (1000 * 60));
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+        if (diffMins < 60) return `${diffMins} ${tAct('minsAgo')}`;
+        if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? tAct('hourAgo') : tAct('hoursAgo')}`;
+        return past.toLocaleDateString();
+    }
 
     return (
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}
             className="bg-slate-800 border border-slate-700 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('recentActivity')}</h3>
             <div className="space-y-4">
-                {activities.map((activity, i) => (
-                    <div key={i} className="flex items-start space-x-3">
-                        <div className={`p-2 rounded-lg ${activity.color} bg-opacity-10`}>
-                            <activity.icon className={`w-4 h-4 ${activity.color.replace('bg-', 'text-')}`} />
-                        </div>
-                        <div className="flex-1">
-                            <p className="text-sm text-slate-200">{activity.text}</p>
-                            <p className="text-xs text-slate-500 mt-1">{activity.time}</p>
-                        </div>
+                {isLoading ? (
+                    <div className="space-y-3">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="flex items-center space-x-3 animate-pulse">
+                                <div className="p-4 bg-slate-700 rounded-lg" />
+                                <div className="flex-1 space-y-2">
+                                    <div className="h-3 bg-slate-700 rounded w-3/4" />
+                                    <div className="h-2 bg-slate-700 rounded w-1/4" />
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                ) : !activitiesData || activitiesData.length === 0 ? (
+                    <p className="text-slate-500 text-sm py-4">{t('noRecentActivity') || 'No recent activity.'}</p>
+                ) : (
+                    activitiesData.slice(0, 5).map((activity: Activity, i: number) => {
+                        const config = getActivityConfig(activity.type)
+                        return (
+                            <div key={activity._id || i} className="flex items-start space-x-3">
+                                <div className={`p-2 rounded-lg ${config.color} bg-opacity-10 flex-shrink-0`}>
+                                    <config.icon className={`w-4 h-4 ${config.color.replace('bg-', 'text-')}`} />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-sm text-slate-200">
+                                        <span className="font-semibold">{activity.userName || ''}</span> {config.text}
+                                        {activity.courseTitle ? ` in ${activity.courseTitle}` : ''}
+                                    </p>
+                                    <p className="text-xs text-slate-500 mt-1">{formatTime(activity.createdAt)}</p>
+                                </div>
+                            </div>
+                        )
+                    })
+                )}
             </div>
         </motion.div>
     )

@@ -78,6 +78,7 @@ export default function DashboardLayout({
             <main className="flex-1 overflow-y-auto">
                 {/* Header */}
                 <Header
+                    user={user}
                     currentRole={currentRole}
                     roleConfig={roleConfig}
                     onMenuClick={() => setIsMobileSidebarOpen(true)}
@@ -105,6 +106,7 @@ function Sidebar({ currentRole }: { currentRole: UserRole }) {
                 ...commonItems,
                 { icon: 'Users', label: t('users'), href: '/dashboard/users' },
                 { icon: 'BookOpen', label: t('courses'), href: '/dashboard/courses-management' },
+                { icon: 'Backpack', label: t('enrollmentHistory'), href: '/dashboard/enrollments' },
                 { icon: 'DollarSign', label: t('revenue'), href: '/dashboard/revenue' },
                 { icon: 'Settings', label: t('settings'), href: '/dashboard/settings' },
             ]
@@ -190,6 +192,7 @@ function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClos
                 ...commonItems,
                 { icon: 'Users', label: t('users'), href: '/dashboard/users' },
                 { icon: 'BookOpen', label: t('courses'), href: '/dashboard/courses-management' },
+                { icon: 'Backpack', label: t('enrollmentHistory'), href: '/dashboard/enrollments' },
                 { icon: 'DollarSign', label: t('revenue'), href: '/dashboard/revenue' },
                 { icon: 'Settings', label: t('settings'), href: '/dashboard/settings' },
             ]
@@ -276,7 +279,10 @@ function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClos
     )
 }
 
-function Header({ currentRole, roleConfig, onMenuClick }: {
+import { Avatar } from '@/components/ui/Avater'
+
+function Header({ user, currentRole, roleConfig, onMenuClick }: {
+    user: any
     currentRole: UserRole
     roleConfig: { [key in UserRole]: { name: string, icon: any, color: string } }
     onMenuClick: () => void
@@ -311,12 +317,18 @@ function Header({ currentRole, roleConfig, onMenuClick }: {
 
                         <button className="relative p-2 hover:bg-slate-800 rounded-lg transition-colors">
                             <Bell className="w-5 h-5 text-slate-400" />
-                            <span className="absolute top-1 right-1 w-2 h-2 bg-cyan-500 rounded-full"></span>
+                            <span className="absolute top-1 right-1 w-2 h-2 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-full"></span>
                         </button>
 
-                        <div className={`w-9 h-9 bg-gradient-to-br ${roleConfig[currentRole].color} rounded-full flex items-center justify-center text-sm font-bold cursor-pointer`}>
-                            {currentRole === 'ADMIN' ? 'A' : currentRole === 'INSTRUCTOR' ? 'I' : 'S'}
-                        </div>
+                        <Link href="/profile">
+                            <Avatar 
+                                src={user?.profilePhoto} 
+                                alt={user?.name} 
+                                fallback={user?.name} 
+                                size="sm" 
+                                className="cursor-pointer border border-white/10 hover:border-cyan-500/50 transition-all"
+                            />
+                        </Link>
                     </div>
                 </div>
             </div>

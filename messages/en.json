@@ -163,6 +163,7 @@
       "paymentHistory": "Payment History",
       "leaderboard": "Leaderboard",
       "certificates": "Certificates",
+      "enrollmentHistory": "Enrollment History",
       "learningPlatform": "Learning Platform"
     },
     "layout": {
@@ -189,6 +190,7 @@
       },
       "myCourses": "My Courses",
       "recentActivity": "Recent Activity",
+      "noRecentActivity": "No recent activity found.",
       "loading": "Loading...",
       "noCourses": "No courses found.",
       "students": "Students",
@@ -244,7 +246,18 @@
         "distribution": "User Distribution"
       },
       "recentActivity": "Recent Activity",
-      "systemAlerts": "System Alerts"
+      "noRecentActivity": "No recent activity found.",
+      "systemAlerts": "System Alerts",
+      "activities": {
+        "newEnrollment": "enrolled in a new course",
+        "courseCompleted": "completed a course",
+        "assignmentSubmitted": "submitted an assignment",
+        "newReview": "received a new review",
+        "newTeacher": "joined as a teacher",
+        "minsAgo": "mins ago",
+        "hourAgo": "hour ago",
+        "hoursAgo": "hours ago"
+      }
     }
   },
   "CourseListing": {

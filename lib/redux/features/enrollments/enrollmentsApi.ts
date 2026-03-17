@@ -33,7 +33,39 @@ export const enrollmentsApi = apiSlice.injectEndpoints({
                 return response.data;
             },
         }),
+        getInstructorEnrollments: builder.query({
+            query: (params?: any) => ({
+                url: '/instructor/enrollments',
+                params,
+            }),
+            providesTags: ['Enrollment'],
+            transformResponse: (response: any) => {
+                return {
+                    enrollments: response.data,
+                    meta: response.meta
+                };
+            },
+        }),
+        getAllEnrollments: builder.query({
+            query: (params?: any) => ({
+                url: '/admin/enrollments',
+                params,
+            }),
+            providesTags: ['Enrollment'],
+            transformResponse: (response: any) => {
+                return {
+                    enrollments: response.data,
+                    meta: response.meta
+                };
+            },
+        }),
     }),
 })
 
-export const { useGetMyEnrollmentsQuery, useCreateEnrollmentMutation, useCheckEnrollmentQuery } = enrollmentsApi
+export const {
+    useGetMyEnrollmentsQuery,
+    useCreateEnrollmentMutation,
+    useCheckEnrollmentQuery,
+    useGetInstructorEnrollmentsQuery,
+    useGetAllEnrollmentsQuery
+} = enrollmentsApi

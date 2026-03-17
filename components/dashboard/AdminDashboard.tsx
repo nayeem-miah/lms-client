@@ -1,7 +1,8 @@
 "use client"
-import { useGetDashboardSummaryQuery } from '@/lib/redux/features/dashboard/dashboardApi'
+import { useGetDashboardSummaryQuery, useGetAdminActivitiesQuery } from '@/lib/redux/features/dashboard/dashboardApi'
 import { useGetAllUsersQuery } from '@/lib/redux/features/users/usersApi'
 import { useGetRevenueStatsQuery } from '@/lib/redux/features/payments/paymentsApi'
+import { Activity } from '@/types/api'
 import { motion } from 'framer-motion'
 import { Users, BookOpen, DollarSign, TrendingUp, UserCheck, AlertCircle, BarChart3, Settings } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
@@ -177,28 +178,67 @@ function StatsCard({ icon: Icon, label, value, trend, color, delay }: StatsCardP
 
 function RecentActivity() {
     const t = useTranslations('Dashboard.admin')
-    const activities = [
-        { user: 'Rahul Ahmed', action: 'enrolled in a new course', time: '5 mins ago' },
-        { user: 'Sarah Khan', action: 'completed a course', time: '15 mins ago' },
-        { user: 'Tanvir Islam', action: 'submitted an assignment', time: '30 mins ago' },
-    ]
+    const tAct = useTranslations('Dashboard.admin.activities')
+    const { data: activitiesData, isLoading } = useGetAdminActivitiesQuery(undefined)
+
+    const getActivityText = (type: string) => {
+        switch (type.toUpperCase()) {
+            case 'ENROLLMENT': return tAct('newEnrollment')
+            case 'COURSE_COMPLETED': return tAct('courseCompleted')
+            case 'ASSIGNMENT': return tAct('assignmentSubmitted')
+            case 'REVIEW': return tAct('newReview')
+            case 'TEACHER': return tAct('newTeacher')
+            default: return 'performed an action'
+        }
+    }
+
+    const formatTime = (time: string) => {
+        const now = new Date();
+        const past = new Date(time);
+        const diffMs = now.getTime() - past.getTime();
+        const diffMins = Math.floor(diffMs / (1000 * 60));
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+        if (diffMins < 60) return `${diffMins} ${tAct('minsAgo')}`;
+        if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? tAct('hourAgo') : tAct('hoursAgo')}`;
+        return past.toLocaleDateString();
+    }
 
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
             className="bg-slate-800 border border-slate-700 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('recentActivity')}</h3>
             <div className="space-y-4">
-                {activities.map((activity, i) => (
-                    <div key={i} className="flex items-start space-x-3 pb-3 border-b border-slate-700 last:border-0">
-                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-xs font-bold">
-                            {activity.user.charAt(0)}
-                        </div>
-                        <div className="flex-1">
-                            <p className="text-sm text-slate-200"><span className="font-semibold">{activity.user}</span> {activity.action}</p>
-                            <p className="text-xs text-slate-500 mt-1">{activity.time}</p>
-                        </div>
+                {isLoading ? (
+                    <div className="space-y-4">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="flex items-center space-x-3 animate-pulse pb-3 border-b border-slate-700 last:border-0">
+                                <div className="w-8 h-8 bg-slate-700 rounded-full" />
+                                <div className="flex-1 space-y-2">
+                                    <div className="h-3 bg-slate-700 rounded w-3/4" />
+                                    <div className="h-2 bg-slate-700 rounded w-1/4" />
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                ) : !activitiesData || activitiesData.length === 0 ? (
+                    <p className="text-slate-500 text-sm py-4">{t('noRecentActivity')}</p>
+                ) : (
+                    activitiesData.slice(0, 5).map((activity: Activity, i: number) => (
+                        <div key={activity._id || i} className="flex items-start space-x-3 pb-3 border-b border-slate-700 last:border-0">
+                            <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                                {(activity.userName || 'U').charAt(0)}
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm text-slate-200">
+                                    <span className="font-semibold text-white">{activity.userName}</span> {getActivityText(activity.type)}
+                                    {activity.courseTitle ? ` in ${activity.courseTitle}` : ''}
+                                </p>
+                                <p className="text-xs text-slate-500 mt-1">{formatTime(activity.createdAt)}</p>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </motion.div>
     )
