@@ -1,22 +1,77 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAppSelector } from '@/lib/redux/hooks'
 import { selectCurrentUser } from '@/lib/redux/features/auth/authSlice'
 import { Avatar } from '../ui/Avater'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { Card, CardContent } from '../ui/Card'
-import { User, Mail, Shield, Camera, Edit2, Check, X, ShieldCheck, Clock, BookOpen } from 'lucide-react'
+import { User, Mail, Shield, Camera, Edit2, Check, X, ShieldCheck, Clock, BookOpen, Lock, Loader2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useUpdateProfileMutation } from '@/lib/redux/features/users/usersApi'
+import { useChangePasswordMutation } from '@/lib/redux/features/auth/authApi'
+import { Modal } from '../ui/Model'
+import toast from 'react-hot-toast'
 
 export const ProfilePage = () => {
     const user = useAppSelector(selectCurrentUser)
     const [isEditing, setIsEditing] = useState(false)
     const [name, setName] = useState(user?.name || '')
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+    const [passwords, setPasswords] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' })
 
-    const handleUpdate = () => {
-        // API call would go here
-        setIsEditing(false)
+    const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation()
+    const [changePassword, { isLoading: isChangingPassword }] = useChangePasswordMutation()
+
+    useEffect(() => {
+        if (user?.name) {
+            setName(user.name)
+        }
+    }, [user])
+
+    const handleUpdate = async () => {
+        if (!name.trim() || name === user?.name) {
+            setIsEditing(false)
+            return
+        }
+
+        try {
+            const formData = new FormData()
+            formData.append('name', name)
+            
+            await updateProfile(formData).unwrap()
+            toast.success('Profile updated successfully!')
+            setIsEditing(false)
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to update profile')
+        }
+    }
+
+    const handleChangePassword = async (e: React.FormEvent) => {
+        e.preventDefault()
+        
+        if (passwords.newPassword !== passwords.confirmPassword) {
+            toast.error('Passwords do not match')
+            return
+        }
+
+        if (passwords.newPassword.length < 6) {
+            toast.error('Password must be at least 6 characters')
+            return
+        }
+
+        try {
+            await changePassword({
+                oldPassword: passwords.oldPassword,
+                newPassword: passwords.newPassword
+            }).unwrap()
+            
+            toast.success('Password changed successfully!')
+            setIsPasswordModalOpen(false)
+            setPasswords({ oldPassword: '', newPassword: '', confirmPassword: '' })
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to change password')
+        }
     }
 
     if (!user) return <div className="flex items-center justify-center min-h-screen">Loading profile...</div>
@@ -55,11 +110,20 @@ export const ProfilePage = () => {
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
                                                 className="h-8 py-0 min-w-[200px]"
+                                                disabled={isUpdating}
                                             />
-                                            <button onClick={handleUpdate} className="text-emerald-500 hover:text-emerald-600 p-1">
-                                                <Check className="h-5 w-5" />
+                                            <button 
+                                                onClick={handleUpdate} 
+                                                className="text-emerald-500 hover:text-emerald-600 p-1 disabled:opacity-50"
+                                                disabled={isUpdating}
+                                            >
+                                                {isUpdating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Check className="h-5 w-5" />}
                                             </button>
-                                            <button onClick={() => setIsEditing(false)} className="text-red-500 hover:text-red-600 p-1">
+                                            <button 
+                                                onClick={() => setIsEditing(false)} 
+                                                className="text-red-500 hover:text-red-600 p-1 disabled:opacity-50"
+                                                disabled={isUpdating}
+                                            >
                                                 <X className="h-5 w-5" />
                                             </button>
                                         </div>
@@ -108,7 +172,11 @@ export const ProfilePage = () => {
                                         </div>
                                     </div>
                                     <div className="mt-6 pt-6 border-t border-slate-800">
-                                        <Button variant="outline" className="w-full text-sm border-slate-700 hover:bg-slate-800 text-slate-300">
+                                        <Button 
+                                            variant="outline" 
+                                            className="w-full text-sm border-slate-700 hover:bg-slate-800 text-slate-300"
+                                            onClick={() => setIsPasswordModalOpen(true)}
+                                        >
                                             Change Password
                                         </Button>
                                     </div>
@@ -182,6 +250,77 @@ export const ProfilePage = () => {
                     </div>
                 </motion.div>
             </div>
+
+            {/* Change Password Modal */}
+            <Modal
+                isOpen={isPasswordModalOpen}
+                onClose={() => setIsPasswordModalOpen(false)}
+                title="Change Password"
+                size="md"
+            >
+                <form onSubmit={handleChangePassword} className="space-y-5">
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-slate-400 uppercase tracking-wider block">Current Password</label>
+                        <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                            <Input
+                                type="password"
+                                placeholder="••••••••"
+                                className="pl-10"
+                                value={passwords.oldPassword}
+                                onChange={(e) => setPasswords({ ...passwords, oldPassword: e.target.value })}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-slate-400 uppercase tracking-wider block">New Password</label>
+                        <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                            <Input
+                                type="password"
+                                placeholder="••••••••"
+                                className="pl-10"
+                                value={passwords.newPassword}
+                                onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-slate-400 uppercase tracking-wider block">Confirm New Password</label>
+                        <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                            <Input
+                                type="password"
+                                placeholder="••••••••"
+                                className="pl-10"
+                                value={passwords.confirmPassword}
+                                onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="pt-4 flex space-x-3">
+                        <Button 
+                            type="button" 
+                            variant="outline" 
+                            className="flex-1 border-slate-800 text-slate-400 hover:bg-slate-800"
+                            onClick={() => setIsPasswordModalOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button 
+                            type="submit" 
+                            className="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white"
+                            disabled={isChangingPassword}
+                        >
+                            {isChangingPassword ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                            Update Password
+                        </Button>
+                    </div>
+                </form>
+            </Modal>
         </div>
     )
 }
@@ -205,3 +344,4 @@ function TrendingUp(props: any) {
         </svg>
     )
 }
+

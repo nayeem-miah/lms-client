@@ -30,6 +30,17 @@ export const usersApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['User'],
         }),
+        updateProfile: builder.mutation({
+            query: (payload) => ({
+                url: '/users/update-profile',
+                method: 'PATCH',
+                body: payload,
+            }),
+            invalidatesTags: ['User'],
+            transformResponse: (response: any) => {
+                return response.data;
+            },
+        }),
     }),
 })
 
@@ -37,4 +48,5 @@ export const {
     useGetAllUsersQuery,
     useUpdateUserRoleMutation,
     useDeleteUserMutation,
+    useUpdateProfileMutation,
 } = usersApi

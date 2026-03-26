@@ -1,7 +1,20 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useGetAllCoursesQuery } from '@/lib/redux/features/courses/coursesApi';
+import { useGetAllUsersQuery } from '@/lib/redux/features/users/usersApi';
 
 export default function HeroSection() {
     const t = useTranslations('About.hero');
+    
+    const { data: coursesData } = useGetAllCoursesQuery({ limit: 1 });
+    const { data: studentsData } = useGetAllUsersQuery({ role: 'STUDENT', limit: 1 });
+    const { data: instructorsData } = useGetAllUsersQuery({ role: 'INSTRUCTOR', limit: 1 });
+
+    const totalStudents = studentsData?.meta?.total ? `${(studentsData.meta.total / 1000).toFixed(0)}K+` : '50K+';
+    const totalInstructors = instructorsData?.meta?.total ? `${instructorsData.meta.total}+` : '500+';
+    const totalCourses = coursesData?.meta?.total ? `${coursesData.meta.total}+` : '1000+';
+
     return (
         <section className="relative bg-slate-950 text-white py-24 overflow-hidden border-b border-slate-800">
             {/* Background Pattern */}
@@ -29,15 +42,21 @@ export default function HeroSection() {
 
                     <div className="flex flex-wrap justify-center gap-6 pt-8">
                         <div className="bg-slate-900/50 border border-slate-800 backdrop-blur-md rounded-2xl px-10 py-6 shadow-2xl hover:border-cyan-500/30 transition-all group">
-                            <div className="text-4xl font-black text-slate-100 italic group-hover:text-cyan-400 transition-colors">50K+</div>
+                            <div className="text-4xl font-black text-slate-100 italic group-hover:text-cyan-400 transition-colors uppercase tracking-tighter">
+                                {totalStudents}
+                            </div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">{t('stats.activeStudents')}</div>
                         </div>
                         <div className="bg-slate-900/50 border border-slate-800 backdrop-blur-md rounded-2xl px-10 py-6 shadow-2xl hover:border-purple-500/30 transition-all group">
-                            <div className="text-4xl font-black text-slate-100 italic group-hover:text-purple-400 transition-colors">500+</div>
+                            <div className="text-4xl font-black text-slate-100 italic group-hover:text-purple-400 transition-colors uppercase tracking-tighter">
+                                {totalInstructors}
+                            </div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">{t('stats.expertInstructors')}</div>
                         </div>
                         <div className="bg-slate-900/50 border border-slate-800 backdrop-blur-md rounded-2xl px-10 py-6 shadow-2xl hover:border-cyan-500/30 transition-all group">
-                            <div className="text-4xl font-black text-slate-100 italic group-hover:text-cyan-400 transition-colors">1000+</div>
+                            <div className="text-4xl font-black text-slate-100 italic group-hover:text-cyan-400 transition-colors uppercase tracking-tighter">
+                                {totalCourses}
+                            </div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">{t('stats.qualityCourses')}</div>
                         </div>
                     </div>
@@ -45,4 +64,4 @@ export default function HeroSection() {
             </div>
         </section>
     );
-}
+}

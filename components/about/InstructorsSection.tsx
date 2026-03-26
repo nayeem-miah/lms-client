@@ -1,104 +1,31 @@
+'use client';
+
+import { useGetAllUsersQuery } from "@/lib/redux/features/users/usersApi";
 import { Instructor } from "./About";
 import InstructorCard from "./InstructorCard";
-
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
+import Link from "next/link";
 
 export default function InstructorsSection() {
-    // Mock data - Replace with API call
-    const instructors: Instructor[] = [
-        {
-            id: '1',
-            name: 'Dr. Sarah Johnson',
-            title: 'Senior Software Architect',
-            bio: 'Former Google engineer with 15+ years of experience in full-stack development and cloud architecture.',
-            avatar: '/images/instructors/sarah.jpg',
-            expertise: ['React', 'Node.js', 'AWS', 'System Design'],
-            students: 12500,
-            courses: 8,
-            rating: 4.9,
-            socialLinks: {
-                twitter: 'https://twitter.com/sarahjohnson',
-                linkedin: 'https://linkedin.com/in/sarahjohnson',
-                github: 'https://github.com/sarahjohnson',
-            },
-        },
-        {
-            id: '2',
-            name: 'Prof. Michael Chen',
-            title: 'Data Science Lead',
-            bio: 'PhD in Machine Learning with expertise in AI, deep learning, and statistical analysis. Previously at Meta.',
-            avatar: '/images/instructors/michael.jpg',
-            expertise: ['Python', 'Machine Learning', 'TensorFlow', 'Statistics'],
-            students: 15000,
-            courses: 12,
-            rating: 4.8,
-            socialLinks: {
-                twitter: 'https://twitter.com/michaelchen',
-                linkedin: 'https://linkedin.com/in/michaelchen',
-            },
-        },
-        {
-            id: '3',
-            name: 'Emily Rodriguez',
-            title: 'UX/UI Design Expert',
-            bio: 'Award-winning designer with 10+ years creating beautiful, user-centric digital experiences for Fortune 500 companies.',
-            avatar: '/images/instructors/emily.jpg',
-            expertise: ['Figma', 'UI Design', 'UX Research', 'Design Systems'],
-            students: 9800,
-            courses: 6,
-            rating: 5.0,
-            socialLinks: {
-                twitter: 'https://twitter.com/emilyrodriguez',
-                linkedin: 'https://linkedin.com/in/emilyrodriguez',
-                website: 'https://emilyrodriguez.com',
-            },
-        },
-        {
-            id: '4',
-            name: 'David Park',
-            title: 'DevOps Architect',
-            bio: 'Kubernetes expert and cloud infrastructure specialist. Built scalable systems serving millions of users.',
-            avatar: '/images/instructors/david.jpg',
-            expertise: ['Docker', 'Kubernetes', 'CI/CD', 'Terraform'],
-            students: 8500,
-            courses: 5,
-            rating: 4.9,
-            socialLinks: {
-                github: 'https://github.com/davidpark',
-                linkedin: 'https://linkedin.com/in/davidpark',
-            },
-        },
-        {
-            id: '5',
-            name: 'Lisa Thompson',
-            title: 'Mobile Development Guru',
-            bio: 'iOS and Android expert with apps downloaded over 50 million times. Former lead developer at Uber.',
-            avatar: '/images/instructors/lisa.jpg',
-            expertise: ['Swift', 'Kotlin', 'React Native', 'Flutter'],
-            students: 11200,
-            courses: 9,
-            rating: 4.9,
-            socialLinks: {
-                twitter: 'https://twitter.com/lisathompson',
-                github: 'https://github.com/lisathompson',
-            },
-        },
-        {
-            id: '6',
-            name: 'James Wilson',
-            title: 'Blockchain Specialist',
-            bio: 'Smart contract developer and Web3 pioneer. Building the decentralized future with Ethereum and Solidity.',
-            avatar: '/images/instructors/james.jpg',
-            expertise: ['Solidity', 'Ethereum', 'Web3', 'Smart Contracts'],
-            students: 7300,
-            courses: 4,
-            rating: 4.7,
-            socialLinks: {
-                twitter: 'https://twitter.com/jameswilson',
-                github: 'https://github.com/jameswilson',
-                website: 'https://jameswilson.dev',
-            },
-        },
-    ];
+    const t = useTranslations('LandingPage.instructor'); // Reusing translations
+    const { data: instructorsData, isLoading } = useGetAllUsersQuery({ role: 'INSTRUCTOR', limit: 6 });
+
+    const instructors: Instructor[] = useMemo(() => {
+        if (!instructorsData?.users) return [];
+        return instructorsData.users.map((user: any) => ({
+            id: user._id,
+            name: user.name,
+            title: user.title || 'Expert Instructor',
+            bio: user.bio || 'Experienced professional dedicated to teaching.',
+            avatar: user.profilePhoto || '',
+            expertise: user.expertise || ['General'],
+            students: user.totalStudents || 0,
+            courses: user.totalCourses || 0,
+            rating: user.ratingAvg || 4.5,
+            socialLinks: user.socialLinks || {},
+        }));
+    }, [instructorsData]);
 
     return (
         <section className="py-24 bg-slate-900 overflow-hidden relative">
@@ -112,7 +39,7 @@ export default function InstructorsSection() {
                                 Meet Our Team
                             </span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black mb-4 text-slate-100 italic tracking-tight">
+                        <h2 className="text-4xl md:text-5xl font-black mb-4 text-slate-100 italic tracking-tight uppercase">
                             World-Class Instructors
                         </h2>
                         <p className="text-xl text-slate-400 max-w-3xl mx-auto font-medium">
@@ -123,9 +50,15 @@ export default function InstructorsSection() {
 
                     {/* Instructors Grid */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-                        {instructors.map((instructor) => (
-                            <InstructorCard key={instructor.id} instructor={instructor} />
-                        ))}
+                        {isLoading ? (
+                            Array(3).fill(0).map((_, i) => (
+                                <div key={i} className="h-96 bg-slate-800 rounded-[2rem] animate-pulse border border-slate-700" />
+                            ))
+                        ) : (
+                            instructors.map((instructor) => (
+                                <InstructorCard key={instructor.id} instructor={instructor} />
+                            ))
+                        )}
                     </div>
 
                     {/* Become Instructor CTA */}
@@ -134,16 +67,15 @@ export default function InstructorsSection() {
                         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
                         <div className="relative z-10">
-                            <h3 className="text-4xl font-black mb-6 italic text-slate-100">
-                                Want to Become an Instructor?
+                            <h3 className="text-4xl font-black mb-6 italic text-slate-100 uppercase">
+                                {t('title')}
                             </h3>
                             <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto font-medium">
-                                Share your expertise with millions of students worldwide. Join our community
-                                of instructors and make an impact.
+                                {t('subtitle')}
                             </p>
-                            <button className="px-10 py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-cyan-500/25 active:scale-95 italic">
-                                Apply to Teach
-                            </button>
+                            <Link href={'/login'}> <button className="px-10 py-6 h-auto bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-cyan-500/25 active:scale-95 italic uppercase tracking-widest text-sm">
+                                {t('button')}
+                            </button></Link>
                         </div>
                     </div>
                 </div>
@@ -151,3 +83,4 @@ export default function InstructorsSection() {
         </section>
     );
 }
+

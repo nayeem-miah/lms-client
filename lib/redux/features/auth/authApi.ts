@@ -35,16 +35,6 @@ export const authApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: payload,
             }),
-            transformResponse: (response, meta, arg) => {
-                return response.data;
-            },
-        }),
-        updateProfile: builder.mutation({
-            query: (payload) => ({
-                url: '/users/update-profile',
-                method: 'PATCH',
-                body: payload,
-            }),
             transformResponse: (response: any) => {
                 return response.data;
             },
@@ -57,5 +47,4 @@ export const {
     useRegisterMutation,
     useGetMeQuery,
     useChangePasswordMutation,
-    useUpdateProfileMutation
 } = authApi;
