@@ -15,6 +15,10 @@ import { useAuth } from '@/context/AuthContext'
 import { getDeviceId } from '@/lib/utils/deviceId'
 import { useTranslations } from 'next-intl'
 import toast, { Toaster } from 'react-hot-toast'
+import { Modal } from '@/components/ui/Model'
+import { useLogoutAllMutation } from '@/lib/redux/features/auth/authApi'
+import { LogOut, ShieldAlert, Loader2 } from 'lucide-react'
+
 export const LoginPage = () => {
     const t = useTranslations('Auth.login')
     const [email, setEmail] = useState('')
@@ -23,6 +27,7 @@ export const LoginPage = () => {
     const { login, isLoading } = useAuth()
     const router = useRouter()
     const [error, setError] = useState<string | null>(null)
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -41,14 +46,6 @@ export const LoginPage = () => {
         try {
             // Get or generate a unique device ID
             const deviceId = getDeviceId();
-
-            // Log the login credentials with device ID
-            console.log('Login attempt:', {
-                email,
-                password: '***hidden***',
-                deviceId,
-                deviceName: navigator.userAgent.split('(')[1]?.split(')')[0] || 'Unknown Device'
-            });
 
             await login(email, password, deviceId)
 
@@ -82,6 +79,11 @@ export const LoginPage = () => {
                 errorMessage = err
             }
 
+            // Check for maximum device limit error
+            if (errorMessage.includes('Maximum 3 devices allowed')) {
+                setIsLogoutModalOpen(true)
+            }
+
             // Show error toast
             toast.error(errorMessage, {
                 duration: 5000,
@@ -90,6 +92,24 @@ export const LoginPage = () => {
 
             setError(errorMessage)
             setIsSubmitting(false)
+        }
+    }
+
+    const handleLogoutAll = async () => {
+        const loadingToast = toast.loading('Force logging in and clearing other sessions...')
+        try {
+            const deviceId = getDeviceId();
+            await login(email, password, deviceId, true)
+            
+            toast.dismiss(loadingToast)
+            toast.success('Successfully logged in. Other sessions have been terminated.')
+            setIsLogoutModalOpen(false)
+            
+            // Redirect after successful force login
+            router.push('/dashboard')
+        } catch (err: any) {
+            toast.dismiss(loadingToast)
+            toast.error(err?.data?.message || 'Failed to perform force login.')
         }
     }
 
@@ -284,6 +304,53 @@ export const LoginPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Logout from all devices Modal */}
+            <Modal
+                isOpen={isLogoutModalOpen}
+                onClose={() => setIsLogoutModalOpen(false)}
+                title="Device Limit Reached"
+                size="md"
+            >
+                <div className="space-y-6">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                        <div className="h-16 w-16 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-500 shadow-lg border border-amber-500/20">
+                            <ShieldAlert className="h-8 w-8" />
+                        </div>
+                        <h3 className="text-xl font-bold text-white italic uppercase tracking-tight">Maximum 3 Devices Allowed</h3>
+                        <p className="text-slate-400 text-sm font-medium leading-relaxed">
+                            You have reached the maximum number of active sessions. To continue logging in on this device, you must terminate all other active sessions across your account.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                        <Button 
+                            className="w-full bg-red-600 hover:bg-red-500 text-white font-black uppercase italic tracking-widest py-6 rounded-2xl shadow-xl shadow-red-500/10 flex items-center justify-center gap-2 group border-none transition-all active:scale-95 disabled:opacity-50"
+                            onClick={handleLogoutAll}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                            ) : (
+                                <LogOut className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+                            )}
+                            Logout From All Devices
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            className="w-full text-slate-400 font-bold uppercase italic tracking-widest text-xs hover:bg-slate-800"
+                            onClick={() => setIsLogoutModalOpen(false)}
+                            disabled={isLoading}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+
+                    <p className="text-[10px] text-slate-600 text-center uppercase tracking-widest font-black italic">
+                        Securing your account is our top priority.
+                    </p>
+                </div>
+            </Modal>
         </div>
     )
 }

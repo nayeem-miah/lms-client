@@ -23,7 +23,11 @@ const baseQueryWithReauth: BaseQueryFn<
     let result = await baseQuery(args, api, extraOptions)
 
     // Check if the error is 401 (Unauthorized) or 403 (Forbidden) - token expired or invalid
-    if (result.error && (result.error.status === 401 || result.error.status === 403)) {
+    // EXCLUDE /auth/login from this logic to handle specific errors like "3 devices limit"
+    const url = typeof args === 'string' ? args : args.url
+    const isLoginEndpoint = url.includes('/auth/login')
+
+    if (result.error && (result.error.status === 401 || result.error.status === 403) && !isLoginEndpoint) {
         console.log('Token expired or invalid, logging out...')
 
         // Dispatch logout action

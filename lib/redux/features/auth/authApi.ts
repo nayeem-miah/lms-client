@@ -39,6 +39,15 @@ export const authApi = apiSlice.injectEndpoints({
                 return response.data;
             },
         }),
+        logoutAll: builder.mutation({
+            query: () => ({
+                url: '/auth/logout-all',
+                method: 'POST',
+            }),
+            transformResponse: (response: any) => {
+                return response;
+            },
+        }),
     }),
 })
 
@@ -47,4 +56,5 @@ export const {
     useRegisterMutation,
     useGetMeQuery,
     useChangePasswordMutation,
+    useLogoutAllMutation,
 } = authApi;

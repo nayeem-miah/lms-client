@@ -11,7 +11,7 @@ interface AuthContextType {
     user: User | null
     isAuthenticated: boolean
     isLoading: boolean
-    login: (email: string, password: string, deviceId: string) => Promise<void>
+    login: (email: string, password: string, deviceId: string, logoutFromAllDevices?: boolean) => Promise<void>
     register: (name: string, email: string, password: string, role: UserRole) => Promise<void>
     logout: (deviceId: string) => Promise<void>
 }
@@ -36,11 +36,11 @@ export const useAuth = (): AuthContextType => {
         avatar: reduxUser.profilePhoto
     } : null
 
-    const login = async (email: string, password: string, deviceId: string) => {
+    const login = async (email: string, password: string, deviceId: string, logoutFromAllDevices: boolean = false) => {
         try {
             // response is the data object from backend (due to transformResponse)
             // { accessToken: string, user: User }
-            const data = await loginMutation({ email, password, deviceId }).unwrap()
+            const data = await loginMutation({ email, password, deviceId, logoutFromAllDevices }).unwrap()
 
             if (data && data.accessToken) {
                 dispatch(setCredentials({ token: data.accessToken, user: data.user }))
