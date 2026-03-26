@@ -3,9 +3,15 @@ import { apiSlice } from '../../api/apiSlice'
 export const paymentsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getPayments: builder.query({
-            query: () => '/payments',
+            query: (params) => ({
+                url: '/payments',
+                params
+            }),
             providesTags: ['Payment'],
-            transformResponse: (response: any) => response.data,
+            transformResponse: (response: any) => ({
+                payments: response.data,
+                meta: response.meta
+            }),
         }),
         getRevenueStats: builder.query({
             query: () => '/payments/revenue-stats',
