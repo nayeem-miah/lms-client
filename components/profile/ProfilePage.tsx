@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useAppSelector } from '@/lib/redux/hooks'
 import { selectCurrentUser } from '@/lib/redux/features/auth/authSlice'
 import { Avatar } from '../ui/Avater'
@@ -12,6 +12,8 @@ import { useUpdateProfileMutation } from '@/lib/redux/features/users/usersApi'
 import { useChangePasswordMutation } from '@/lib/redux/features/auth/authApi'
 import { Modal } from '../ui/Model'
 import toast from 'react-hot-toast'
+import { useAppDispatch } from '@/lib/redux/hooks'
+import { setUser } from '@/lib/redux/features/auth/authSlice'
 
 export const ProfilePage = () => {
     const user = useAppSelector(selectCurrentUser)
@@ -22,6 +24,8 @@ export const ProfilePage = () => {
 
     const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation()
     const [changePassword, { isLoading: isChangingPassword }] = useChangePasswordMutation()
+    const dispatch = useAppDispatch()
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         if (user?.name) {
@@ -30,7 +34,12 @@ export const ProfilePage = () => {
     }, [user])
 
     const handleUpdate = async () => {
-        if (!name.trim() || name === user?.name) {
+        if (!name.trim()) {
+            toast.error('Name cannot be empty')
+            return
+        }
+
+        if (name === user?.name) {
             setIsEditing(false)
             return
         }
@@ -39,11 +48,39 @@ export const ProfilePage = () => {
             const formData = new FormData()
             formData.append('name', name)
             
-            await updateProfile(formData).unwrap()
+            const res = await updateProfile(formData).unwrap()
+            
+            // Update local Redux state
+            if (res) {
+                dispatch(setUser(res))
+            }
+            
             toast.success('Profile updated successfully!')
             setIsEditing(false)
         } catch (error: any) {
             toast.error(error?.data?.message || 'Failed to update profile')
+        }
+    }
+
+    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        try {
+            const loadingToast = toast.loading('Uploading photo...')
+            const formData = new FormData()
+            formData.append('profilePhoto', file)
+            
+            const res = await updateProfile(formData).unwrap()
+            
+            if (res) {
+                dispatch(setUser(res))
+            }
+            
+            toast.dismiss(loadingToast)
+            toast.success('Profile photo updated!')
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Failed to update photo')
         }
     }
 
@@ -96,41 +133,66 @@ export const ProfilePage = () => {
                                     src={user.profilePhoto}
                                     alt={user.name}
                                     size="xl"
-                                    className="border-4 border-slate-950 shadow-2xl ring-2 ring-cyan-500/20"
+                                    className={`border-4 border-slate-950 shadow-2xl ring-2 ring-cyan-500/20 ${isUpdating ? 'opacity-50' : ''}`}
                                 />
-                                <button className="absolute bottom-0 right-0 p-2 bg-slate-900 rounded-full shadow-lg border border-slate-700 hover:bg-slate-800 transition-colors text-cyan-400">
-                                    <Camera className="h-4 w-4" />
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handlePhotoChange}
+                                    className="hidden"
+                                    accept="image/*"
+                                />
+                                <button 
+                                    onClick={() => fileInputRef.current?.click()}
+                                    disabled={isUpdating}
+                                    className="absolute bottom-0 right-0 p-2 bg-slate-900 rounded-full shadow-lg border border-slate-700 hover:bg-slate-800 transition-colors text-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed group-hover:scale-110 duration-200"
+                                >
+                                    {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
                                 </button>
                             </div>
                             <div className="pb-4">
                                 <div className="flex items-center space-x-3 mb-1">
                                     {isEditing ? (
-                                        <div className="flex items-center space-x-2">
-                                            <Input
+                                        <motion.div 
+                                            initial={{ opacity: 0, scale: 0.95 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="flex items-center gap-2 p-1 pl-3 bg-slate-900/50 backdrop-blur-sm border border-cyan-500/30 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.1)] ring-1 ring-cyan-500/10 focus-within:ring-cyan-500/40 transition-all"
+                                        >
+                                            <input
+                                                autoFocus
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
-                                                className="h-8 py-0 min-w-[200px]"
+                                                onKeyDown={(e) => e.key === 'Enter' && handleUpdate()}
+                                                className="bg-transparent border-none outline-none text-3xl font-bold text-slate-100 italic tracking-tight w-[200px] sm:w-[300px] placeholder:text-slate-500"
+                                                placeholder="Enter your name"
                                                 disabled={isUpdating}
                                             />
-                                            <button 
-                                                onClick={handleUpdate} 
-                                                className="text-emerald-500 hover:text-emerald-600 p-1 disabled:opacity-50"
-                                                disabled={isUpdating}
-                                            >
-                                                {isUpdating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Check className="h-5 w-5" />}
-                                            </button>
-                                            <button 
-                                                onClick={() => setIsEditing(false)} 
-                                                className="text-red-500 hover:text-red-600 p-1 disabled:opacity-50"
-                                                disabled={isUpdating}
-                                            >
-                                                <X className="h-5 w-5" />
-                                            </button>
-                                        </div>
+                                            <div className="flex items-center gap-1 border-l border-slate-700/50 pl-2 pr-1">
+                                                <button 
+                                                    onClick={handleUpdate} 
+                                                    className="p-1.5 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-full transition-all disabled:opacity-50"
+                                                    disabled={isUpdating}
+                                                    title="Save"
+                                                >
+                                                    {isUpdating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Check className="h-5 w-5" />}
+                                                </button>
+                                                <button 
+                                                    onClick={() => {
+                                                        setName(user.name)
+                                                        setIsEditing(false)
+                                                    }} 
+                                                    className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-all disabled:opacity-50"
+                                                    disabled={isUpdating}
+                                                    title="Cancel"
+                                                >
+                                                    <X className="h-5 w-5" />
+                                                </button>
+                                            </div>
+                                        </motion.div>
                                     ) : (
                                         <>
                                             <h1 className="text-3xl font-bold text-slate-100 italic tracking-tight">{user.name}</h1>
-                                            <button onClick={() => setIsEditing(true)} className="text-slate-500 hover:text-cyan-400 transition-colors p-1">
+                                            <button onClick={() => setIsEditing(true)} className="text-slate-500 hover:text-cyan-400 transition-colors p-1 bg-slate-800/20 hover:bg-slate-800/50 rounded-lg">
                                                 <Edit2 className="h-4 w-4" />
                                             </button>
                                         </>
