@@ -1,16 +1,13 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import {
     DollarSign,
     TrendingUp,
-    TrendingDown,
     CreditCard,
-    ArrowUpRight,
     Search,
     Download,
-    Calendar,
     Loader2
 } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
@@ -18,18 +15,14 @@ import { useGetPaymentsQuery } from '@/lib/redux/features/payments/paymentsApi'
 import { Payment } from '@/types/api'
 
 export default function RevenuePage() {
-    const { data: paymentData, isLoading } = useGetPaymentsQuery({ limit: 100 }) // Fetching a larger batch for stats
+    const { data: paymentData, isLoading } = useGetPaymentsQuery({ limit: 100 })
 
     const payments = paymentData?.payments || []
     const paidPayments = payments.filter((p: Payment) => p.status === 'PAID')
-    
-    // Calculate total revenue from PAID payments
+
     const totalRevenue = paidPayments.reduce((sum: number, p: Payment) => sum + p.amount, 0)
-    
-    // Calculate average transaction for PAID payments
     const avgTransaction = paidPayments.length ? (totalRevenue / paidPayments.length) : 0
 
-    // For the chart, we'll group PAID payments by day (last 7 days)
     const chartData = useMemo(() => {
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         const revenueByDay = new Array(7).fill(0).map((_, i) => ({
@@ -37,13 +30,12 @@ export default function RevenuePage() {
             revenue: 0
         }))
 
-        paidPayments.forEach(p => {
+        paidPayments.forEach((p: Payment) => {
             const date = new Date(p.createdAt)
             const dayIndex = date.getDay()
             revenueByDay[dayIndex].revenue += p.amount
         })
 
-        // Reorder to start from 6 days ago
         const today = new Date().getDay()
         const sortedData = []
         for (let i = 0; i < 7; i++) {
@@ -73,7 +65,6 @@ export default function RevenuePage() {
                 </button>
             </div>
 
-            {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
                     { label: 'Total Revenue', value: formatCurrency(totalRevenue), icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
@@ -99,14 +90,13 @@ export default function RevenuePage() {
                 ))}
             </div>
 
-            {/* Revenue Chart */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="bg-slate-900 border border-slate-800 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden"
             >
                 <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[100px] -mr-48 -mt-48" />
-                
+
                 <div className="flex items-center justify-between mb-10 relative z-10">
                     <div>
                         <h3 className="text-2xl font-black text-slate-100 italic uppercase tracking-tight">Revenue Performance</h3>
@@ -128,42 +118,42 @@ export default function RevenuePage() {
                                 </linearGradient>
                             </defs>
                             <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} strokeOpacity={0.2} />
-                            <XAxis 
-                                dataKey="name" 
-                                stroke="#64748b" 
-                                axisLine={false} 
-                                tickLine={false} 
-                                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 'bold' }} 
-                                dy={15} 
+                            <XAxis
+                                dataKey="name"
+                                stroke="#64748b"
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 'bold' }}
+                                dy={15}
                             />
-                            <YAxis 
-                                stroke="#64748b" 
-                                axisLine={false} 
-                                tickLine={false} 
-                                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 'bold' }} 
+                            <YAxis
+                                stroke="#64748b"
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 'bold' }}
                                 tickFormatter={(value) => `$${value}`}
                             />
                             <Tooltip
                                 cursor={{ stroke: '#10b981', strokeWidth: 1, strokeDasharray: '4 4' }}
-                                contentStyle={{ 
-                                    backgroundColor: '#0f172a', 
-                                    borderColor: '#1e293b', 
-                                    borderRadius: '20px', 
+                                contentStyle={{
+                                    backgroundColor: '#0f172a',
+                                    borderColor: '#1e293b',
+                                    borderRadius: '20px',
                                     boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.5)',
                                     padding: '12px 20px',
                                     border: '1px solid rgba(255,255,255,0.05)'
                                 }}
                                 itemStyle={{ color: '#10b981', fontWeight: '900', fontSize: '14px', textTransform: 'uppercase' }}
                                 labelStyle={{ color: '#94a3b8', marginBottom: '4px', fontWeight: 'bold' }}
-                                formatter={(value: number) => [formatCurrency(value), 'Revenue']}
+                                formatter={(value: any) => [formatCurrency(Number(value)), 'Revenue']}
                             />
-                            <Area 
-                                type="monotone" 
-                                dataKey="revenue" 
-                                stroke="#10b981" 
-                                strokeWidth={4} 
-                                fillOpacity={1} 
-                                fill="url(#colorRev)" 
+                            <Area
+                                type="monotone"
+                                dataKey="revenue"
+                                stroke="#10b981"
+                                strokeWidth={4}
+                                fillOpacity={1}
+                                fill="url(#colorRev)"
                                 animationDuration={2000}
                             />
                         </AreaChart>
@@ -171,7 +161,6 @@ export default function RevenuePage() {
                 </div>
             </motion.div>
 
-            {/* Transactions Table */}
             <div className="bg-slate-900 border border-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl backdrop-blur-sm">
                 <div className="p-8 border-b border-slate-800 flex justify-between items-center bg-slate-950/30">
                     <h3 className="text-xl font-black text-slate-100 italic uppercase">Recent Paid Transactions</h3>
@@ -223,7 +212,7 @@ export default function RevenuePage() {
                                                 {formatCurrency(payment.amount)}
                                             </p>
                                         </td>
-                                        <td className="px-8 py-6 text-center text-right">
+                                        <td className="px-8 py-6 text-right">
                                             <span className="px-4 py-1.5 rounded-xl text-[10px] font-black bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-[0.1em] italic">
                                                 {payment.status}
                                             </span>

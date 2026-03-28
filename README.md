@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 Learning Management System (LMS) - Client
 
-## Getting Started
+A modern, fast, and feature-rich Learning Management System (LMS) client built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**. This platform provides a seamless experience for instructors to manage courses and for students to learn effectively.
 
-First, run the development server:
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://learening-management-system.vercel.app)
 
+---
+
+## 🚀 Key Features
+
+- **Interactive Dashboard**: Real-time analytics and statistics powered by Recharts.
+- **Course Management**: Effortless course creation, management, and tracking.
+- **Smooth Animations**: Enhancing UX with Framer Motion and Lucide React.
+- **Multi-language Support**: Internationalization (i18n) via `next-intl`.
+- **Global State Management**: Powered by Redux Toolkit for consistent data flow.
+- **Secure Payments**: integrated Stripe for smooth course enrollment and transactions.
+- **Responsive Design**: Mobile-first approach using Tailwind CSS 4.
+- **Modern UI Components**: Built on top of Radix UI for accessibility and style.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Data Visualization**: [Recharts](https://recharts.org/)
+- **Internationalization**: [next-intl](https://next-intl-docs.vercel.app/)
+- **Database/Auth**: Integrated via Backend API
+- **Icons**: [Lucide React](https://lucide.dev/)
+
+---
+
+## 🏁 Getting Started
+
+Follow these steps to set up the project locally:
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/nayeem-miah/lms-client.git
+cd lms-client
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Environment Setup
+Create a `.env.local` file in the root directory and add your environment variables:
+```env
+NEXT_PUBLIC_API_URL=your_api_url
+# Add other necessary variables
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Run the development server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🏗️ Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `app/`: Next.js 16 App Router routes and pages.
+- `components/`: Reusable UI components.
+- `context/`: React context providers.
+- `lib/`: Utility functions and shared logic.
+- `messages/`: Translation files for i18n.
+- `types/`: TypeScript type definitions.
+- `public/`: Static assets like images and fonts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🌐 Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is optimized for deployment on [Vercel](https://vercel.com/). You can check the live version here:
+[https://learening-management-system.vercel.app](https://learening-management-system.vercel.app)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📄 License
+
+This project is currently for private use. Contact the author for more information.
+
+---
+
+Developed with ❤️ by **Nayeem Miah**
