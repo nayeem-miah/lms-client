@@ -18,7 +18,7 @@ export default function StudentDashboard() {
     const user = useAppSelector(selectCurrentUser)
     const { data: enrollmentsData, isLoading: enrollmentsLoading } = useGetMyEnrollmentsQuery(undefined)
     const { data: allCoursesData, isLoading: coursesLoading } = useGetAllCoursesQuery({ limit: 4 })
-    
+
     const enrollments: Enrollment[] = useMemo(() => enrollmentsData || [], [enrollmentsData])
     const recommendedCourses: Course[] = useMemo(() => allCoursesData?.courses || [], [allCoursesData])
 
@@ -28,17 +28,17 @@ export default function StudentDashboard() {
         const active = enrollments.filter(e => e.isActive).length
         const completed = enrollments.filter(e => e.progress === 100).length
         const inProgress = total - completed
-        
+
         // Group by category for real chart data
         const categoryMap: Record<string, number> = {}
         enrollments.forEach(e => {
             const cat = (e.courseId as Course).category || 'Other'
             categoryMap[cat] = (categoryMap[cat] || 0) + 1
         })
-        
-        const categoryData = Object.entries(categoryMap).map(([name, value]) => ({ 
-            name, 
-            value 
+
+        const categoryData = Object.entries(categoryMap).map(([name, value]) => ({
+            name,
+            value
         }))
 
         // Mock XP for current user based on progress (since XP isn't in API)
@@ -51,8 +51,8 @@ export default function StudentDashboard() {
     return (
         <div className="space-y-8 pb-10">
             {/* Welcome Header */}
-            <motion.div 
-                initial={{ opacity: 0, y: -20 }} 
+            <motion.div
+                initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="flex flex-col md:flex-row md:items-center justify-between gap-4"
             >
@@ -85,29 +85,29 @@ export default function StudentDashboard() {
                     color="cyan"
                     delay={0.1}
                 />
-                <StatsCard 
-                    icon={LayoutDashboard} 
-                    label="Total Enrolled" 
-                    value={enrollmentsLoading ? "..." : stats.total.toString()} 
-                    trend="From API" 
-                    color="blue" 
-                    delay={0.2} 
+                <StatsCard
+                    icon={LayoutDashboard}
+                    label="Total Enrolled"
+                    value={enrollmentsLoading ? "..." : stats.total.toString()}
+                    trend="From API"
+                    color="blue"
+                    delay={0.2}
                 />
-                <StatsCard 
-                    icon={CheckCircle2} 
-                    label="Certifications" 
-                    value={enrollmentsLoading ? "..." : stats.completed.toString()} 
-                    trend="Verified" 
-                    color="emerald" 
-                    delay={0.3} 
+                <StatsCard
+                    icon={CheckCircle2}
+                    label="Certifications"
+                    value={enrollmentsLoading ? "..." : stats.completed.toString()}
+                    trend="Verified"
+                    color="emerald"
+                    delay={0.3}
                 />
-                <StatsCard 
-                    icon={Zap} 
-                    label="In Progress" 
-                    value={enrollmentsLoading ? "..." : stats.inProgress.toString()} 
-                    trend="Active" 
-                    color="yellow" 
-                    delay={0.4} 
+                <StatsCard
+                    icon={Zap}
+                    label="In Progress"
+                    value={enrollmentsLoading ? "..." : stats.inProgress.toString()}
+                    trend="Active"
+                    color="yellow"
+                    delay={0.4}
                 />
             </div>
 
@@ -127,11 +127,11 @@ export default function StudentDashboard() {
                         </div>
 
                         {enrollmentsLoading ? (
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 {[1, 2].map(i => (
                                     <div key={i} className="h-64 bg-slate-800/40 animate-pulse rounded-2xl border border-slate-700/50" />
                                 ))}
-                             </div>
+                            </div>
                         ) : enrollments.length === 0 ? (
                             <div className="bg-slate-800/40 border border-slate-700/50 rounded-3xl p-12 text-center">
                                 <p className="text-slate-500 italic mb-4">{t('noOngoing')}</p>
@@ -149,7 +149,7 @@ export default function StudentDashboard() {
                                             progress={enrollment.progress}
                                             instructor={instructor}
                                             thumbnail={course.thumbnail || "bg-gradient-to-br from-indigo-600 to-cyan-500"}
-                                            lessons={10} 
+                                            lessons={10}
                                             duration="6h 30m"
                                             delay={0.1 * index}
                                         />
@@ -160,9 +160,9 @@ export default function StudentDashboard() {
                     </section>
 
                     {/* Learning Distribution (Real Category Data) */}
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }} 
-                        animate={{ opacity: 1, y: 0 }} 
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
                         className="bg-slate-800/30 backdrop-blur-md border border-slate-700/50 rounded-[2.5rem] p-8"
                     >
@@ -186,11 +186,11 @@ export default function StudentDashboard() {
                                             stroke="none"
                                         >
                                             {stats.categoryData.map((_, index) => (
-                                                <Cell key={`cell-${index}`} fill={[ '#06b6d4', '#6366f1', '#10b981', '#f59e0b', '#ec4899'][index % 5]} />
+                                                <Cell key={`cell-${index}`} fill={['#06b6d4', '#6366f1', '#10b981', '#f59e0b', '#ec4899'][index % 5]} />
                                             ))}
                                             {stats.categoryData.length === 0 && <Cell fill="#1e293b" />}
                                         </Pie>
-                                        <Tooltip 
+                                        <Tooltip
                                             contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px' }}
                                             itemStyle={{ fontWeight: 'bold' }}
                                         />
@@ -201,7 +201,7 @@ export default function StudentDashboard() {
                                 {stats.categoryData.length > 0 ? stats.categoryData.map((item, i) => (
                                     <div key={i} className="flex justify-between items-center p-3 rounded-xl bg-slate-800/50 border border-slate-700/30">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: [ '#06b6d4', '#6366f1', '#10b981', '#f59e0b', '#ec4899'][i % 5] }} />
+                                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: ['#06b6d4', '#6366f1', '#10b981', '#f59e0b', '#ec4899'][i % 5] }} />
                                             <span className="text-xs font-bold text-slate-300">{item.name}</span>
                                         </div>
                                         <span className="text-xs font-black text-slate-500 tabular-nums">{item.value} Course{item.value > 1 ? 's' : ''}</span>
@@ -215,7 +215,7 @@ export default function StudentDashboard() {
 
                     {/* Recommended for You */}
                     <section>
-                         <div className="flex items-center gap-2 mb-6">
+                        <div className="flex items-center gap-2 mb-6">
                             <Sparkles className="w-6 h-6 text-yellow-400" />
                             <h2 className="text-xl font-black text-slate-100 uppercase tracking-tight">Recommended for You</h2>
                         </div>
@@ -225,7 +225,7 @@ export default function StudentDashboard() {
                             ) : recommendedCourses.length > 0 ? (
                                 recommendedCourses.map((course, i) => (
                                     <Link key={course._id} href={`/courses/${course._id}`}>
-                                        <motion.div 
+                                        <motion.div
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ delay: 0.1 * i }}
@@ -255,10 +255,10 @@ export default function StudentDashboard() {
                 <aside className="space-y-8">
                     <LeaderboardWidget />
                     <AcademicProgressWidget stats={stats} />
-                    
-                    <motion.div 
-                        initial={{ opacity: 0, x: 20 }} 
-                        animate={{ opacity: 1, x: 0 }} 
+
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.7 }}
                         className="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-2xl shadow-blue-500/20"
                     >
@@ -282,11 +282,11 @@ function StatsCard({ icon: Icon, label, value, trend, color, delay }: StatsCardP
         emerald: 'text-emerald-400 border-emerald-500/20 bg-emerald-500',
         yellow: 'text-yellow-400 border-yellow-500/20 bg-yellow-500',
     }
-    
+
     return (
-        <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay }}
             className="group bg-slate-800/30 backdrop-blur-md border border-slate-700/50 rounded-[2rem] p-6 hover:border-cyan-500/30 transition-all duration-300"
         >
@@ -309,9 +309,9 @@ function StatsCard({ icon: Icon, label, value, trend, color, delay }: StatsCardP
 function CourseCard({ title, progress, instructor, thumbnail, lessons, duration, delay }: CourseCardProps) {
     const t = useTranslations('Dashboard.student.course')
     return (
-        <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay }}
             className="group bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-3xl overflow-hidden hover:border-cyan-500/30 transition-all duration-300 flex flex-col h-full shadow-lg"
         >
@@ -337,14 +337,14 @@ function CourseCard({ title, progress, instructor, thumbnail, lessons, duration,
                 <div className="flex items-center gap-2 mb-6">
                     <span className="text-[11px] font-bold text-slate-500 italic opacity-70">by {instructor}</span>
                 </div>
-                
+
                 <div className="mt-auto space-y-5">
                     <div className="h-1.5 bg-slate-700/40 rounded-full overflow-hidden border border-white/5">
-                        <motion.div 
-                            initial={{ width: 0 }} 
-                            animate={{ width: `${progress}%` }} 
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
                             transition={{ duration: 1.5, delay: delay + 0.3 }}
-                            className="bg-gradient-to-r from-cyan-400 to-indigo-500 h-full rounded-full shadow-[0_0_10px_rgba(34,211,238,0.3)]" 
+                            className="bg-gradient-to-r from-cyan-400 to-indigo-500 h-full rounded-full shadow-[0_0_10px_rgba(34,211,238,0.3)]"
                         />
                     </div>
                 </div>
@@ -356,7 +356,7 @@ function CourseCard({ title, progress, instructor, thumbnail, lessons, duration,
 function LeaderboardWidget() {
     const { data: studentsData, isLoading } = useGetAllUsersQuery({ role: 'STUDENT', limit: 3 })
     const currentUser = useAppSelector(selectCurrentUser)
-    
+
     const leaders = useMemo(() => {
         if (!studentsData?.users) return []
         return (studentsData.users as User[]).map((student, i) => ({
@@ -368,9 +368,9 @@ function LeaderboardWidget() {
     }, [studentsData, currentUser])
 
     return (
-        <motion.div 
-            initial={{ opacity: 0, x: 20 }} 
-            animate={{ opacity: 1, x: 0 }} 
+        <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
             className="bg-slate-800/30 backdrop-blur-md border border-slate-700/50 rounded-[2.5rem] p-8"
         >
@@ -404,9 +404,9 @@ function LeaderboardWidget() {
 
 function AcademicProgressWidget({ stats }: { stats: any }) {
     return (
-        <motion.div 
-            initial={{ opacity: 0, x: 20 }} 
-            animate={{ opacity: 1, x: 0 }} 
+        <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
             className="bg-slate-800/30 backdrop-blur-md border border-slate-700/50 rounded-[2.5rem] p-8"
         >
@@ -415,7 +415,7 @@ function AcademicProgressWidget({ stats }: { stats: any }) {
             </div>
             <h3 className="text-2xl font-black text-slate-100 uppercase tracking-tighter mb-1">Academic Summary</h3>
             <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-8">Verified Progress Data</p>
-            
+
             <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-700/50">
                     <p className="text-[10px] uppercase font-black text-slate-500 mb-1">Completed</p>
@@ -426,7 +426,7 @@ function AcademicProgressWidget({ stats }: { stats: any }) {
                     <p className="text-2xl font-black text-blue-400 tabular-nums">{stats.total}</p>
                 </div>
             </div>
-            
+
             <div className="mt-8 pt-6 border-t border-white/5 space-y-4">
                 <div>
                     <div className="flex justify-between items-center mb-2">
@@ -434,7 +434,7 @@ function AcademicProgressWidget({ stats }: { stats: any }) {
                         <span className="text-[10px] font-black text-slate-300">{(stats.completed / (stats.total || 1) * 100).toFixed(0)}%</span>
                     </div>
                     <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                        <motion.div 
+                        <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${(stats.completed / (stats.total || 1) * 100)}%` }}
                             className="bg-emerald-500 h-full rounded-full"

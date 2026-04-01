@@ -8,49 +8,55 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 
 export default function ReduxAuthProvider({ children }: { children: React.ReactNode }) {
     const dispatch = useAppDispatch()
-    const { token } = useAppSelector((state) => state.auth)
+    const { token, user: currentUser } = useAppSelector((state) => state.auth)
     const [isMounted, setIsMounted] = useState(false)
 
     // Initial check for token in localStorage on mount
     useEffect(() => {
         const storedToken = localStorage.getItem('accessToken')
         if (storedToken) {
-            // We have a token but not fully loaded user yet. Set credentials to enable query.
-            dispatch(setCredentials({ token: storedToken, user: null as any }))
+            // Only set credentials if not already set (e.g. from a fresh login)
+            if (!token) {
+                dispatch(setCredentials({ token: storedToken, user: null as any }))
+            }
         } else {
-            dispatch(logOut())
+            // No token found, ensure we are logged out
+            if (token || currentUser) {
+                dispatch(logOut())
+            }
         }
         setIsMounted(true)
-    }, [dispatch])
+    }, [dispatch, token, currentUser])
 
-    // Query to fetch user details if we have a token
-    const { data: userData, isLoading, isSuccess, isError, error } = useGetMeQuery(undefined, {
-        skip: !token, // Only fetch if token is present
+    // Query to fetch user details if we have a token but NO user data in Redux
+    // This allows fresh logins to skip this if they already have 'user' in state
+    const { data: userData, isLoading, isSuccess, isError } = useGetMeQuery(undefined, {
+        skip: !token || !!currentUser, 
     })
 
     useEffect(() => {
         if (isSuccess && userData) {
             dispatch(setUser(userData))
         } else if (isError) {
-            console.error("Auth check failed:", error)
+            // Errors (like 401) are already handled globally in apiSlice.ts
+            // We just ensure Redux is cleared here if getMe fails
             dispatch(logOut())
-
-            // Redirect to login page if auth fails
-            if (typeof window !== 'undefined') {
-                const toast = require('react-hot-toast').default
-                toast.error('Please log in to continue.')
-                setTimeout(() => {
-                    window.location.href = '/login'
-                }, 1000)
-            }
         }
-        dispatch(setLoading(isLoading))
-    }, [userData, isSuccess, isError, isLoading, dispatch, error])
+        
+        // Sync loading state only if we are actually checking
+        if (token && !currentUser) {
+            dispatch(setLoading(isLoading))
+        } else {
+            dispatch(setLoading(false))
+        }
+    }, [userData, isSuccess, isError, isLoading, dispatch, token, currentUser])
 
     if (!isMounted) {
-        return <div className="flex min-h-screen items-center justify-center bg-slate-950">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
-        </div>
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-slate-950">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+            </div>
+        )
     }
 
     return <>{children}</>
