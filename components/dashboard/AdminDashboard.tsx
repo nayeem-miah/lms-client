@@ -4,13 +4,12 @@ import { useGetAllUsersQuery } from '@/lib/redux/features/users/usersApi'
 import { useGetRevenueStatsQuery } from '@/lib/redux/features/payments/paymentsApi'
 import { Activity } from '@/types/api'
 import { motion } from 'framer-motion'
-import { Users, BookOpen, DollarSign, TrendingUp, UserCheck, AlertCircle, BarChart3, Settings } from 'lucide-react'
+import { Users, BookOpen, DollarSign, UserCheck, AlertCircle, BarChart3, TrendingUp } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
-import type { StatsCardProps } from '@/types/dashboard'
+import { DashboardStatsCard } from './shared/DashboardStatsCard'
 
-// Fallback mock data
 const MOCK_STATS_DATA = [
     { name: 'Jan', users: 400, revenue: 2400, courses: 24 },
     { name: 'Feb', users: 300, revenue: 1398, courses: 22 },
@@ -20,26 +19,21 @@ const MOCK_STATS_DATA = [
     { name: 'Jun', users: 900, revenue: 3800, courses: 42 },
 ]
 
-
-
 export default function AdminDashboard() {
     const t = useTranslations('Dashboard.admin')
     const { data: summary, isLoading } = useGetDashboardSummaryQuery(undefined)
     
-    // Fetch counts for each role
     const { data: studentsData } = useGetAllUsersQuery({ role: 'STUDENT', limit: 1 })
     const { data: instructorsData } = useGetAllUsersQuery({ role: 'INSTRUCTOR', limit: 1 })
     const { data: adminsData } = useGetAllUsersQuery({ role: 'ADMIN', limit: 1 })
-    
-    // Fetch monthly revenue stats
     const { data: revenueStats } = useGetRevenueStatsQuery(undefined)
 
     const statsData = useMemo(() => {
         if (revenueStats && Array.isArray(revenueStats) && revenueStats.length > 0) {
             return revenueStats.map((item: any) => ({
-                name: item.month, // Assumes backend returns { month: 'Jan', revenue: 1000 }
+                name: item.month,
                 revenue: item.revenue || item.amount || 0,
-                users: item.users || 0, // Fallback to 0 if not provided
+                users: item.users || 0,
                 courses: item.courses || 0
             }));
         }
@@ -53,56 +47,56 @@ export default function AdminDashboard() {
     ], [studentsData, instructorsData, adminsData])
 
     return (
-        <div className="space-y-6">
-            {/* Welcome Section */}
+        <div className="space-y-8 pb-10">
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                <h1 className="text-3xl font-bold text-slate-100 mb-2">{t('title')}</h1>
-                <p className="text-slate-400">{t('subtitle')}</p>
+                <h1 className="text-3xl font-black text-slate-100 mb-2 uppercase tracking-tight">{t('title')}</h1>
+                <p className="text-slate-400 font-medium italic">{t('subtitle')}</p>
             </motion.div>
 
-            {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatsCard
+                <DashboardStatsCard
                     icon={Users}
                     label={t('stats.totalUsers')}
                     value={isLoading ? "..." : (summary?.totalUsers || 0).toLocaleString()}
                     trend="+12%"
-                    color="bg-cyan-500"
+                    color="cyan"
                     delay={0.1}
+                    variant="admin"
                 />
-                <StatsCard
+                <DashboardStatsCard
                     icon={BookOpen}
                     label={t('stats.totalCourses')}
                     value={isLoading ? "..." : (summary?.totalCourses || 0).toLocaleString()}
                     trend="+5%"
-                    color="bg-purple-500"
+                    color="purple"
                     delay={0.2}
+                    variant="admin"
                 />
-                <StatsCard
+                <DashboardStatsCard
                     icon={DollarSign}
                     label={t('stats.totalRevenue')}
                     value={isLoading ? "..." : `৳${(summary?.totalRevenue || 0).toLocaleString()}`}
                     trend="+18%"
-                    color="bg-emerald-500"
+                    color="emerald"
                     delay={0.3}
+                    variant="admin"
                 />
-                <StatsCard
+                <DashboardStatsCard
                     icon={UserCheck}
                     label={t('stats.activeNow')}
                     value={isLoading ? "..." : "42"}
                     trend="Live"
-                    color="bg-blue-500"
+                    color="blue"
                     delay={0.4}
+                    variant="admin"
                 />
             </div>
 
-            {/* Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Revenue Chart */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
-                    className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-slate-100 mb-6">{t('charts.growth')}</h3>
-                    <div className="h-64">
+                    className="lg:col-span-2 bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-[2.5rem] p-10 shadow-xl">
+                    <h3 className="text-xl font-black text-slate-100 mb-8 uppercase tracking-tighter">{t('charts.growth')}</h3>
+                    <div className="h-72">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={statsData}>
                                 <defs>
@@ -111,68 +105,48 @@ export default function AdminDashboard() {
                                         <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                                <XAxis dataKey="name" stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                                <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }} />
-                                <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.1} />
+                                <XAxis dataKey="name" stroke="#4a5568" tick={{ fill: '#718096', fontSize: 10, fontWeight: 'bold' }} />
+                                <YAxis stroke="#4a5568" tick={{ fill: '#718096', fontSize: 10, fontWeight: 'bold' }} />
+                                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '16px', fontSize: '12px' }} />
+                                <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={4} fillOpacity={1} fill="url(#colorRevenue)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
                 </motion.div>
 
-                {/* User Distribution */}
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
-                    className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('charts.distribution')}</h3>
-                    <div className="h-48">
+                    className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-[2.5rem] p-10 shadow-xl">
+                    <h3 className="text-xl font-black text-slate-100 mb-6 uppercase tracking-tighter">{t('charts.distribution')}</h3>
+                    <div className="h-56">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
-                                <Pie data={userDistribution} cx="50%" cy="50%" innerRadius={40} outerRadius={70} paddingAngle={5} dataKey="value">
+                                <Pie data={userDistribution} cx="50%" cy="50%" innerRadius={50} outerRadius={85} paddingAngle={10} dataKey="value" stroke="none">
                                     {userDistribution.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
                                 </Pie>
+                                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '16px' }} />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
-                    <div className="space-y-2 mt-4">
+                    <div className="space-y-3 mt-8">
                         {userDistribution.map((item, i) => (
-                            <div key={i} className="flex items-center justify-between text-sm">
+                            <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-slate-900/50 border border-slate-700/30">
                                 <div className="flex items-center">
-                                    <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: item.color }} />
-                                    <span className="text-slate-300">{item.name}</span>
+                                    <div className="w-2.5 h-2.5 rounded-full mr-3" style={{ backgroundColor: item.color }} />
+                                    <span className="text-xs font-black text-slate-400 uppercase tracking-tight">{item.name}</span>
                                 </div>
-                                <span className="text-slate-400 font-mono">{item.value}</span>
+                                <span className="text-sm font-black text-slate-200 tabular-nums">{item.value.toLocaleString()}</span>
                             </div>
                         ))}
                     </div>
                 </motion.div>
             </div>
 
-            {/* Recent Activity & Alerts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <RecentActivity />
                 <SystemAlerts />
             </div>
         </div>
-    )
-}
-
-function StatsCard({ icon: Icon, label, value, trend, color, delay }: StatsCardProps) {
-    return (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay }}
-            className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-cyan-500/50 transition-all">
-            <div className="flex justify-between items-start mb-4">
-                <div className={`p-3 rounded-xl ${color} bg-opacity-10`}>
-                    <Icon className={`w-6 h-6 ${color.replace('bg-', 'text-')}`} />
-                </div>
-                <div className="flex items-center text-xs font-medium text-emerald-400">
-                    <TrendingUp className="w-3 h-3 mr-1" />
-                    {trend}
-                </div>
-            </div>
-            <p className="text-3xl font-bold text-slate-100 mb-1 font-mono">{value}</p>
-            <p className="text-sm text-slate-400">{label}</p>
-        </motion.div>
     )
 }
 
@@ -199,42 +173,47 @@ function RecentActivity() {
         const diffMins = Math.floor(diffMs / (1000 * 60));
         const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
-        if (diffMins < 60) return `${diffMins} ${tAct('minsAgo')}`;
-        if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? tAct('hourAgo') : tAct('hoursAgo')}`;
+        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffHours < 24) return `${diffHours}h ago`;
         return past.toLocaleDateString();
     }
 
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-            className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('recentActivity')}</h3>
-            <div className="space-y-4">
+            className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-[2.5rem] p-10">
+            <div className="flex items-center gap-3 mb-8">
+                <div className="p-3 bg-cyan-500/10 rounded-2xl text-cyan-400">
+                    <BarChart3 className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-black text-slate-100 uppercase tracking-tighter">{t('recentActivity')}</h3>
+            </div>
+            <div className="space-y-6">
                 {isLoading ? (
-                    <div className="space-y-4">
-                        {[1, 2, 3].map(i => (
-                            <div key={i} className="flex items-center space-x-3 animate-pulse pb-3 border-b border-slate-700 last:border-0">
-                                <div className="w-8 h-8 bg-slate-700 rounded-full" />
-                                <div className="flex-1 space-y-2">
-                                    <div className="h-3 bg-slate-700 rounded w-3/4" />
-                                    <div className="h-2 bg-slate-700 rounded w-1/4" />
-                                </div>
+                    [1, 2, 3].map(i => (
+                        <div key={i} className="flex items-center space-x-4 animate-pulse">
+                            <div className="w-12 h-12 bg-slate-700 rounded-2xl" />
+                            <div className="flex-1 space-y-2">
+                                <div className="h-4 bg-slate-700 rounded-xl w-3/4" />
+                                <div className="h-3 bg-slate-700 rounded-xl w-1/4" />
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))
                 ) : !activitiesData || activitiesData.length === 0 ? (
-                    <p className="text-slate-500 text-sm py-4">{t('noRecentActivity')}</p>
+                    <div className="py-10 text-center">
+                        <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] italic">{t('noRecentActivity')}</p>
+                    </div>
                 ) : (
                     activitiesData.slice(0, 5).map((activity: Activity, i: number) => (
-                        <div key={activity._id || i} className="flex items-start space-x-3 pb-3 border-b border-slate-700 last:border-0">
-                            <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                        <div key={activity._id || i} className="flex items-start space-x-4 p-4 rounded-[1.5rem] bg-slate-900/40 border border-slate-700/30">
+                            <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center text-xs font-black text-white shadow-xl">
                                 {(activity.userName || 'U').charAt(0)}
                             </div>
                             <div className="flex-1">
-                                <p className="text-sm text-slate-200">
-                                    <span className="font-semibold text-white">{activity.userName}</span> {getActivityText(activity.type)}
+                                <p className="text-sm text-slate-300 font-bold leading-tight">
+                                    <span className="text-white font-black">{activity.userName}</span> {getActivityText(activity.type)}
                                     {activity.courseTitle ? ` in ${activity.courseTitle}` : ''}
                                 </p>
-                                <p className="text-xs text-slate-500 mt-1">{formatTime(activity.createdAt)}</p>
+                                <p className="text-[10px] text-slate-500 mt-1 font-black uppercase italic">{formatTime(activity.createdAt)}</p>
                             </div>
                         </div>
                     ))
@@ -247,28 +226,33 @@ function RecentActivity() {
 function SystemAlerts() {
     const t = useTranslations('Dashboard.admin')
     const alerts = [
-        { type: 'warning', message: 'High server load', time: '10 mins ago' },
-        { type: 'info', message: 'New update available', time: '1 hour ago' },
-        { type: 'success', message: 'Backup successful', time: '2 hours ago' },
+        { type: 'warning', message: 'High server load', time: '10 mins ago', icon: AlertCircle },
+        { type: 'info', message: 'New update available', time: '1 hour ago', icon: AlertCircle },
+        { type: 'success', message: 'Backup successful', time: '2 hours ago', icon: AlertCircle },
     ]
 
     return (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-            className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-slate-100 mb-4">{t('systemAlerts')}</h3>
-            <div className="space-y-3">
+            className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-[2.5rem] p-10">
+            <div className="flex items-center gap-3 mb-8">
+                <div className="p-3 bg-red-500/10 rounded-2xl text-red-400">
+                    <ShieldAlert className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-black text-slate-100 uppercase tracking-tighter">{t('systemAlerts')}</h3>
+            </div>
+            <div className="space-y-4">
                 {alerts.map((alert, i) => (
-                    <div key={i} className={`p-3 rounded-lg border ${alert.type === 'warning' ? 'bg-yellow-500/10 border-yellow-500/30' :
-                        alert.type === 'info' ? 'bg-blue-500/10 border-blue-500/30' :
-                            'bg-emerald-500/10 border-emerald-500/30'
+                    <div key={i} className={`p-5 rounded-[1.5rem] border ${alert.type === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20' :
+                        alert.type === 'info' ? 'bg-blue-500/10 border-blue-500/20' :
+                            'bg-emerald-500/10 border-emerald-500/20'
                         }`}>
-                        <div className="flex items-start space-x-2">
-                            <AlertCircle className={`w-4 h-4 mt-0.5 ${alert.type === 'warning' ? 'text-yellow-400' :
+                        <div className="flex items-start space-x-4">
+                            <alert.icon className={`w-5 h-5 mt-0.5 ${alert.type === 'warning' ? 'text-yellow-400' :
                                 alert.type === 'info' ? 'text-blue-400' : 'text-emerald-400'
                                 }`} />
                             <div className="flex-1">
-                                <p className="text-sm text-slate-200">{alert.message}</p>
-                                <p className="text-xs text-slate-500 mt-1">{alert.time}</p>
+                                <p className="text-xs font-black text-slate-200 uppercase tracking-tight">{alert.message}</p>
+                                <p className="text-[9px] text-slate-500 mt-1 font-black uppercase italic">{alert.time}</p>
                             </div>
                         </div>
                     </div>
@@ -277,3 +261,5 @@ function SystemAlerts() {
         </motion.div>
     )
 }
+
+import { ShieldAlert } from 'lucide-react'
