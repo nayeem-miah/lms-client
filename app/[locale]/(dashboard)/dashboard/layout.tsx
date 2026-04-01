@@ -123,7 +123,6 @@ function Sidebar({ currentRole }: { currentRole: UserRole }) {
             return [
                 ...commonItems,
                 { icon: 'Backpack', label: t('myEnrollments'), href: '/dashboard/my-enrollments' },
-                { icon: 'Calendar', label: t('schedule'), href: '/dashboard/schedule' },
                 { icon: 'DollarSign', label: t('paymentHistory'), href: '/dashboard/payment-history' },
                 { icon: 'Trophy', label: t('leaderboard'), href: '/dashboard/leaderboard' },
                 { icon: 'Award', label: t('certificates'), href: '/dashboard/certificates' },
@@ -209,7 +208,6 @@ function MobileSidebar({ currentRole, onClose }: { currentRole: UserRole, onClos
             return [
                 ...commonItems,
                 { icon: 'Backpack', label: t('myEnrollments'), href: '/dashboard/my-enrollments' },
-                { icon: 'Calendar', label: t('schedule'), href: '/dashboard/schedule' },
                 { icon: 'DollarSign', label: t('paymentHistory'), href: '/dashboard/payment-history' },
                 { icon: 'Trophy', label: t('leaderboard'), href: '/dashboard/leaderboard' },
                 { icon: 'Award', label: t('certificates'), href: '/dashboard/certificates' },
